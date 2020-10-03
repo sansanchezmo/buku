@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'register_screen.dart';
-
-// Import the firebase_core plugin
-import 'package:firebase_core/firebase_core.dart';
+import 'package:buku/firebase/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,6 +7,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+
+  @override
+  void dispose(){
+    emailController.dispose();
+    passController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: <Widget>[
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                         labelText: 'EMAIL',
                         labelStyle: TextStyle(
@@ -42,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20.0,
                   ),
                   TextField(
+                    controller: passController,
                     decoration: InputDecoration(
                       labelText: 'PASSWORD',
                       labelStyle: TextStyle(
@@ -60,21 +71,26 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: EdgeInsets.only(left: 30.0, right: 30.0),
               height: 50.0,
-              child: Material(
-                borderRadius: BorderRadius.circular(20.0),
-                shadowColor: Colors.orangeAccent,
-                color: Colors.orange,
-                elevation: 7.0,
-                child: GestureDetector(
-                  onTap: () {},
+              child: GestureDetector(
+                onTap: () {
+
+                  Auth auth = new Auth();
+                  auth.loginUser(emailController.text, passController.text, context);
+
+                },
+                child: Material(
+                  borderRadius: BorderRadius.circular(20.0),
+                  shadowColor: Colors.orangeAccent,
+                  color: Colors.orange,
+                  elevation: 7.0,
                   child: Center(
                     child: Text(
                       'LOGIN',
                       style: TextStyle(
-                          fontSize: 18.0,
-                          fontFamily: 'ProductSans',
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 18.0,
+                        fontFamily: 'ProductSans',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

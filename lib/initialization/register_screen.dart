@@ -1,14 +1,26 @@
+import 'package:buku/firebase/auth.dart';
 import 'package:flutter/material.dart';
 
-// Import the firebase_core plugin
-import 'package:firebase_core/firebase_core.dart';
-
-class registerScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
   _registerScreenState createState() => _registerScreenState();
 }
 
-class _registerScreenState extends State<registerScreen> {
+class _registerScreenState extends State<RegisterScreen> {
+
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+  final nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    nameController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +52,7 @@ class _registerScreenState extends State<registerScreen> {
                     child: Column(
                       children: <Widget>[
                         TextField(
+                          controller: emailController,
                           decoration: InputDecoration(
                               labelText: 'EMAIL',
                               labelStyle: TextStyle(
@@ -54,6 +67,7 @@ class _registerScreenState extends State<registerScreen> {
                           height: 20.0,
                         ),
                         TextField(
+                          controller: passController,
                           obscureText: true,
                           decoration: InputDecoration(
                               labelText: 'PASSWORD',
@@ -69,6 +83,7 @@ class _registerScreenState extends State<registerScreen> {
                           height: 20.0,
                         ),
                         TextField(
+                          controller: nameController,
                           decoration: InputDecoration(
                               labelText: 'NICK NAME',
                               labelStyle: TextStyle(
@@ -85,14 +100,19 @@ class _registerScreenState extends State<registerScreen> {
                         Container(
                           //padding: EdgeInsets.only(left: 30.0,right: 30.0),
                           height: 50.0,
-                          child: Material(
-                            borderRadius: BorderRadius.circular(20.0),
-                            shadowColor: Colors.orangeAccent,
-                            color: Colors.orange,
-                            elevation: 7.0,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Center(
+                          child: GestureDetector(
+                            onTap: (){
+
+                              Auth auth = new Auth();
+                              auth.registerUser(emailController.text, passController.text, nameController.text, context);
+
+                            },
+                            child: Material(
+                              borderRadius: BorderRadius.circular(20.0),
+                              shadowColor: Colors.orangeAccent,
+                              color: Colors.orange,
+                              elevation: 7.0,
+                              child:Center(
                                 child: Text(
                                   'REGISTER',
                                   style: TextStyle(
@@ -103,7 +123,7 @@ class _registerScreenState extends State<registerScreen> {
                                 ),
                               ),
                             ),
-                          ),
+                          )
                         ),
                         SizedBox(
                           height: 20.0,
