@@ -1,5 +1,6 @@
 import 'linked_list.dart';
 
+//This class is very similar to vector, but reallocations are different
 class ArrayQueue<T> {
   //public attributes - nothing here
   //private attributes
@@ -8,7 +9,7 @@ class ArrayQueue<T> {
   int _size;
   int _capacity;
   List _data;
-  static final int _min_capacity = 1;
+  static const int _min_capacity = 1;
 
   //public methods
   ArrayQueue() {
@@ -103,4 +104,4 @@ class ListQueue<T> {
   }
 }
 
-class queue<T> extends ListQueue<T> {}
+class Queue<T> extends ListQueue<T> {}

@@ -58,4 +58,4 @@ class ListStack<T> {
 }
 
 
-class stack<T> extends ListStack<T>{}
+class Stack<T> extends ListStack<T>{}

@@ -1,10 +1,10 @@
 class Vector<T> {
   //public attributes - nothing here
-  //private methods
+  //private attributes
   List _data;
   int _size;
   int _capacity;
-  static final int _min_capacity = 1;
+  static const int _min_capacity = 1;
 
   //public methods
   vector([int initialSize = 0, T filling]) {
@@ -130,8 +130,8 @@ class Vector<T> {
   }
 
   //private methods
-  void _realloc(bool double_capacity) {
-    if (double_capacity)
+  void _realloc(bool doubleCapacity) {
+    if (doubleCapacity)
       _capacity *= 2;
     else
       _capacity ~/= 2;
