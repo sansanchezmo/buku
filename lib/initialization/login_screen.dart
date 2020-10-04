@@ -69,8 +69,15 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 50.0,
             ),
             Container(
-              padding: EdgeInsets.only(left: 30.0, right: 30.0),
+              //padding: EdgeInsets.only(left: 30.0, right: 30.0),
+              margin: EdgeInsets.only(left: 30.0, right: 30.0),
               height: 50.0,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                      colors: [Colors.orange,Colors.deepOrange]
+                  )
+              ),
               child: GestureDetector(
                 onTap: () {
 
@@ -80,9 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Material(
                   borderRadius: BorderRadius.circular(20.0),
-                  shadowColor: Colors.orangeAccent,
-                  color: Colors.orange,
-                  elevation: 7.0,
+                  //shadowColor: Colors.orangeAccent,
+                  color: Colors.transparent,
+                  //elevation: 7.0,
                   child: Center(
                     child: Text(
                       'LOGIN',

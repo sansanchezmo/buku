@@ -34,10 +34,14 @@ class _SplashScreenState extends State<SplashScreen>{
 
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.orange,Colors.deepOrange]
+          )
+        ),
         height: double.infinity,
         width: double.infinity,
         padding: EdgeInsets.only(top: 150),
-        color: Colors.orange,
         child: Column(
           children: [
 
