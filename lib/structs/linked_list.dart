@@ -90,13 +90,20 @@ class LinkedList<T> {
 
   T popFront() {
     if (empty())
-      throw RangeError('pop from an empty list');
+      throw RangeError('popFront from empty list');
 
     T temp = _head.data();
     _head = _head.next();
 
     _size--;
     return temp;
+  }
+
+  T popBack() {
+    if (empty())
+      throw RangeError('popBack from empty list');
+
+    return erase(_size - 1);
   }
 
   void insert(int index, T val) {
@@ -120,6 +127,29 @@ class LinkedList<T> {
 
     newNode.setNextTo(itr.next());
     itr.setNextTo(newNode);
+    _size++;
+  }
+
+  T erase(int index) {
+    if (index > 0 || index >= _size)
+      throw RangeError('list erasing index out of range');
+
+    if (index == 0) {
+      return popFront();
+    }
+
+    Node itr = _head;
+    for (int i = 0; i < index - 1; i++)
+      itr = itr.next();
+
+    if (index == _size - 1)
+      _tail = itr;
+
+    Node temp = itr.next();
+    itr.next().setNextTo(itr.next().next());
+    _size--;
+
+    return temp.data();
   }
 
   bool found(T val) {

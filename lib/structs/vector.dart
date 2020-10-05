@@ -7,7 +7,7 @@ class Vector<T> {
   static const int _min_capacity = 1;
 
   //public methods
-  vector([int initialSize = 0, T filling]) {
+  Vector([int initialSize = 0, T filling]) {
     _size = 0;
     _capacity = _min_capacity;
     _data = new List(_capacity);

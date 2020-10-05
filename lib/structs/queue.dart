@@ -1,6 +1,7 @@
 import 'linked_list.dart';
 
-//This class is very similar to vector, but reallocations are different
+// This class is very similar to vector, but reallocations and
+// indexing logic are different
 class ArrayQueue<T> {
   //public attributes - nothing here
   //private attributes
@@ -57,9 +58,9 @@ class ArrayQueue<T> {
   }
 
   //private methods
-  void _realloc(bool double_capacity) {
+  void _realloc(bool doubleCapacity) {
     int newCapacity;
-    if (double_capacity)
+    if (doubleCapacity)
       newCapacity = _capacity * 2;
     else
       newCapacity = _capacity ~/ 2;
