@@ -14,6 +14,7 @@ class _TestState extends State<Test> {
     auth.getEmail();
     email = auth.email;
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -22,7 +23,7 @@ class _TestState extends State<Test> {
           children: [
             Image(
               image: AssetImage(
-                'assets/images/firebase.png',
+                'assets/images/bukusymbol.png',
               ),
               width: 200.0,
               height: 200.0,
@@ -31,7 +32,7 @@ class _TestState extends State<Test> {
               'You logged in with:',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.deepOrangeAccent,
+                color: Colors.deepOrange,
                 fontSize: 25.0,
                 fontFamily: 'ProductSans',
                 fontWeight: FontWeight.bold,
@@ -58,15 +59,30 @@ class _TestState extends State<Test> {
                     child: GestureDetector(
                       onTap: () {
                         auth.signout();
-                        Navigator.of(context).pushNamed('/login');
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, "/login", (r) => false);
                       },
-                      child: Text(
-                        'SIGN OUT',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 10,
+                                  spreadRadius: 2)
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            'SIGN OUT',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     ),
                   ),

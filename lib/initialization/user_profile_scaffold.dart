@@ -11,7 +11,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Stack(
@@ -367,7 +367,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
         child: Column(
           children: [
             Container(
-              height: 144,
+              height: 130,
               width: 90,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),

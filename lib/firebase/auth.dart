@@ -21,7 +21,7 @@ class Auth {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       if (userCredential != null) {
-        Navigator.of(context).pushNamed('/home');
+        Navigator.of(context).pushNamed('/menu');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -41,7 +41,7 @@ class Auth {
           email: email, password: password);
       print("le logeo");
       if (userCredential != null) {
-        Navigator.of(context).pushNamed('/home');
+        Navigator.of(context).pushNamed('/menu');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
