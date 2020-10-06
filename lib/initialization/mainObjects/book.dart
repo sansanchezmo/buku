@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class Book{
   //Instance attributes
   final String _isbn, _title, _author, _year, _publisher, _synopsis;
@@ -10,7 +12,8 @@ class Book{
   }
 
   scanBookRating(){
-      _rating = 3.1; //Code to set the book rating based on the users ratings.
+    var rdm = new Random();
+    _rating = rdm.nextInt(50)/10; //Code to set the book rating based on the users ratings.
   }
 
   //Getters.

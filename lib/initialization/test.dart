@@ -49,46 +49,7 @@ class _TestState extends State<Test> {
                 fontFamily: 'ProductSans',
               ),
             ),
-            Expanded(
-                child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        auth.signout();
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, "/login", (r) => false);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 10,
-                                  spreadRadius: 2)
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            'SIGN OUT',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ))
+
           ],
         ),
       ),

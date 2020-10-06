@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:buku/firebase/auth.dart';
 import 'mainObjects/book.dart';
 
 class UserProfileScaffold extends StatefulWidget {
@@ -8,6 +9,7 @@ class UserProfileScaffold extends StatefulWidget {
 }
 
 class _UserProfileScaffold extends State<UserProfileScaffold> {
+  Auth user = new Auth();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +73,20 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 top: 90,
                 child: _profileAvatar(),
               ),
+              Positioned(
+                top:55, right: 30,
+                child: GestureDetector(
+                    onTap: () {
+                      user.signout();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/login", (r) => false);
+                    },
+                    child: Text("Sign out",
+                      style: TextStyle(
+                          color: Colors.black54, fontSize: 15
+                      ),)
+                ),
+              )
             ],
           ),
           SizedBox(height: 25),
