@@ -34,8 +34,7 @@ class _SearchScaffold extends State<SearchScaffold> {
                     BoxShadow(
                         color: Colors.black12, spreadRadius: 5, blurRadius: 10)
                   ],
-                  gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.deepOrange])),
+                  color: Colors.deepOrange),
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [

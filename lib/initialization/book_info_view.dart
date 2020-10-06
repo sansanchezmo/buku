@@ -19,11 +19,7 @@ class _bookViewState extends State<bookView> {
     final screenWidth = MediaQuery.of(context).size.width;
     final rating = book.getRating();
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.orange,Colors.deepOrange]
-        )
-      ),
+      color: Colors.deepOrange,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(

@@ -15,11 +15,7 @@ class _CommingSoonPage extends State<CommingSoonPage>{
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(50),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Colors.orange,Colors.deepOrange]
-          )
-        ),
+        color: Colors.deepOrange,
         child: Center(
           child: Container(
             alignment: Alignment.center,

@@ -24,8 +24,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                     height: 140,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.orange, Colors.deepOrange]),
+                        color: Colors.deepOrange,
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(40),
                             bottomRight: Radius.circular(40)),
@@ -451,7 +450,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
     ];
     for (int i = 0; i < 10; i++) {
       userFavTagsList.add(Container(
-        height: 30,
+        height: 33,
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
             color: Colors.white,

@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'ProductSans'),
       routes: <String, WidgetBuilder>{
         //Here you can implement routes to every single file
         // used by the Navigator.
