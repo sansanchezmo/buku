@@ -1,4 +1,5 @@
 import 'package:buku/firebase/auth.dart';
+import 'package:buku/widget/gradient_button.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -49,6 +50,11 @@ class _registerScreenState extends State<RegisterScreen> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: Colors.white,
+                        boxShadow: [BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 20,
+                            offset: Offset(0,0)
+                        ),],
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40.0),
                           topRight: Radius.circular(40.0),
@@ -101,39 +107,14 @@ class _registerScreenState extends State<RegisterScreen> {
                         SizedBox(
                           height: 50.0,
                         ),
-                        Container(
-                          //padding: EdgeInsets.only(left: 30.0,right: 30.0),
-                          height: 50.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                                gradient: LinearGradient(
-                                    colors: [Colors.orange,Colors.deepOrange]
-                                )
-                            ),
-                          child: GestureDetector(
-                            onTap: (){
+                        GradientButton(
+                          text: 'REGISTER',
+                          tap: (){
 
-                              Auth auth = new Auth();
-                              auth.registerUser(emailController.text, passController.text, nameController.text, context);
+                            Auth auth = new Auth();
+                            auth.registerUser(emailController.text, passController.text, nameController.text, context);
 
-                            },
-                            child: Material(
-                              borderRadius: BorderRadius.circular(20.0),
-                              //shadowColor: Colors.orangeAccent,
-                              color: Colors.transparent,
-                              //elevation: 7.0,
-                              child:Center(
-                                child: Text(
-                                  'REGISTER',
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontFamily: 'ProductSans',
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          )
+                          },
                         ),
                         SizedBox(
                           height: 20.0,
