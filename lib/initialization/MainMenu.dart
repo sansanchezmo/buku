@@ -3,7 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'coming_soon_scaffold.dart';
 import 'search_scaffold.dart';
-import 'test.dart';
+import 'mainPage_scaffold.dart';
 import 'user_profile_scaffold.dart';
 
 class Menu extends StatefulWidget {
@@ -42,7 +42,7 @@ class _MenuState extends State<Menu> {
         children: <Widget>[
           CommingSoonPage(),
           SearchScaffold(),
-          Test(),
+          MainPage(),
           CommingSoonPage(),
           UserProfileScaffold(),
         ],
