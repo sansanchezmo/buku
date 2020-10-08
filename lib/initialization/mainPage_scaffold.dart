@@ -70,7 +70,7 @@ class _MainPage extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: (){},// Stack Method.
+                  onTap: () async { await _bookHistoryStack(true);},// Stack Method.
                   child: Container(
                     width: 150,
                     alignment: Alignment.center,
@@ -85,7 +85,7 @@ class _MainPage extends State<MainPage> {
                 ),
                 SizedBox(width: 10),
                 GestureDetector(
-                    onTap: (){},// Stack Method.
+                    onTap: () async { await _bookHistoryStack(false);},// Stack Method.
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -178,20 +178,50 @@ class _MainPage extends State<MainPage> {
   }
 
   _recomendationQueue(bool array){
-    var books = new List<Book>(); // TODO: method that returns nData books to enqueue and dequeue from database.
+    var time1,time2;
+    // var books = Database.getBookList(_nData);
+    var books = new List<Book>();
     var bookQueue;
     if(array){
       bookQueue = new ArrayQueue<Book>();
     } else {
       bookQueue = new ListQueue<Book>();
     }
-    for (Book book in books){ //Take time for enqueue
+    time1 = DateTime.now().microsecondsSinceEpoch;
+    for (Book book in books){
       bookQueue.push(book);
     }
-    print("Time to enqueue "+_nData.toString()+" data: ");
-    while(!bookQueue.empty()){ //Take time for dequeue
+    time2 = DateTime.now().microsecondsSinceEpoch;
+    print("Time to enqueue "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
+    time1 = DateTime.now().microsecondsSinceEpoch;
+    while(!bookQueue.empty()){
       bookQueue.pop();
     }
-    print("Time to dequeue "+_nData.toString()+" data: ");
+    time2 = DateTime.now().microsecondsSinceEpoch;
+    print("Time to dequeue "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
+  }
+
+  _bookHistoryStack(bool array){
+    var time1, time2;
+    // var books = Database.getBookList(_nData);
+    var books = new List<Book>();
+    var bookStack;
+    if(array){
+      bookStack = new ArrayStack<Book>();
+    } else {
+      bookStack = new ListStack<Book>();
+    }
+    time1 = DateTime.now().microsecondsSinceEpoch;
+    for (Book book in books){
+      bookStack.push(book);
+    }
+    time2 = DateTime.now().microsecondsSinceEpoch;
+    print("Time to push "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
+    time1 = DateTime.now().microsecondsSinceEpoch;
+    while(!bookStack.empty()){
+      bookStack.pop();
+    }
+    time2 = DateTime.now().microsecondsSinceEpoch;
+    print("Time to pop "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
   }
 }
