@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:buku/firebase/auth.dart';
 import 'package:flutter/services.dart';
 import 'mainObjects/book.dart';
+import 'package:buku/database/database.dart';
 import 'package:buku/structs/linked_list.dart';
 import 'package:buku/structs/queue.dart';
 import 'package:buku/structs/stack.dart';
@@ -156,7 +157,13 @@ class _MainPage extends State<MainPage> {
                 ),
                 SizedBox(width: 10),
                 GestureDetector(
-                    onTap: (){},// Stack Method.
+                    onTap: () async{
+                      //test db connection
+                      List<Book> list = await Database.getBookList(10);
+
+                      print(list);
+
+                    },// Stack Method.
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -177,10 +184,10 @@ class _MainPage extends State<MainPage> {
     );
   }
 
-  _recomendationQueue(bool array){
+  _recomendationQueue(bool array) async {
     var time1,time2;
-    // var books = Database.getBookList(_nData);
-    var books = new List<Book>();
+    var books = await Database.getBookList(_nData);
+    //var books = new List<Book>();
     var bookQueue;
     if(array){
       bookQueue = new ArrayQueue<Book>();
@@ -201,10 +208,10 @@ class _MainPage extends State<MainPage> {
     print("Time to dequeue "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
   }
 
-  _bookHistoryStack(bool array){
+  _bookHistoryStack(bool array) async{
     var time1, time2;
-    // var books = Database.getBookList(_nData);
-    var books = new List<Book>();
+    var books = await Database.getBookList(_nData);
+    //var books = new List<Book>();
     var bookStack;
     if(array){
       bookStack = new ArrayStack<Book>();
