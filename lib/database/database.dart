@@ -36,6 +36,16 @@ class Database {
 
   }
 
+  static Future<int> getBookCount() async{
+
+    dynamic res = await openConnection();
+    int _bookCount = res[1];
+    res[0].close();
+
+    return _bookCount;
+
+  }
+
   static Future<List<Book>> getBookList(int n) async{
 
     dynamic res = await openConnection();

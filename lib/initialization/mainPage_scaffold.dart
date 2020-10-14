@@ -159,9 +159,11 @@ class _MainPage extends State<MainPage> {
                 GestureDetector(
                     onTap: () async{
                       //test db connection
-                      List<Book> list = await Database.getBookList(10);
 
-                      print(list);
+                      await Database.createDatabase();
+
+                      int n = await Database.getBookCount();
+                      print(n);
 
                     },// Stack Method.
                     child: Container(
