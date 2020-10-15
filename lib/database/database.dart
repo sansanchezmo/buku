@@ -57,7 +57,7 @@ class Database {
       throw Exception('there are not enough data in db');
     }
 
-    List<Map> _bookData = await _db.rawQuery('SELECT * FROM book LIMIT'  + n.toString());
+    List<Map> _bookData = await _db.rawQuery('SELECT * FROM book LIMIT '  + n.toString());
 
     List<Book> list = List();
 

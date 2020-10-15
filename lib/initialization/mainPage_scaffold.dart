@@ -160,10 +160,12 @@ class _MainPage extends State<MainPage> {
                     onTap: () async{
                       //test db connection
 
-                      await Database.createDatabase();
+                      //await Database.createDatabase();
 
                       int n = await Database.getBookCount();
                       print(n);
+                      var x = await Database.getBookList(2000);
+                      print(x.length.toString());
 
                     },// Stack Method.
                     child: Container(
