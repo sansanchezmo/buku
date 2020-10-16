@@ -16,7 +16,10 @@ class MainPage extends StatefulWidget {
 class _MainPage extends State<MainPage> {
   Auth auth = new Auth();
   String email;
-  int _nData = 0;
+  int _nData = 10;
+  Stopwatch _stopwatch = new Stopwatch();
+  List<Book> _bookList = new List<Book>();
+
   @override
   Widget build(BuildContext context) {
     auth.getEmail();
@@ -61,11 +64,18 @@ class _MainPage extends State<MainPage> {
             Container(
               width: 150,
               child: TextField(
-                onChanged: (String number) {_nData = int.parse(number);},
+                onSubmitted: (String number) async {
+                  _nData = int.parse(number);
+                  _bookList.clear();
+                  _bookList = await Database.getBookList(_nData);
+                  print(_bookList.length.toString() + " data was downloaded.");
+                  },
+                //onChanged: (String number) {_nData = int.parse(number);},
                 decoration: new InputDecoration(labelText: "Data to process"),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
             ),
+
             SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -141,7 +151,7 @@ class _MainPage extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                    onTap: (){},// Stack Method.
+                    onTap: () async { await _bookLinkedListTest();},// Stack Method.
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -180,6 +190,7 @@ class _MainPage extends State<MainPage> {
                         style: TextStyle(color: Colors.white,fontSize: 16),),
                     )
                 ),
+                SizedBox(height: 10)
               ],
             )
           ],
@@ -189,50 +200,85 @@ class _MainPage extends State<MainPage> {
   }
 
   _recomendationQueue(bool array) async {
-    var time1,time2;
-    var books = await Database.getBookList(_nData);
-    //var books = new List<Book>();
     var bookQueue;
     if(array){
       bookQueue = new ArrayQueue<Book>();
     } else {
       bookQueue = new ListQueue<Book>();
     }
-    time1 = DateTime.now().microsecondsSinceEpoch;
-    for (Book book in books){
+    _stopwatch.reset();
+    _stopwatch.start();
+    for (Book book in _bookList){
       bookQueue.push(book);
     }
-    time2 = DateTime.now().microsecondsSinceEpoch;
-    print("Time to enqueue "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
-    time1 = DateTime.now().microsecondsSinceEpoch;
+    print("Time to enqueue "+ _nData.toString() +" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+    _stopwatch.start();
     while(!bookQueue.empty()){
       bookQueue.pop();
     }
-    time2 = DateTime.now().microsecondsSinceEpoch;
-    print("Time to dequeue "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
+    print("Time to dequeue "+_nData.toString()+" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
   }
 
   _bookHistoryStack(bool array) async{
-    var time1, time2;
-    var books = await Database.getBookList(_nData);
-    //var books = new List<Book>();
     var bookStack;
     if(array){
       bookStack = new ArrayStack<Book>();
     } else {
       bookStack = new ListStack<Book>();
     }
-    time1 = DateTime.now().microsecondsSinceEpoch;
-    for (Book book in books){
+    _stopwatch.reset();
+    _stopwatch.start();
+    for (Book book in _bookList){
       bookStack.push(book);
     }
-    time2 = DateTime.now().microsecondsSinceEpoch;
-    print("Time to push "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
-    time1 = DateTime.now().microsecondsSinceEpoch;
+    print("Time to push "+ _nData.toString() +" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+    _stopwatch.start();
     while(!bookStack.empty()){
       bookStack.pop();
     }
-    time2 = DateTime.now().microsecondsSinceEpoch;
-    print("Time to pop "+_nData.toString()+" books: "+(time2-time1).toString() + "us");
+    print("Time to pop "+_nData.toString()+" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+  }
+
+  _bookLinkedListTest(){
+    LinkedList<Book> bookLinkedList = new LinkedList<Book>();
+
+    _stopwatch.reset();
+    _stopwatch.start();
+    for (Book book in _bookList){
+      bookLinkedList.pushFront(book);
+    }
+    print("Time to pushFront "+ _nData.toString() +" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+    _stopwatch.start();
+    while(!bookLinkedList.empty()){
+      bookLinkedList.popFront();
+    }
+    print("Time to popFront "+_nData.toString()+" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+
+    /*bookLinkedList.pushBack(_bookList[0]);
+    for (Book book in _bookList){
+      bookLinkedList.pushBack(book);
+    }
+    print("Time to pushBack "+ _nData.toString() +" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+    _stopwatch.start();
+    while(!bookLinkedList.empty()){
+      bookLinkedList.popBack();
+    }
+    print("Time to popBack "+_nData.toString()+" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();*/
   }
 }
