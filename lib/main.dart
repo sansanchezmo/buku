@@ -5,7 +5,6 @@ import 'package:buku/initialization/register_screen.dart';
 import 'package:buku/database/database.dart';
 import 'package:buku/initialization/login_screen.dart';
 import 'package:buku/initialization/test.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

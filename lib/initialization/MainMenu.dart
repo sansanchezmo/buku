@@ -1,3 +1,4 @@
+import 'package:buku/initialization/PrimitiveTestPage.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -43,7 +44,7 @@ class _MenuState extends State<Menu> {
           CommingSoonPage(),
           SearchScaffold(),
           MainPage(),
-          CommingSoonPage(),
+          PrimitiveTest(),
           UserProfileScaffold(),
         ],
         controller: pageControl,
