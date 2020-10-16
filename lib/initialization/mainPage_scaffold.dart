@@ -169,9 +169,6 @@ class _MainPage extends State<MainPage> {
                 GestureDetector(
                     onTap: () async{
                       //test db connection
-
-                      //await Database.createDatabase();
-
                       int n = await Database.getBookCount();
                       print(n);
                       var x = await Database.getBookList(2000);

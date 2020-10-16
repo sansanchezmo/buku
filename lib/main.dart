@@ -2,6 +2,7 @@ import 'package:buku/initialization/MainMenu.dart';
 import 'package:buku/initialization/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:buku/initialization/register_screen.dart';
+import 'package:buku/database/database.dart';
 import 'package:buku/initialization/login_screen.dart';
 import 'package:buku/initialization/test.dart';
 
@@ -10,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // bind app with FireBase
+  await Database.createDatabase(); // bind app with SQL Database
   runApp(MyApp());
 }
 
