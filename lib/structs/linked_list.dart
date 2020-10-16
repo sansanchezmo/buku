@@ -94,8 +94,8 @@ class LinkedList<T> {
 
     T temp = _head.data();
     _head = _head.next();
-
     _size--;
+
     return temp;
   }
 
@@ -108,7 +108,7 @@ class LinkedList<T> {
 
   void insert(int index, T val) {
     if (index > 0 || index > _size)
-      throw RangeError('list inserting index out of range');
+      throw IndexError(index, this, '', 'list inserting index out of range', size() + 1);
 
     if (index == 0) {
       pushFront(val);
@@ -131,8 +131,8 @@ class LinkedList<T> {
   }
 
   T erase(int index) {
-    if (index > 0 || index >= _size)
-      throw RangeError('list erasing index out of range');
+    if (!(0 <= index && index < _size))
+      throw IndexError(index, this, '', 'list erasing index out of range', size());
 
     if (index == 0) {
       return popFront();
@@ -174,6 +174,18 @@ class LinkedList<T> {
     }
 
     return -1;
+  }
+
+  Node foundNode(T val) {
+    Node itr = _head;
+
+    while (itr != null) {
+      if (itr.data() == val)
+        return itr;
+      itr = itr.next();
+    }
+
+    return null;
   }
   //private methods - nothing here
 }
