@@ -72,7 +72,7 @@ class Database {
 
     await _db.close();
 
-    return list;
+    return list.take(n).toList();
 
   }
 
