@@ -107,7 +107,7 @@ class LinkedList<T> {
   }
 
   void insert(int index, T val) {
-    if (index > 0 || index > _size)
+    if (!(0 <= index && index <= _size))
       throw IndexError(index, this, '', 'list inserting index out of range', size() + 1);
 
     if (index == 0) {
