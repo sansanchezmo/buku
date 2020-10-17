@@ -180,7 +180,9 @@ class _MainPage extends State<MainPage> {
                     )),
                 SizedBox(width: 10),
                 GestureDetector(
-                    onTap: () async {await _bookVectorTest();}, // Stack Method.
+                    onTap: () async {
+                      await _bookVectorTest();
+                    }, // Stack Method.
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -212,7 +214,7 @@ class _MainPage extends State<MainPage> {
     _stopwatch.reset();
     _stopwatch.start();
     for (Book book in _bookList) {
-      bookQueue.push(book);
+      bookQueue.enqueue(book);
     }
     print("Time to enqueue " +
         _nData.toString() +
@@ -223,7 +225,7 @@ class _MainPage extends State<MainPage> {
     _stopwatch.reset();
     _stopwatch.start();
     while (!bookQueue.empty()) {
-      bookQueue.pop();
+      bookQueue.dequeue();
     }
     print("Time to dequeue " +
         _nData.toString() +
@@ -252,7 +254,6 @@ class _MainPage extends State<MainPage> {
     }
     print((sumEnqueueTime/20).toString() + " enqueue");
     print((sumDequeueTime/20).toString() + " dequeue");*/
-
   }
 
   _bookHistoryStack(bool array) async {
@@ -312,11 +313,13 @@ class _MainPage extends State<MainPage> {
     _stopwatch.reset();
     _stopwatch.start();
     for (Book book in _bookList) {
-        bookLinkedList.pushFront(book);
+      bookLinkedList.pushFront(book);
     }
-    print("Time to pushFront " + _nData.toString()
-          + " books: " + _stopwatch.elapsedMicroseconds.toString()
-          + " us");
+    print("Time to pushFront " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
     _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
@@ -334,30 +337,38 @@ class _MainPage extends State<MainPage> {
     for (Book book in _bookList) {
       bookLinkedList.pushBack(book);
     }
-    print("Time to pushBack " + _nData.toString() + " books: " +
-        _stopwatch.elapsedMicroseconds.toString() + " us");
+    print("Time to pushBack " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
     _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
     while (!bookLinkedList.empty()) {
       bookLinkedList.popBack();
     }
-    print("Time to popBack " + _nData.toString() + " books: " +
-        _stopwatch.elapsedMicroseconds.toString() + " us");
+    print("Time to popBack " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
     _stopwatch.stop();
     _stopwatch.reset();
   }
 
   _bookVectorTest() {
     Vector<Book> bookVector = new Vector<Book>();
-    /*_stopwatch.reset();
+    _stopwatch.reset();
     _stopwatch.start();
     for (Book book in _bookList) {
       bookVector.pushFront(book);
     }
-    print("Time to pushFront " + _nData.toString()
-        + " books: " + _stopwatch.elapsedMicroseconds.toString()
-        + " us");
+    print("Time to pushFront " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
     _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
@@ -369,22 +380,28 @@ class _MainPage extends State<MainPage> {
         " books: " +
         _stopwatch.elapsedMicroseconds.toString() +
         " us");
-    _stopwatch.stop();*/
+    _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
     for (Book book in _bookList) {
       bookVector.pushBack(book);
     }
-    print("Time to pushBack " + _nData.toString() + " books: " +
-        _stopwatch.elapsedMicroseconds.toString() + " us");
+    print("Time to pushBack " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
     _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
     while (!bookVector.empty()) {
       bookVector.popBack();
     }
-    print("Time to popBack " + _nData.toString() + " books: " +
-        _stopwatch.elapsedMicroseconds.toString() + " us");
+    print("Time to popBack " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
     _stopwatch.stop();
     _stopwatch.reset();
   }
