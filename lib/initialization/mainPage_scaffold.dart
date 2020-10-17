@@ -180,13 +180,7 @@ class _MainPage extends State<MainPage> {
                     )),
                 SizedBox(width: 10),
                 GestureDetector(
-                    onTap: () async {
-                      //test db connection
-                      int n = await Database.getBookCount();
-                      print(n);
-                      var x = await Database.getBookList(2000);
-                      print(x.length.toString());
-                    }, // Stack Method.
+                    onTap: () async {await _bookVectorTest();}, // Stack Method.
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -238,6 +232,27 @@ class _MainPage extends State<MainPage> {
         " us");
     _stopwatch.stop();
     _stopwatch.reset();
+    /*int sumEnqueueTime = 0;
+    int sumDequeueTime = 0;
+    for (int i = 0; i < 20; i++) {
+      _stopwatch.reset();
+      _stopwatch.start();
+      for (Book book in _bookList) {
+        bookQueue.push(book);
+      }
+      sumEnqueueTime += _stopwatch.elapsedMicroseconds;
+      _stopwatch.stop();
+      _stopwatch.reset();
+      _stopwatch.start();
+      while(!bookQueue.empty()){
+        bookQueue.pop();
+      }
+      sumDequeueTime += _stopwatch.elapsedMicroseconds;
+      _stopwatch.stop();
+    }
+    print((sumEnqueueTime/20).toString() + " enqueue");
+    print((sumDequeueTime/20).toString() + " dequeue");*/
+
   }
 
   _bookHistoryStack(bool array) async {
@@ -270,21 +285,38 @@ class _MainPage extends State<MainPage> {
         " us");
     _stopwatch.stop();
     _stopwatch.reset();
+    /*int sumPushTime = 0;
+    int sumPopTime = 0;
+    for (int i = 0; i < 20; i++) {
+      _stopwatch.reset();
+      _stopwatch.start();
+      for (Book book in _bookList) {
+        bookStack.push(book);
+      }
+      sumPushTime += _stopwatch.elapsedMicroseconds;
+      _stopwatch.stop();
+      _stopwatch.reset();
+      _stopwatch.start();
+      while(!bookStack.empty()){
+        bookStack.pop();
+      }
+      sumPopTime += _stopwatch.elapsedMicroseconds;
+      _stopwatch.stop();
+    }
+    print((sumPushTime/20).toString() + " push");
+    print((sumPopTime/20).toString() + " pop");*/
   }
 
   _bookLinkedListTest() {
     LinkedList<Book> bookLinkedList = new LinkedList<Book>();
-
     _stopwatch.reset();
     _stopwatch.start();
     for (Book book in _bookList) {
-      bookLinkedList.pushFront(book);
+        bookLinkedList.pushFront(book);
     }
-    print("Time to pushFront " +
-        _nData.toString() +
-        " books: " +
-        _stopwatch.elapsedMicroseconds.toString() +
-        " us");
+    print("Time to pushFront " + _nData.toString()
+          + " books: " + _stopwatch.elapsedMicroseconds.toString()
+          + " us");
     _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
@@ -298,20 +330,62 @@ class _MainPage extends State<MainPage> {
         " us");
     _stopwatch.stop();
     _stopwatch.reset();
-
-    /*bookLinkedList.pushBack(_bookList[0]);
-    for (Book book in _bookList){
+    _stopwatch.start();
+    for (Book book in _bookList) {
       bookLinkedList.pushBack(book);
     }
-    print("Time to pushBack "+ _nData.toString() +" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    print("Time to pushBack " + _nData.toString() + " books: " +
+        _stopwatch.elapsedMicroseconds.toString() + " us");
     _stopwatch.stop();
     _stopwatch.reset();
     _stopwatch.start();
-    while(!bookLinkedList.empty()){
+    while (!bookLinkedList.empty()) {
       bookLinkedList.popBack();
     }
-    print("Time to popBack "+_nData.toString()+" books: "+ _stopwatch.elapsedMicroseconds.toString() + " us");
+    print("Time to popBack " + _nData.toString() + " books: " +
+        _stopwatch.elapsedMicroseconds.toString() + " us");
     _stopwatch.stop();
-    _stopwatch.reset();*/
+    _stopwatch.reset();
+  }
+
+  _bookVectorTest() {
+    Vector<Book> bookVector = new Vector<Book>();
+    /*_stopwatch.reset();
+    _stopwatch.start();
+    for (Book book in _bookList) {
+      bookVector.pushFront(book);
+    }
+    print("Time to pushFront " + _nData.toString()
+        + " books: " + _stopwatch.elapsedMicroseconds.toString()
+        + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+    _stopwatch.start();
+    while (!bookVector.empty()) {
+      bookVector.popFront();
+    }
+    print("Time to popFront " +
+        _nData.toString() +
+        " books: " +
+        _stopwatch.elapsedMicroseconds.toString() +
+        " us");
+    _stopwatch.stop();*/
+    _stopwatch.reset();
+    _stopwatch.start();
+    for (Book book in _bookList) {
+      bookVector.pushBack(book);
+    }
+    print("Time to pushBack " + _nData.toString() + " books: " +
+        _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
+    _stopwatch.start();
+    while (!bookVector.empty()) {
+      bookVector.popBack();
+    }
+    print("Time to popBack " + _nData.toString() + " books: " +
+        _stopwatch.elapsedMicroseconds.toString() + " us");
+    _stopwatch.stop();
+    _stopwatch.reset();
   }
 }
