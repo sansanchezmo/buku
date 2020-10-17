@@ -1,3 +1,5 @@
+import 'package:buku/structs/queue.dart';
+import 'package:buku/structs/stack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,6 +10,99 @@ class PrimitiveTest extends StatefulWidget {
 
 class _PrimitiveTestState extends State<PrimitiveTest> {
   int nData = 10;
+  bool doCharts = false;
+  Stopwatch time = new Stopwatch();
+
+  void testStacks(bool decide) {
+    String message;
+    var PrimitiveStack;
+    switch (decide) {
+      case true:
+        {
+          PrimitiveStack = new ArrayStack();
+          print('------------Using ArrayStack------------');
+        }
+        break;
+      case false:
+        {
+          PrimitiveStack = new ListStack();
+          print('------------Using ListStack------------');
+        }
+        break;
+    }
+    //Pushing $nData elements
+    time.start();
+    for (int i = 0; i < nData; i++) {
+      PrimitiveStack.push(i);
+    }
+    time.stop();
+    message = 'Time to push ' +
+        nData.toString() +
+        ' integers: ' +
+        time.elapsedMicroseconds.toString() +
+        ' microseconds';
+    print(message);
+    time.reset();
+    //Popping $nData elements
+    time.start();
+    for (int j = 0; j < nData; j++) {
+      PrimitiveStack.pop();
+    }
+    time.stop();
+    message = 'Time to pop ' +
+        nData.toString() +
+        ' integers: ' +
+        time.elapsedMicroseconds.toString() +
+        ' microseconds';
+    print(message);
+    time.reset();
+  }
+
+  void testQueues(bool decide) {
+    String message;
+    var PrimitiveQueue;
+    switch (decide) {
+      case true:
+        {
+          PrimitiveQueue = new ArrayQueue();
+          print('------------Using ArrayQueue------------');
+        }
+        break;
+      case false:
+        {
+          PrimitiveQueue = new ListQueue();
+          print('------------Using ListQueue------------');
+        }
+        break;
+    }
+    //Pushing $nData elements
+    time.start();
+    for (int i = 0; i < nData; i++) {
+      PrimitiveQueue.push(i);
+    }
+    time.stop();
+    message = 'Time to enqueue ' +
+        nData.toString() +
+        ' integers: ' +
+        time.elapsedMicroseconds.toString() +
+        ' microseconds';
+    print(message);
+    time.reset();
+    //Popping $nData elements
+    time.start();
+    for (int j = 0; j < nData; j++) {
+      PrimitiveQueue.pop();
+    }
+    time.stop();
+    message = 'Time to dequeue ' +
+        nData.toString() +
+        ' integers: ' +
+        time.elapsedMicroseconds.toString() +
+        ' microseconds';
+    print(message);
+    time.reset();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +142,9 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
               child: TextField(
                   onSubmitted: (String number) async {
                     nData = int.parse(number);
+                    setState(() {
+                      doCharts = true;
+                    });
                     print(nData);
                   },
                   decoration: new InputDecoration(labelText: "Data to process"),
@@ -60,7 +158,9 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      testStacks(true);
+                    },
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -75,7 +175,9 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                     )),
                 SizedBox(width: 10),
                 GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      testStacks(false);
+                    },
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -95,7 +197,9 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      testQueues(true);
+                    },
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -110,7 +214,9 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                     )),
                 SizedBox(width: 10),
                 GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      testQueues(false);
+                    },
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
@@ -120,6 +226,26 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Text(
                         "ListQueue",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    )),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                    onTap: () async {},
+                    child: Container(
+                      width: 150,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: doCharts ? Colors.green : Colors.grey[300],
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Text(
+                        "View chart",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     )),
