@@ -31,7 +31,7 @@ class ArrayQueue<T> {
     return _data[_headIndex];
   }
 
-  void push(T val) {
+  void enqueue(T val) {
     if (_size == _capacity)
       _realloc(true);
 
@@ -40,9 +40,9 @@ class ArrayQueue<T> {
     _size++;
   }
 
-  T pop() {
+  T dequeue() {
     if (empty())
-      throw RangeError('pop from empty queue');
+      throw RangeError('dequeue from empty queue');
 
     T temp = _data[_headIndex];
     _data[_headIndex] = null;
@@ -94,13 +94,13 @@ class ListQueue<T> {
     return _list.front().data();
   }
 
-  void push(T val) {
+  void enqueue(T val) {
     _list.pushBack(val);
   }
 
-  T pop() {
+  T dequeue() {
     if (empty())
-      throw RangeError('pop from empty queue');
+      throw RangeError('dequeue from empty queue');
     return _list.popFront();
   }
 }

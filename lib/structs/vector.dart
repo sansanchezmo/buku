@@ -44,9 +44,11 @@ class Vector<T> {
     _size++;
   }
 
+  void pushFront(T val) => insert(0, val);
+
   void insert(int index, T val) {
     if ( 0 > index || index > _size)
-      throw IndexError(index, this, '', 'vector inserting index out of range', size());
+      throw IndexError(index, this, '', 'vector inserting index out of range', size() + 1);
 
     if (index == _size) {
       pushBack(val);
@@ -63,7 +65,7 @@ class Vector<T> {
 
   T popBack() {
     if (empty())
-      throw RangeError('pop from empty vector');
+      throw RangeError('popBack from empty vector');
 
     _size--;
     T val = _data[_size];
@@ -76,17 +78,25 @@ class Vector<T> {
     return val;
   }
 
-  void erase(int index) {
+  T popFront() {
+    if (empty())
+      throw RangeError('popFront from empty vector');
+
+    return erase(0);
+  }
+
+  T erase(int index) {
     if (empty())
       throw RangeError('erase from empty vector');
     if (0 > index || index >= _size)
       throw IndexError(index, this, '', 'vector erasing index out of range', size());
 
-
+    T val = _data[index];
     for (int i = index; i < _size - 1; i++)
       _data[i] = _data[i + 1];
 
     popBack();
+    return val;
   }
 
   void resize(int newSize, [T filling]) {
