@@ -26,180 +26,178 @@ class _MainPage extends State<MainPage> {
     email = auth.email;
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 50.0,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 50.0,
+          ),
+          Image(
+            image: AssetImage(
+              'assets/images/open-book.png',
             ),
-            Image(
-              image: AssetImage(
-                'assets/images/test.png',
-              ),
-              width: 150.0,
-              height: 150.0,
+            width: 150.0,
+            height: 150.0,
+          ),
+          Text(
+            'BUKUTest',
+            style: TextStyle(
+              fontFamily: 'ProductSans',
+              fontSize: 50.0,
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              'BUKUTest',
-              style: TextStyle(
-                fontFamily: 'ProductSans',
-                fontSize: 50.0,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          Text(
+            'Book Data',
+            style: TextStyle(
+              color: Colors.deepOrange,
+              fontFamily: 'ProductSans',
+              fontSize: 20.0,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              'Book Data',
-              style: TextStyle(
-                color: Colors.deepOrange,
-                fontFamily: 'ProductSans',
-                fontSize: 20.0,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 30),
-            Container(
-              width: 150,
-              child: TextField(
-                  onSubmitted: (String number) async {
-                    _nData = int.parse(number);
-                    _bookList.clear();
-                    _bookList = await Database.getBookList(_nData);
-                    print(
-                        _bookList.length.toString() + " data was downloaded.");
-                  },
-                  //onChanged: (String number) {_nData = int.parse(number);},
-                  decoration: new InputDecoration(labelText: "Data to process"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
-            ),
-            SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                    onTap: () async {
-                      await _bookHistoryStack(true);
-                    }, // Stack Method.
-                    child: Container(
-                      width: 150,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "ArrayStack Method",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )),
-                SizedBox(width: 10),
-                GestureDetector(
-                    onTap: () async {
-                      await _bookHistoryStack(false);
-                    }, // Stack Method.
-                    child: Container(
-                      width: 150,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "ListStack Method",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                    onTap: () async {
-                      await _recomendationQueue(true);
-                    }, // ListQueue Method.
-                    child: Container(
-                      width: 150,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "ArrayQueue Method",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )),
-                SizedBox(width: 10),
-                GestureDetector(
-                    onTap: () async {
-                      await _recomendationQueue(false);
-                    }, // ListQueue Method.
-                    child: Container(
-                      width: 150,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "ListQueue Method",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                    onTap: () async {
-                      await _bookLinkedListTest();
-                    }, // Stack Method.
-                    child: Container(
-                      width: 150,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "List Method",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )),
-                SizedBox(width: 10),
-                GestureDetector(
-                    onTap: () async {
-                      await _bookVectorTest();
-                    }, // Stack Method.
-                    child: Container(
-                      width: 150,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "Array Method",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )),
-                SizedBox(height: 10)
-              ],
-            )
-          ],
-        ),
+          ),
+          SizedBox(height: 30),
+          Container(
+            width: 150,
+            child: TextField(
+                onSubmitted: (String number) async {
+                  _nData = int.parse(number);
+                  _bookList.clear();
+                  _bookList = await Database.getBookList(_nData);
+                  print(_bookList.length.toString() + " data was downloaded.");
+                },
+                //onChanged: (String number) {_nData = int.parse(number);},
+                decoration: new InputDecoration(labelText: "Data to process"),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
+          ),
+          SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                  onTap: () async {
+                    await _bookHistoryStack(true);
+                  }, // Stack Method.
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.orangeAccent,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      "ArrayStack Method",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              SizedBox(width: 10),
+              GestureDetector(
+                  onTap: () async {
+                    await _bookHistoryStack(false);
+                  }, // Stack Method.
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.orangeAccent,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      "ListStack Method",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+            ],
+          ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                  onTap: () async {
+                    await _recomendationQueue(true);
+                  }, // ListQueue Method.
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.orangeAccent[700],
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      "ArrayQueue Method",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              SizedBox(width: 10),
+              GestureDetector(
+                  onTap: () async {
+                    await _recomendationQueue(false);
+                  }, // ListQueue Method.
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.orangeAccent[700],
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      "ListQueue Method",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+            ],
+          ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                  onTap: () async {
+                    await _bookLinkedListTest();
+                  }, // Stack Method.
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      "List Method",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              SizedBox(width: 10),
+              GestureDetector(
+                  onTap: () async {
+                    await _bookVectorTest();
+                  }, // Stack Method.
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      "Array Method",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              SizedBox(height: 10)
+            ],
+          )
+        ],
       ),
     );
   }

@@ -1,5 +1,8 @@
+import 'package:buku/structs/linked_list.dart';
 import 'package:buku/structs/queue.dart';
 import 'package:buku/structs/stack.dart';
+import 'package:buku/structs/vector.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,9 +13,9 @@ class PrimitiveTest extends StatefulWidget {
 
 class _PrimitiveTestState extends State<PrimitiveTest> {
   int nData = 10;
-  bool doCharts = false;
   Stopwatch time = new Stopwatch();
 
+  // TEST METHODS: Four methods for each implemented structure.
   void testStacks(bool decide) {
     String message;
     var PrimitiveStack;
@@ -78,7 +81,7 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
     //Pushing $nData elements
     time.start();
     for (int i = 0; i < nData; i++) {
-      PrimitiveQueue.push(i);
+      PrimitiveQueue.enqueue(i);
     }
     time.stop();
     message = 'Time to enqueue ' +
@@ -91,7 +94,7 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
     //Popping $nData elements
     time.start();
     for (int j = 0; j < nData; j++) {
-      PrimitiveQueue.pop();
+      PrimitiveQueue.dequeue();
     }
     time.stop();
     message = 'Time to dequeue ' +
@@ -100,6 +103,106 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
         time.elapsedMicroseconds.toString() +
         ' microseconds';
     print(message);
+    time.reset();
+  }
+
+  void intVectorTest() {
+    Vector<int> intVector = new Vector<int>();
+    print('---------------Using Array---------------');
+    time.reset();
+    time.start();
+    for (int i = 0; i < nData; i++) {
+      intVector.pushFront(i);
+    }
+    print("Time to pushFront " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+    time.start();
+    while (!intVector.empty()) {
+      intVector.popFront();
+    }
+    print("Time to popFront " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+    time.start();
+    for (int j = 0; j < nData; j++) {
+      intVector.pushBack(j);
+    }
+    print("Time to pushBack " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+    time.start();
+    while (!intVector.empty()) {
+      intVector.popBack();
+    }
+    print("Time to popBack " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+  }
+
+  void intLinkedListTest() {
+    LinkedList<int> intLinkedList = new LinkedList<int>();
+    print('---------------Using LinkedList---------------');
+    time.reset();
+    time.start();
+    for (int i = 0; i < nData; i++) {
+      intLinkedList.pushFront(i);
+    }
+    print("Time to pushFront " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+    time.start();
+    while (!intLinkedList.empty()) {
+      intLinkedList.popFront();
+    }
+    print("Time to popFront " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+    time.start();
+    for (int j = 0; j < nData; j++) {
+      intLinkedList.pushBack(j);
+    }
+    print("Time to pushBack " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
+    time.reset();
+    time.start();
+    while (!intLinkedList.empty()) {
+      intLinkedList.popBack();
+    }
+    print("Time to popBack " +
+        nData.toString() +
+        " integers: " +
+        time.elapsedMicroseconds.toString() +
+        " microseconds");
+    time.stop();
     time.reset();
   }
 
@@ -112,10 +215,10 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 20.0),
+            SizedBox(height: 50.0),
             Image(
               image: AssetImage(
-                'assets/images/test.png',
+                'assets/images/settings.png',
               ),
               width: 150.0,
               height: 150.0,
@@ -142,9 +245,6 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
               child: TextField(
                   onSubmitted: (String number) async {
                     nData = int.parse(number);
-                    setState(() {
-                      doCharts = true;
-                    });
                     print(nData);
                   },
                   decoration: new InputDecoration(labelText: "Data to process"),
@@ -152,7 +252,7 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
             ),
             SizedBox(
-              height: 30.0,
+              height: 50.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -168,9 +268,12 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                       decoration: BoxDecoration(
                           color: Colors.orangeAccent,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "ArrayStack",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      child: Center(
+                        child: Text(
+                          "ArrayStack Method",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     )),
                 SizedBox(width: 10),
@@ -186,13 +289,14 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                           color: Colors.orangeAccent,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Text(
-                        "ListStack",
+                        "ListStack Method",
                         style: TextStyle(color: Colors.white, fontSize: 16),
+                        textAlign: TextAlign.center,
                       ),
                     )),
               ],
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -208,8 +312,9 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                           color: Colors.orangeAccent[700],
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Text(
-                        "ArrayQueue",
+                        "ArrayQueue Method",
                         style: TextStyle(color: Colors.white, fontSize: 16),
+                        textAlign: TextAlign.center,
                       ),
                     )),
                 SizedBox(width: 10),
@@ -225,32 +330,55 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
                           color: Colors.orangeAccent[700],
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Text(
-                        "ListQueue",
+                        "ListQueue Method",
                         style: TextStyle(color: Colors.white, fontSize: 16),
+                        textAlign: TextAlign.center,
                       ),
                     )),
               ],
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      intVectorTest();
+                    },
                     child: Container(
                       width: 150,
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: doCharts ? Colors.green : Colors.grey[300],
+                          color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Text(
-                        "View chart",
+                        "Array Method",
                         style: TextStyle(color: Colors.white, fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    )),
+                SizedBox(width: 10),
+                GestureDetector(
+                    onTap: () {
+                      intLinkedListTest();
+                    },
+                    child: Container(
+                      width: 150,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Text(
+                        "List Method",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        textAlign: TextAlign.center,
                       ),
                     )),
               ],
             ),
+            SizedBox(height: 10.0)
           ],
         ),
       ),
