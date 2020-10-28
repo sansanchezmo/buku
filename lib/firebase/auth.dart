@@ -1,3 +1,4 @@
+import 'package:buku/firebase/firestore.dart';
 import 'package:buku/initialization/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,10 @@ class Auth {
           email: email, password: password);
       if (userCredential != null) {
         if(userCredential.user.emailVerified){
-          if(userCredential.additionalUserInfo.isNewUser){//TODO: isNewUser function doesn't serve at all.
+
+          bool isNew = await Firestore().isNew(userCredential.user.uid);
+
+          if(isNew){//TODO: isNewUser function doesn't serve at all.
             //TODO: create screen of UX guide
             Navigator.of(context).pushNamed('/newUser');
 
@@ -96,6 +100,10 @@ class Auth {
 
   Future<void> getEmail() async {
     email = _auth.currentUser.email;
+  }
+
+  User getCurrentUser(){
+    return _auth.currentUser;
   }
 
   Future<void> signout() async {

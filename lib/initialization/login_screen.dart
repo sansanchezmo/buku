@@ -1,3 +1,5 @@
+import 'package:buku/firebase/user.dart';
+import 'package:buku/themes/current_theme.dart';
 import 'package:buku/widget/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:buku/firebase/auth.dart';
@@ -55,10 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'EMAIL',
                         labelStyle: TextStyle(
                             fontFamily: 'ProductSans',
-                            color: Colors.grey,
+                            color: CurrentTheme.textFieldHint,
                             fontWeight: FontWeight.bold),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange))),
+                            borderSide: BorderSide(color: CurrentTheme.primaryColor))),
                   ),
                   SizedBox(
                     height: 20.0,
@@ -68,9 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       labelText: 'PASSWORD',
                       labelStyle: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.bold),
+                          color: CurrentTheme.textFieldHint, fontWeight: FontWeight.bold),
                       focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.orange)),
+                          borderSide: BorderSide(color: CurrentTheme.primaryColor)),
                     ),
                     obscureText: true,
                   )
@@ -84,8 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'LOGIN',
               tap: () {
 
-                Auth auth = new Auth();
-                auth.loginUser(emailController.text, passController.text, context);
+                /*Auth auth = new Auth();
+                auth.loginUser(emailController.text, passController.text, context);*/
+
+                MainUser().login(emailController.text, passController.text, context);
 
               }
             ),
@@ -103,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Colors.black,
+                        color: CurrentTheme.textColor1,
                         style: BorderStyle.solid,
                         width: 2.0),
                     color: Colors.transparent,
@@ -113,6 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Register',
                       style: TextStyle(
+                        color: CurrentTheme.textColor1,
                           fontSize: 16.0,
                           fontFamily: 'ProductSans',
                           fontWeight: FontWeight.bold),

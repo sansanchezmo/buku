@@ -2,6 +2,7 @@ import 'package:buku/structs/linked_list.dart';
 import 'package:buku/structs/queue.dart';
 import 'package:buku/structs/stack.dart';
 import 'package:buku/structs/vector.dart';
+import 'package:buku/themes/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -209,7 +210,6 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -226,6 +226,7 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
             Text(
               'BUKUTest',
               style: TextStyle(
+                color: CurrentTheme.textColor1,
                 fontFamily: 'ProductSans',
                 fontSize: 50.0,
                 fontWeight: FontWeight.bold,
@@ -234,7 +235,7 @@ class _PrimitiveTestState extends State<PrimitiveTest> {
             Text(
               'Primitive Data',
               style: TextStyle(
-                  color: Colors.grey,
+                  color: CurrentTheme.textColor2,
                   fontFamily: 'ProductSans',
                   fontSize: 20.0,
                   fontStyle: FontStyle.italic),

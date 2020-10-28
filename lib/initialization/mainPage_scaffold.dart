@@ -1,3 +1,4 @@
+import 'package:buku/themes/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:buku/firebase/auth.dart';
@@ -25,7 +26,6 @@ class _MainPage extends State<MainPage> {
     auth.getEmail();
     email = auth.email;
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,6 +43,7 @@ class _MainPage extends State<MainPage> {
           Text(
             'BUKUTest',
             style: TextStyle(
+              color: CurrentTheme.textColor1,
               fontFamily: 'ProductSans',
               fontSize: 50.0,
               fontWeight: FontWeight.bold,
@@ -51,7 +52,7 @@ class _MainPage extends State<MainPage> {
           Text(
             'Book Data',
             style: TextStyle(
-              color: Colors.deepOrange,
+              color: CurrentTheme.primaryColor,
               fontFamily: 'ProductSans',
               fontSize: 20.0,
               fontStyle: FontStyle.italic,

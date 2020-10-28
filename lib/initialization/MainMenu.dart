@@ -1,4 +1,5 @@
 import 'package:buku/initialization/PrimitiveTestPage.dart';
+import 'package:buku/themes/current_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -38,7 +39,6 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: PageView(
         children: <Widget>[
           CommingSoonPage(),
@@ -54,33 +54,33 @@ class _MenuState extends State<Menu> {
         items: <Widget>[
           Icon(
             Icons.group,
-            color: numbpage == 0 ? Colors.white : Colors.deepOrange[400],
+            color: numbpage == 0 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.search,
-            color: numbpage == 1 ? Colors.white : Colors.deepOrange[400],
+            color: numbpage == 1 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.home,
-            color: numbpage == 2 ? Colors.white : Colors.deepOrange[400],
+            color: numbpage == 2 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.format_list_bulleted,
-            color: numbpage == 3 ? Colors.white : Colors.deepOrange[400],
+            color: numbpage == 3 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.person,
-            color: numbpage == 4 ? Colors.white : Colors.deepOrange[400],
+            color: numbpage == 4 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
             size: 30,
           ),
         ],
-        color: Colors.white,
-        backgroundColor: Colors.grey[50],
-        buttonBackgroundColor: Colors.deepOrange,
+        color: CurrentTheme.navigatorBarColor,
+        backgroundColor: CurrentTheme.background,
+        buttonBackgroundColor: CurrentTheme.primaryColor,
         onTap: onTapped,
         index: numbpage,
         animationDuration: Duration(milliseconds: 250),

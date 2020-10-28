@@ -1,3 +1,4 @@
+import 'package:buku/themes/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:buku/firebase/auth.dart';
@@ -13,7 +14,6 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Stack(
@@ -26,13 +26,14 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                     height: 140,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        //
+                        gradient: CurrentTheme.primaryGradientColor,
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(40),
                             bottomRight: Radius.circular(40)),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.black38,
+                              color: CurrentTheme.shadow1,
                               spreadRadius: 5,
                               blurRadius: 30)
                         ]),
@@ -51,7 +52,8 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 28,
-                              color: Colors.black87),
+                              color: CurrentTheme.textColor1
+                          ),
                         ),
                         SizedBox(
                           height: 8,
@@ -62,7 +64,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
-                              color: Colors.black54),
+                              color: CurrentTheme.textColor2),
                         ),
                       ],
                     ),
@@ -83,10 +85,10 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                     },
                     child: Text("Sign out",
                       style: TextStyle(
-                          color: Colors.black54, fontSize: 15
+                          color: CurrentTheme.textColor2, fontSize: 15
                       ),)
                 ),
-              )
+              ),
             ],
           ),
           SizedBox(height: 25),
@@ -94,7 +96,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
             padding: EdgeInsets.only(right: 30, left: 30),
             child: Text(
                 "This is my biography, here I write some stuff about me.",
-                style: TextStyle(fontSize: 15, color: Colors.black87),
+                style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
                 textAlign: TextAlign.center),
           ),
           SizedBox(height: 20),
@@ -115,7 +117,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
       width: 100,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 0.5),
+          border: Border.all(color: CurrentTheme.backgroundContrast, width: 0.5),
           image: DecorationImage(
               fit: BoxFit.fill,
               image: NetworkImage(
@@ -136,14 +138,14 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Colors.black87),
+                    color: CurrentTheme.textColor1),
               ),
               Text(
                 "Followers",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
-                    color: Colors.black54),
+                    color: CurrentTheme.textColor2),
               )
             ],
           ),
@@ -153,7 +155,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
             width: 2,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Color.fromRGBO(38, 38, 38, 0.1)),
+                color: CurrentTheme.separatorColor),
           ),
           SizedBox(width: 20),
           Column(
@@ -164,14 +166,14 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Colors.black87),
+                    color: CurrentTheme.textColor1),
               ),
               Text(
                 "Following",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
-                    color: Colors.black54),
+                    color: CurrentTheme.textColor2),
               )
             ],
           ),
@@ -181,7 +183,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
             width: 2,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Color.fromRGBO(38, 38, 38, 0.1)),
+                color: CurrentTheme.separatorColor),
           ),
           SizedBox(width: 20),
           Column(
@@ -192,14 +194,14 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Colors.black87),
+                    color: CurrentTheme.textColor1),
               ),
               Text(
                 "Books",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
-                    color: Colors.black54),
+                    color: CurrentTheme.textColor2),
               )
             ],
           )
@@ -220,7 +222,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
               height: 35,
               width: 45,
               decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(10),
                       topRight: Radius.circular(10))),
@@ -233,7 +235,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Color.fromRGBO(38, 38, 38, 0.8)),
+                      color: CurrentTheme.textColor3),
                 )),
           ],
         ),
@@ -272,7 +274,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
               height: 35,
               width: 45,
               decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(10),
                       topRight: Radius.circular(10))),
@@ -285,7 +287,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Color.fromRGBO(38, 38, 38, 0.8)),
+                      color: CurrentTheme.textColor3),
                 )),
           ],
         ),
@@ -324,7 +326,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
               height: 35,
               width: 45,
               decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(10),
                       topRight: Radius.circular(10))),
@@ -337,7 +339,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Color.fromRGBO(38, 38, 38, 0.8)),
+                      color: CurrentTheme.textColor3),
                 )),
           ],
         ),
@@ -349,10 +351,10 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
           width: 300,
           padding: EdgeInsets.all(25),
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: CurrentTheme.backgroundContrast,
               borderRadius: BorderRadius.all(Radius.circular(10)),
               boxShadow: [
-                BoxShadow(color: Colors.black12, spreadRadius: 3, blurRadius: 5)
+                BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 3, blurRadius: 5)
               ]),
           child: Wrap(
             children: _favTagsList(),
@@ -400,14 +402,14 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
-                  color: Colors.black54,
+                  color: CurrentTheme.textColor2,
                 )),
             SizedBox(height: 5),
             Text(book.getAuthor(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.black54,
+                  color: CurrentTheme.textColor2,
                 ))
           ],
         ),
@@ -441,7 +443,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
-                  color: Colors.black54,
+                  color: CurrentTheme.textColor2,
                 ))
           ],
         ),
@@ -474,7 +476,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Text(
           testTags[i],
-          style: TextStyle(color: Colors.black54, fontSize: 13),
+          style: TextStyle(color: CurrentTheme.textColor2, fontSize: 13),
         ),
       ));
       userFavTagsList.add(SizedBox(width: 10, height: 40));
