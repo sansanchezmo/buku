@@ -30,4 +30,27 @@ class MainUser {
 
   }
 
+  void signOut(BuildContext context) async{
+
+    await _auth.signout();
+    Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
+
+  }
+
+  void storeMainData(String theme, String name, String desc, String userImg, List<String> tags) async{
+
+    await store.storeMainData(currUser.uid, theme, name, desc, userImg, tags);
+
+  }
+
+  Future<String> getNickName() async{
+
+   return await store.getData(currUser.uid, Firestore.nickName);
+
+  }
+  Future<String> getProfileTheme() async{
+
+    return await store.getData(currUser.uid, Firestore.theme);
+
+  }
 }

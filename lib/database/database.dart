@@ -1,7 +1,5 @@
-
 import 'dart:io';
-
-import 'package:buku/initialization/mainObjects/book.dart';
+import 'package:buku/main_objects/book.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,6 +8,7 @@ class Database {
   static Future<void> createDatabase() async{
 
     //pls don't delete this function, it's used to create the database
+    //TODO: change connection
 
     String _dir = await getDatabasesPath();
     String _path = _dir + 'buku_database.db';

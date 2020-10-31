@@ -1,12 +1,12 @@
-import 'package:buku/initialization/PrimitiveTestPage.dart';
-import 'package:buku/themes/current_theme.dart';
+import 'package:buku/scaffolds/others_scaffolds/primitive_test_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/search_scf.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
-import 'coming_soon_scaffold.dart';
-import 'search_scaffold.dart';
-import 'mainPage_scaffold.dart';
-import 'user_profile_scaffold.dart';
+import '../others_scaffolds/comming_soon_scf.dart';
+import 'main_page_scf.dart';
+import 'user_profile_scf.dart';
 
 class Menu extends StatefulWidget {
   final int number;
@@ -41,10 +41,10 @@ class _MenuState extends State<Menu> {
     return Scaffold(
       body: PageView(
         children: <Widget>[
-          CommingSoonPage(),
+          ComingSoonScaffold(),
           SearchScaffold(),
-          MainPage(),
-          PrimitiveTest(),
+          MainPageScaffold(),
+          PrimitiveTestScaffold(),
           UserProfileScaffold(),
         ],
         controller: pageControl,

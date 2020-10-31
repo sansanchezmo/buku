@@ -1,4 +1,4 @@
-import 'package:buku/themes/current_theme.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 
 class SearchScaffold extends StatefulWidget {
   @override
-  _SearchScaffold createState() => _SearchScaffold();
+  _SearchScaffoldState createState() => _SearchScaffoldState();
 }
 
-class _SearchScaffold extends State<SearchScaffold> {
+class _SearchScaffoldState extends State<SearchScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,16 +1,15 @@
-import 'package:buku/themes/current_theme.dart';
+import 'package:buku/main_objects/book.dart';
+import 'package:buku/main_objects/main_user.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:buku/firebase/auth.dart';
-import 'mainObjects/book.dart';
 
 class UserProfileScaffold extends StatefulWidget {
   @override
-  _UserProfileScaffold createState() => _UserProfileScaffold();
+  _UserProfileScaffoldState createState() => _UserProfileScaffoldState();
 }
 
-class _UserProfileScaffold extends State<UserProfileScaffold> {
-  Auth user = new Auth();
+class _UserProfileScaffoldState extends State<UserProfileScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +25,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                     height: 140,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        //
-                        gradient: CurrentTheme.primaryGradientColor,
+                        color: CurrentTheme.primaryColor,
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(40),
                             bottomRight: Radius.circular(40)),
@@ -79,9 +77,7 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
                 top:55, right: 30,
                 child: GestureDetector(
                     onTap: () {
-                      user.signout();
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "/login", (r) => false);
+                      MainUser().signOut(context);
                     },
                     child: Text("Sign out",
                       style: TextStyle(
@@ -471,8 +467,8 @@ class _UserProfileScaffold extends State<UserProfileScaffold> {
         height: 33,
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.orange),
+            color: CurrentTheme.backgroundContrast,
+            border: Border.all(color: CurrentTheme.primaryColor),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Text(
           testTags[i],

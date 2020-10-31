@@ -1,18 +1,18 @@
+import 'package:buku/main_objects/book.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'mainObjects/book.dart';
 
 
-class bookView extends StatefulWidget {
+class BookInfoScaffold extends StatefulWidget {
   final Book book;
-  bookView({Key key, @required this.book}) : super(key: key);
-  _bookViewState createState() => _bookViewState(book);
+  BookInfoScaffold({Key key, @required this.book}) : super(key: key);
+  _BookInfoScaffoldState createState() => _BookInfoScaffoldState(book);
 }
 
-class _bookViewState extends State<bookView> {
+class _BookInfoScaffoldState extends State<BookInfoScaffold> {
  Book book;
 
- _bookViewState(this.book);
+ _BookInfoScaffoldState(this.book);
 
   @override
   Widget build(BuildContext context) {

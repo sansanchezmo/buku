@@ -1,8 +1,11 @@
-import 'package:buku/firebase/firestore.dart';
-import 'package:buku/initialization/login_screen.dart';
+import 'package:buku/main_objects/main_user.dart';
+import 'package:buku/scaffolds/init_scaffolds/login_scf.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'firestore.dart';
 // Import the firebase_core plugin
 
 class Auth {
@@ -23,10 +26,10 @@ class Auth {
 
       if (userCredential != null) {
 
-        sendVerificationEmail();
+        await sendVerificationEmail();
         userCredential.user.updateProfile(displayName: nickName);
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => LoginScreen(email: email,pass: password)
+            builder: (context) => LoginScaffold(email: email,pass: password)
         ));
 
       }
@@ -53,11 +56,13 @@ class Auth {
 
           bool isNew = await Firestore().isNew(userCredential.user.uid);
 
-          if(isNew){//TODO: isNewUser function doesn't serve at all.
-            //TODO: create screen of UX guide
+          if(isNew){
+            await Firestore().setOldUser(userCredential.user.uid);
             Navigator.of(context).pushNamed('/newUser');
 
           }else{
+            String theme = await MainUser().getProfileTheme();
+            CurrentTheme.setTheme(theme, context: context);
             Navigator.of(context).pushNamed('/menu');
           }
         }else{
@@ -82,8 +87,9 @@ class Auth {
     showDialog(
         context: context,
       builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
+        backgroundColor: CurrentTheme.background,
+        title: Text(title, style: TextStyle(color: CurrentTheme.textColor1, fontWeight: FontWeight.bold),),
+        content: Text(message, style: TextStyle(color: CurrentTheme.textColor2),),
       )
     );
 
@@ -112,7 +118,7 @@ class Auth {
 
   Future<void> sendVerificationEmail() async{
 
-    _auth.currentUser.sendEmailVerification();
+    await _auth.currentUser.sendEmailVerification();
 
   }
 }

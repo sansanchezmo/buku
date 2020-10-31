@@ -1,5 +1,6 @@
+import 'package:buku/main_objects/structs/linked_list.dart';
+
 import 'vector.dart';
-import 'linked_list.dart';
 
 class ArrayStack<T> {
   Vector<T> _arr;

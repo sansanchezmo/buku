@@ -1,21 +1,19 @@
-import 'package:buku/themes/current_theme.dart';
+import 'package:buku/main_objects/book.dart';
+import 'package:buku/main_objects/structs/linked_list.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:buku/firebase/auth.dart';
 import 'package:flutter/services.dart';
-import 'mainObjects/book.dart';
 import 'package:buku/database/database.dart';
-import 'package:buku/structs/linked_list.dart';
-import 'package:buku/structs/queue.dart';
-import 'package:buku/structs/stack.dart';
-import 'package:buku/structs/vector.dart';
+import 'package:buku/main_objects/structs/queue.dart';
+import 'package:buku/main_objects/structs/stack.dart';
+import 'package:buku/main_objects/structs/vector.dart';
 
-class MainPage extends StatefulWidget {
-  _MainPage createState() => _MainPage();
+class MainPageScaffold extends StatefulWidget {
+  _MainPageScaffoldState createState() => _MainPageScaffoldState();
 }
 
-class _MainPage extends State<MainPage> {
-  Auth auth = new Auth();
+class _MainPageScaffoldState extends State<MainPageScaffold> {
   String email;
   int _nData = 10;
   Stopwatch _stopwatch = new Stopwatch();
@@ -23,8 +21,6 @@ class _MainPage extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    auth.getEmail();
-    email = auth.email;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -306,7 +302,6 @@ class _MainPage extends State<MainPage> {
     print((sumPushTime/20).toString() + " push");
     print((sumPopTime/20).toString() + " pop");*/
   }
-
   _bookLinkedListTest() {
     LinkedList<Book> bookLinkedList = new LinkedList<Book>();
     _stopwatch.reset();

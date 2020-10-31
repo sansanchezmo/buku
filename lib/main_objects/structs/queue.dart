@@ -1,7 +1,8 @@
-import 'linked_list.dart';
+import 'package:buku/main_objects/structs/linked_list.dart';
 
 // This class is very similar to vector, but reallocations and
 // indexing logic are different
+
 class ArrayQueue<T> {
   //public attributes - nothing here
   //private attributes

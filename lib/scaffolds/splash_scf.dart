@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget {
-  _SplashScreenState createState() => _SplashScreenState();
+class SplashScaffold extends StatefulWidget {
+  _SplashScaffoldState createState() => _SplashScaffoldState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScaffoldState extends State<SplashScaffold> {
   @override
   void initState() {
     checkUser();
@@ -15,8 +15,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<bool> checkUser() async {
-    if (await FirebaseAuth.instance.currentUser != null) {
-      Navigator.of(context).pushNamed('/menu');
+    User user = await FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      if(user.emailVerified){
+        Navigator.of(context).pushNamed('/menu');
+      }else
+        Navigator.of(context).pushNamed('/login');
     } else {
       Navigator.of(context).pushNamed('/login');
     }

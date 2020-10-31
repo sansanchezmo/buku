@@ -1,13 +1,13 @@
-import 'package:buku/themes/current_theme.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CommingSoonPage extends StatefulWidget {
+class ComingSoonScaffold extends StatefulWidget {
   @override
-  _CommingSoonPage createState() => _CommingSoonPage();
+  _ComingSoonScaffoldState createState() => _ComingSoonScaffoldState();
 }
 
-class _CommingSoonPage extends State<CommingSoonPage> {
+class _ComingSoonScaffoldState extends State<ComingSoonScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,8 +1,14 @@
-import 'package:buku/themes/dark_theme.dart';
-import 'package:buku/themes/orange_theme.dart';
+import 'package:buku/theme/themes/dark_theme.dart';
+import 'package:buku/theme/themes/orange_theme.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 
 class CurrentTheme{
+
+  static String _theme;
+
+  static final String orangeTheme = 'orange';
+  static final String darkTheme = 'dark';
 
   static Color textColor1;
   static Color textColor2;
@@ -25,8 +31,11 @@ class CurrentTheme{
 
   static ThemeData themeData;
 
-  static setTheme(String option){
-    if(option == "orange"){
+  static final double borderRadius = 40;
+
+  static setTheme(String option, {BuildContext context = null}){
+    _theme = option;
+    if(option == orangeTheme){
       textColor1 = OrangeTheme.textColor1;
       textColor2 = OrangeTheme.textColor2;
       textColor3 = OrangeTheme.textColor3;
@@ -45,7 +54,7 @@ class CurrentTheme{
       textFieldHint = OrangeTheme.textFieldHint;
       navigatorBarColor = OrangeTheme.navigatorBarColor;
       themeData = OrangeTheme.getTheme();
-    }else if(option == "dark"){
+    }else if(option == darkTheme){
       textColor1 = DarkTheme.textColor1;
       textColor2 = DarkTheme.textColor2;
       textColor3 = DarkTheme.textColor3;
@@ -65,23 +74,23 @@ class CurrentTheme{
       navigatorBarColor = DarkTheme.navigatorBarColor;
       themeData = DarkTheme.getTheme();
     }
+    if(context != null){
+      DynamicTheme.of(context).setThemeData(themeData);
+    }
   }
   static ThemeData getTheme() {
     if(themeData == null)  throw ThemeException("There´s not any theme selected");
     return themeData;
   }
+  static String getThemeKey(){
 
-  static setT(T){
+    return _theme;
 
-    textColor1 = T.textColor1;
-    textColor2 = T.textColor2;
-    textColor3 = T.textColor3;
-    primaryColor = T.primaryColor;
-    primaryColorVariant = T.primaryColorVariant;
-    primaryGradientColor = T.primaryGradientColor;
-    primaryGradientColorVariant = T.primaryGradientColorVariant;
-    shadow1 = T.shadow1;
-    themeData = T.getTheme();
+  }
+
+  static BoxShadow getBoxShadow({double blur = 10, double spread = 10}){
+
+   return  BoxShadow(color: shadow1, spreadRadius: spread, blurRadius: blur);
 
   }
 }

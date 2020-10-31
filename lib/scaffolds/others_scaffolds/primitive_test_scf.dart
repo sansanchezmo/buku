@@ -1,18 +1,18 @@
-import 'package:buku/structs/linked_list.dart';
-import 'package:buku/structs/queue.dart';
-import 'package:buku/structs/stack.dart';
-import 'package:buku/structs/vector.dart';
-import 'package:buku/themes/current_theme.dart';
+import 'package:buku/main_objects/structs/linked_list.dart';
+import 'package:buku/main_objects/structs/queue.dart';
+import 'package:buku/main_objects/structs/stack.dart';
+import 'package:buku/main_objects/structs/vector.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class PrimitiveTest extends StatefulWidget {
+class PrimitiveTestScaffold extends StatefulWidget {
   @override
-  _PrimitiveTestState createState() => _PrimitiveTestState();
+  _PrimitiveTestScaffoldState createState() => _PrimitiveTestScaffoldState();
 }
 
-class _PrimitiveTestState extends State<PrimitiveTest> {
+class _PrimitiveTestScaffoldState extends State<PrimitiveTestScaffold> {
   int nData = 10;
   Stopwatch time = new Stopwatch();
 
