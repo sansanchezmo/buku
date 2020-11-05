@@ -3,11 +3,11 @@ import 'dart:math';
 class Book{
   //Instance attributes
   final String _isbn, _title, _author, _year, _publisher, _synopsis;
-  final String _imageURLS, _imageURLM, _imageURLL;
+  final String _imageURL;
   double _rating;
 
   //Constructor
-  Book(this._isbn, this._title, this._author, this._year, this._publisher, this._synopsis, this._imageURLS, this._imageURLM, this._imageURLL) {
+  Book(this._isbn, this._title, this._author, this._year, this._publisher, this._synopsis, this._imageURL) {
     scanBookRating();
   }
 
@@ -23,9 +23,7 @@ class Book{
   getYear() => _year;
   getPublisher() => _publisher;
   getSynopsis() => _synopsis;
-  getImageS() => _imageURLS;
-  getImageM() => _imageURLM;
-  getImageL() => _imageURLL;
+  getImageL() => _imageURL;
 
   getRating() => _rating;
 

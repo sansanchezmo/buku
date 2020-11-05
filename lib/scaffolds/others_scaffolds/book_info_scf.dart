@@ -1,4 +1,5 @@
 import 'package:buku/main_objects/book.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
     final screenWidth = MediaQuery.of(context).size.width;
     final rating = book.getRating();
     return Container(
-      color: Colors.deepOrange,
+      color: CurrentTheme.primaryColor,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
@@ -44,14 +45,14 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
                       height: 500,
                       width: screenWidth,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: CurrentTheme.background,
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(40),
                           topLeft: Radius.circular(40)
                         ),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.black38,
+                              color: CurrentTheme.shadow1,
                               spreadRadius: 5,
                               blurRadius: 30,
                               offset: Offset(0,0)
@@ -75,7 +76,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
                   bottom: 30
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: CurrentTheme.background,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -120,11 +121,11 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
                       width: screenWidth-100,
                       padding: EdgeInsets.all(25),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: CurrentTheme.background,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         boxShadow:  [
                           BoxShadow(
-                              color: Colors.black12,
+                              color: CurrentTheme.shadow2,
                               spreadRadius: 5,
                               blurRadius: 10
                           )]
@@ -173,7 +174,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black38,
+                    color: CurrentTheme.shadow1,
                     spreadRadius: 5,
                     blurRadius: 20
                 )]
@@ -199,14 +200,14 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
             width: 2,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: Colors.black26
+              color:CurrentTheme.textColor2,
             ),
           ),
           SizedBox(width: 20),
           Column(
             children: [
               Icon(Icons.visibility,
-              color: Colors.deepOrangeAccent,
+              color: CurrentTheme.primaryColor,
                   size:20.0),
               Text("25.3K views")
             ],
@@ -278,16 +279,16 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
     for(int i = 0; i<5;i++){
       if(rat>=1){
         ratingStars[i] = Icon(Icons.star,
-                          color: Colors.deepOrangeAccent,
+                          color: CurrentTheme.primaryColor,
                           size:15.0);
       } else if (rat>0){
         ratingStars[i] = Icon(Icons.star_half,
-                          color: Colors.deepOrangeAccent,
+                          color: CurrentTheme.primaryColor,
                           size:15.0);
         rat = 0;
       } else if (rat<=0){
         ratingStars[i] = Icon(Icons.star_border,
-                          color: Colors.deepOrangeAccent,
+                          color: CurrentTheme.primaryColor,
                           size:15.0);
       }
       rat--;

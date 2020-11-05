@@ -47,7 +47,7 @@ class Database {
 
   static Future<List<Book>> getBookList(int n) async{
 
-    dynamic res = await openConnection();
+    /*dynamic res = await openConnection();
 
     var _db = res[0];
     int numBooks = res[1];
@@ -71,7 +71,8 @@ class Database {
 
     await _db.close();
 
-    return list.take(n).toList();
+    return list.take(n).toList();*/
+    return new List<Book>();
 
   }
 

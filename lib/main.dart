@@ -1,7 +1,8 @@
 import 'package:buku/scaffolds/init_scaffolds/init_config_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/login_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/register_scf.dart';
-import 'file:///C:/Users/User.DESKTOP-TPQFUR7/Documents/GitHub/buku/lib/scaffolds/main_scaffolds/main_menu_navbar.dart';
+import 'package:buku/scaffolds/main_scaffolds/main_menu_navbar.dart';
+import 'package:buku/scaffolds/others_scaffolds/settings_scf.dart';
 import 'package:buku/scaffolds/splash_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -48,7 +49,8 @@ class MyApp extends StatelessWidget {
               '/register': (BuildContext context) => RegisterScaffold(),
               '/menu': (BuildContext context) => Menu(2),
               '/login': (BuildContext context) => LoginScaffold(),
-              '/newUser': (BuildContext context) => InitConfigScaffold()
+              '/newUser': (BuildContext context) => InitConfigScaffold(),
+              '/settings': (BuildContext context) => SettingsScaffold(),
             },
             home: SplashScaffold(),
           ),

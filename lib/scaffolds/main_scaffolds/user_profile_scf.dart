@@ -1,6 +1,8 @@
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/widgets/book_horizontal_slider.dart';
+import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,78 +17,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Stack(
-            alignment: Alignment.topCenter,
-            overflow: Overflow.visible,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 140,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: CurrentTheme.primaryColor,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(40),
-                            bottomRight: Radius.circular(40)),
-                        boxShadow: [
-                          BoxShadow(
-                              color: CurrentTheme.shadow1,
-                              spreadRadius: 5,
-                              blurRadius: 30)
-                        ]),
-                  ),
-                  SizedBox(
-                    height: 75,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "David Butcher",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 28,
-                              color: CurrentTheme.textColor1
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "@DavidButcher",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: CurrentTheme.textColor2),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Positioned(
-                top: 90,
-                child: _profileAvatar(),
-              ),
-              Positioned(
-                top:55, right: 30,
-                child: GestureDetector(
-                    onTap: () {
-                      MainUser().signOut(context);
-                    },
-                    child: Text("Sign out",
-                      style: TextStyle(
-                          color: CurrentTheme.textColor2, fontSize: 15
-                      ),)
-                ),
-              ),
-            ],
-          ),
+          _profileHeader(context),
           SizedBox(height: 25),
           Container(
             padding: EdgeInsets.only(right: 30, left: 30),
@@ -98,7 +29,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
           SizedBox(height: 20),
           _userStatistics(),
           SizedBox(height: 20),
-          _favBooksWidget(),
+          BookHorizontalSlider("Favorite books",_favBooksList()),
           _favAuthorsWidget(),
           _favTagsWidget(),
           SizedBox(height: 30),
@@ -107,21 +38,81 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     );
   }
 
-  _profileAvatar() {
-    return Container(
-      height: 100,
-      width: 100,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: CurrentTheme.backgroundContrast, width: 0.5),
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(
-                  "https://images.megapixl.com/4707/47075236.jpg"))),
+  Widget _profileHeader(BuildContext context){
+    return Stack(
+      alignment: Alignment.topCenter,
+      overflow: Overflow.visible,
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 140,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: CurrentTheme.primaryColor,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: CurrentTheme.shadow1,
+                        spreadRadius: 5,
+                        blurRadius: 30)
+                  ]),
+            ),
+            SizedBox(
+              height: 75,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "David Butcher",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                        color: CurrentTheme.textColor1
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    "@DavidButcher",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: CurrentTheme.textColor2),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+        Positioned(
+          top: 90,
+          child: new ProfileAvatar(),
+        ),
+        Positioned(
+          top:55, right: 30,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+            child: Icon(Icons.settings,
+                color: CurrentTheme.background,
+                size:24.0),
+          ),
+        ),
+      ],
     );
   }
 
-  _userStatistics() {
+  Widget _userStatistics() {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -206,59 +197,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     );
   }
 
-  _favBooksWidget() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 30,
-        ),
-        Row(
-          children: [
-            Container(
-              height: 35,
-              width: 45,
-              decoration: BoxDecoration(
-                  color: CurrentTheme.primaryColorVariant,
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-            ),
-            Container(
-                padding: EdgeInsets.only(left: 25),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Favorite books",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: CurrentTheme.textColor3),
-                )),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          height: 225,
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: Row(
-            children: [
-              Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: _favBooksList(),
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  _favAuthorsWidget() {
+  Widget _favAuthorsWidget() {
     return Column(
       children: [
         SizedBox(
@@ -310,7 +249,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     );
   }
 
-  _favTagsWidget() {
+  Widget _favTagsWidget() {
     return Column(
       children: [
         SizedBox(
@@ -361,58 +300,12 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
   }
 
   _favBooksList() {
-    var userFavBooks = List<Widget>();
-    for (int i = 0; i < 5; i++) {
-      Book book = new Book(
-          "0002005018",
-          "Classical Mythology",
-          "Mark P. O. Morford",
-          "2002",
-          "Oxford University Press",
-          "Building on the bestselling tradition of previous editions, Classical Mythology, Tenth Edition, is the most comprehensive survey of classical mythology available--and the first full-color textbook of its kind. Featuring the authors' clear and extensive translations of original sources, it brings to life the myths and legends of Greece and Rome in a lucid and engaging style. The text contains a wide variety of faithfully translated passages from Greek and Latin sources, including Homer, Hesiod, all the Homeric Hymns, Pindar, Aeschylus, Sophocles, Euripides, Herodotus, Plato, Lucian, Lucretius, Vergil, Ovid, and Seneca. ",
-          "http://images.amazon.com/images/P/0195153448.01.THUMBZZZ.jpg",
-          "link2",
-          "http://images.amazon.com/images/P/0195153448.01.LZZZZZZZ.jpg");
-      userFavBooks.add(Container(
-        alignment: Alignment.center,
-        width: 150,
-        padding: EdgeInsets.only(right: 15, left: 15),
-        child: Column(
-          children: [
-            Container(
-              height: 130,
-              width: 90,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                    image: NetworkImage(book.getImageL()), fit: BoxFit.fill),
-                /*boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12, spreadRadius: 5, blurRadius: 5)
-                  ]*/
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(book.getTitle(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: CurrentTheme.textColor2,
-                )),
-            SizedBox(height: 5),
-            Text(book.getAuthor(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: CurrentTheme.textColor2,
-                ))
-          ],
-        ),
-      ));
+    List<Book> userFavBooks = new List<Book>();
+    for(int i = 0; i<5; i++){
+      userFavBooks.add(new Book("231","Prohibido creer en historias de amor","Javier Ruescas","2","3","4","https://espacio.fundaciontelefonica.com/wp-content/uploads/2018/03/portada-libro-ruescas-700x994-563x800.jpg"));
     }
     return userFavBooks;
-  } //TODO: Display user fav books. Actual is a test example.
+  }
 
   _favAuthorsList() {
     var userFavAuthors = new List<Widget>();
