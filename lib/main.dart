@@ -1,8 +1,12 @@
+import 'package:buku/main_objects/book.dart';
 import 'package:buku/scaffolds/init_scaffolds/init_config_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/login_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/register_scf.dart';
 import 'package:buku/scaffolds/main_scaffolds/main_menu_navbar.dart';
+import 'file:///C:/Users/Santiago/AndroidStudioProjects/buku/lib/scaffolds/others_scaffolds/test_pages_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/settings_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/testdata_book_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/testdata_primitive_scf.dart';
 import 'package:buku/scaffolds/splash_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -20,13 +24,14 @@ void main() async {
   await setTheme();
   runApp(MyApp());
 }
-setTheme() async{
+
+setTheme() async {
   /*the function bellow select the theme for initialize MyApp or set default theme
   if the user does not choose theme yet*/
   var user = MainUser();
-  if(user.currUser == null) {
+  if (user.currUser == null) {
     CurrentTheme.setTheme(CurrentTheme.orangeTheme);
-  }else{
+  } else {
     String theme = await user.getProfileTheme();
     CurrentTheme.setTheme(theme);
   }
@@ -36,9 +41,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return DynamicTheme( //This widgets allows us to change the whole theme in runtime
+    return DynamicTheme(
+      //This widgets allows us to change the whole theme in runtime
       data: (Brightness) => CurrentTheme.getTheme(),
-      themedWidgetBuilder: (context, theme){
+      themedWidgetBuilder: (context, theme) {
         return GestureDetector(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -51,18 +57,21 @@ class MyApp extends StatelessWidget {
               '/login': (BuildContext context) => LoginScaffold(),
               '/newUser': (BuildContext context) => InitConfigScaffold(),
               '/settings': (BuildContext context) => SettingsScaffold(),
+              '/testpages': (BuildContext context) => TestPagesScaffold(),
+              '/testprimitive': (BuildContext context) =>
+                  PrimitiveTestScaffold(),
+              '/testbook': (BuildContext context) => BookTestScaffold(),
             },
             home: SplashScaffold(),
           ),
-          onTap: (){
+          onTap: () {
             //this part is used to fix some Text Field bugs
             FocusScopeNode current = FocusScope.of(context);
-            if(!current.hasPrimaryFocus && current.focusedChild != null){
+            if (!current.hasPrimaryFocus && current.focusedChild != null) {
               FocusManager.instance.primaryFocus.unfocus();
             }
           },
         );
-
       },
     );
   }

@@ -1,4 +1,4 @@
-import 'package:buku/scaffolds/others_scaffolds/primitive_test_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/testdata_primitive_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/search_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,7 @@ class _MenuState extends State<Menu> {
           ComingSoonScaffold(),
           SearchScaffold(),
           MainPageScaffold(),
-          PrimitiveTestScaffold(),
+          ComingSoonScaffold(),
           UserProfileScaffold(),
         ],
         controller: pageControl,
@@ -54,27 +54,37 @@ class _MenuState extends State<Menu> {
         items: <Widget>[
           Icon(
             Icons.group,
-            color: numbpage == 0 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
+            color: numbpage == 0
+                ? CurrentTheme.navigatorBarColor
+                : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.search,
-            color: numbpage == 1 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
+            color: numbpage == 1
+                ? CurrentTheme.navigatorBarColor
+                : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
-            Icons.home,
-            color: numbpage == 2 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
+            Icons.library_books,
+            color: numbpage == 2
+                ? CurrentTheme.navigatorBarColor
+                : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.format_list_bulleted,
-            color: numbpage == 3 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
+            color: numbpage == 3
+                ? CurrentTheme.navigatorBarColor
+                : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
             Icons.person,
-            color: numbpage == 4 ? CurrentTheme.navigatorBarColor : CurrentTheme.primaryColor,
+            color: numbpage == 4
+                ? CurrentTheme.navigatorBarColor
+                : CurrentTheme.primaryColor,
             size: 30,
           ),
         ],

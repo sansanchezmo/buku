@@ -210,12 +210,25 @@ class _PrimitiveTestScaffoldState extends State<PrimitiveTestScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: CurrentTheme.textColor1,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        backgroundColor: CurrentTheme.background,
+      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 50.0),
+            SizedBox(height: 10),
             Image(
               image: AssetImage(
                 'assets/images/settings.png',
@@ -240,7 +253,7 @@ class _PrimitiveTestScaffoldState extends State<PrimitiveTestScaffold> {
                   fontSize: 20.0,
                   fontStyle: FontStyle.italic),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 10),
             Container(
               width: 150,
               child: TextField(
