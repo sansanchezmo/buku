@@ -48,9 +48,8 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                         icon: Icon(Icons.timeline),
                         color: Colors.white,
                         onPressed: () {
-                          /*Navigator.of(context).pushNamed('/testpages');
-                          print('You pressed the icon.');*/
-                          MainUser().signOut(context);
+                          Navigator.of(context).pushNamed('/testpages');
+                          print('You pressed the icon.');
                         },
                       ),
                     ),
