@@ -1,9 +1,8 @@
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/utilities/config_cache.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'config_cache.dart';
 
 class InterestingTags extends StatefulWidget{
   TextEditingController name;
@@ -114,7 +113,7 @@ class _InterestingTagsState extends State<InterestingTags>{
       ],
     );
   }
-  _favTagsList() {
+  _favTagsList() { //TODO: change tags
     var userFavTagsList = new List<Widget>();
     var testTags = [
       "fantasy",

@@ -4,6 +4,10 @@ class Firestore{
 
   static final String nickName = 'nickName';
   static final String theme = 'theme';
+  static final String name = 'name';
+  static final String description = 'description';
+  static final String userImgUrl = 'userImageUrl';
+  static final String tags = 'tags';
 
   FirebaseFirestore store;
 
@@ -22,22 +26,13 @@ class Firestore{
   }
 
   void storeMainData(String uid, String theme, String name, String desc, String userImg, List<String> tags) async{
-    //TODO: change tags id for SQL id
     await store.collection('users').doc(uid).update({
-
-
-
       'theme' : theme,
       'name' : name,
       'description' : desc,
       'userImageUrl' : userImg,
+      'tags': tags
     }).catchError((error) => throw Exception('there´s a problem with the user: Data not stored'));
-
-    for( int i = 0; i<tags.length;i++){
-      print(tags[i]);
-      await store.collection('users').doc(uid).collection('tags').doc(uid+'_'+i.toString()).set({'name':tags[i]})
-          .catchError((error) => throw Exception('there´s a problem with the user: Data not stored'));
-    }
 
   }
 
@@ -49,7 +44,7 @@ class Firestore{
 
   }
 
-  Future<String> getData(String uid, String data) async {
+  Future<dynamic> getData(String uid, String data) async {
     String nickName;
     await store.collection('users').doc(uid).get()
     .then((value) {
@@ -67,5 +62,17 @@ class Firestore{
     });
 
     return isNew;
+  }
+
+  Future<bool> checkName(String name) async{
+    List<String> names = [];
+    await store.collection('users').get().then((value) {
+      value.docs.forEach((element) {names.add(element.data()[nickName]);});
+    });
+
+    for(int i = 0; i<names.length;i++){
+      if(names[i] == name) return false;
+    }
+    return true;
   }
 }

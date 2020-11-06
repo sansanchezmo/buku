@@ -53,4 +53,28 @@ class MainUser {
     return await store.getData(currUser.uid, Firestore.theme);
 
   }
+
+  Future<String> getName() async{
+
+    return await store.getData(currUser.uid, Firestore.name);
+
+  }
+
+  Future<String> getDescription() async{
+
+    return await store.getData(currUser.uid, Firestore.description);
+
+  }
+
+  Future<String> getUserImage() async{
+
+    return await store.getData(currUser.uid, Firestore.userImgUrl);
+
+  }
+
+  Future<List<String>> getTagList() async{
+
+    return await store.getData(currUser.uid, Firestore.tags);
+
+  }
 }

@@ -1,5 +1,5 @@
-import 'package:buku/scaffolds/init_scaffolds/config_widgets/config_cache.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/utilities/config_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

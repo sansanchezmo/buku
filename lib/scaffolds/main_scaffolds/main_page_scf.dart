@@ -1,4 +1,5 @@
 import 'package:buku/main_objects/book.dart';
+import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/structs/linked_list.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,8 +48,9 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                         icon: Icon(Icons.timeline),
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/testpages');
-                          print('You pressed the icon.');
+                          /*Navigator.of(context).pushNamed('/testpages');
+                          print('You pressed the icon.');*/
+                          MainUser().signOut(context);
                         },
                       ),
                     ),

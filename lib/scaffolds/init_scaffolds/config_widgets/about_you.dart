@@ -1,8 +1,8 @@
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/utilities/config_cache.dart';
+import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'config_cache.dart';
 
 class AboutYou extends StatefulWidget {
   TextEditingController name;
@@ -13,11 +13,12 @@ class AboutYou extends StatefulWidget {
 }
 
 class _AboutYouState extends State<AboutYou> {
+  final int numImages = 8;
   String url;
   @override
   void initState() {
-    url = "https://images.megapixl.com/4707/47075236.jpg";
-    ConfigCache.userImageUrl = "https://images.megapixl.com/4707/47075236.jpg";
+    url = "assets/user_images/user_0.png";
+    ConfigCache.userImageUrl = "assets/user_images/user_0.png";
     super.initState();
   }
   @override
@@ -66,7 +67,7 @@ class _AboutYouState extends State<AboutYou> {
                 onTap: (){
                   _showDialog(context);
                 },
-                child: _profileAvatar(100,100,this.url),
+                child: ProfileAvatar(size: 100, profileImage: this.url),
               ),
             ),
             Positioned(
@@ -124,20 +125,6 @@ class _AboutYouState extends State<AboutYou> {
       ),
     );
   }
-
-  _profileAvatar(double height, double width, url) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: CurrentTheme.backgroundContrast, width: 0.5),
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(
-                  url))),
-    );
-  }
   void _showDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -157,36 +144,69 @@ class _AboutYouState extends State<AboutYou> {
                       color: CurrentTheme.textColor2
                     ),),
                     SizedBox(height: 20,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            setProfileImage("https://images.megapixl.com/4707/47075236.jpg");
-                          },
-                          child: _profileAvatar(70,70,"https://images.megapixl.com/4707/47075236.jpg"),
+                    Flexible(
+                      child: ListView(
+                        shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          children:userImages(),
                         ),
-                        SizedBox(width: 10,),
-                        GestureDetector(
-                          onTap: (){
-                            setProfileImage("https://images.megapixl.com/4583/45836554.jpg");
-                          },
-                          child: _profileAvatar(70,70,"https://images.megapixl.com/4583/45836554.jpg"),
-                        ),
-                        SizedBox(width: 10,),
-                        GestureDetector(
-                          onTap: (){
-                            setProfileImage("https://images.megapixl.com/4707/47075236.jpg");
-                          },
-                          child: _profileAvatar(70,70,"https://images.megapixl.com/4707/47075236.jpg"),
-                        ),
-                      ],
-                    )
+                    ),
                   ],
                 )
               ),
             )
     );
+  }
+
+  userImages(){
+    List<Widget> list = [];
+    for(int i = 0; i<numImages~/3;i++){
+      list.add(Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: (){
+              setProfileImage('assets/user_images/user_'+((3*i)).toString()+'.png');
+            },
+            child: ProfileAvatar(size: 70, profileImage: 'assets/user_images/user_'+((3*i)).toString()+'.png'),
+          ),
+          SizedBox(width: 10,),
+          GestureDetector(
+            onTap: (){
+              setProfileImage('assets/user_images/user_'+((3*i)+1).toString()+'.png');
+            },
+            child: ProfileAvatar(size: 70, profileImage: 'assets/user_images/user_'+((3*i)+1).toString()+'.png'),
+          ),
+          SizedBox(width: 10,),
+          GestureDetector(
+            onTap: (){
+              setProfileImage('assets/user_images/user_'+((3*i)+2).toString()+'.png');
+            },
+            child: ProfileAvatar(size: 70, profileImage: 'assets/user_images/user_'+((3*i)+2).toString()+'.png'),
+          ),
+        ],
+      ));
+    }
+    if(numImages%3 != 0){
+      List<Widget> lastRow = List<Widget>();
+      for(int i = 0; i<numImages%3; i++){
+        lastRow.add(
+          GestureDetector(
+            onTap: (){
+              setProfileImage('assets/user_images/user_'+((numImages - numImages%3)+i).toString()+'.png');
+            },
+            child: ProfileAvatar(size: 70, profileImage: 'assets/user_images/user_'+((numImages - numImages%3)+i).toString()+'.png'),
+          ),
+        );
+        lastRow.add(SizedBox(width: 10,),);
+      }
+      list.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: lastRow,
+      ));
+    }
+
+    return list;
   }
 
   setProfileImage(String url){

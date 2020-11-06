@@ -2,7 +2,7 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/*TODO: get user's avatar. */
+//TODO: get user's avatar. <--- well, now I already change that :D
 
 class ProfileAvatar extends StatefulWidget{
   double size;
@@ -10,27 +10,25 @@ class ProfileAvatar extends StatefulWidget{
   ProfileAvatar({Key key, this.size: 100, this.profileImage}) : super(key: key);
 
   @override
-  _ProfileAvatarState createState() => _ProfileAvatarState(size,profileImage);
+  _ProfileAvatarState createState() => _ProfileAvatarState();
 
 }
 
 class _ProfileAvatarState extends State<ProfileAvatar>{
-  double size;
-  String profileImage;
-  _ProfileAvatarState(this.size,this.profileImage);
+  _ProfileAvatarState();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      width: 100,
+      height: widget.size,
+      width: widget.size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: CurrentTheme.backgroundContrast, width: 0.5),
           image: DecorationImage(
               fit: BoxFit.fill,
-              image: NetworkImage( profileImage == null?
-                  "https://images.megapixl.com/4707/47075236.jpg": profileImage))),
+              image: AssetImage( widget.profileImage == null?
+                  "assets/user_images/user_0": widget.profileImage))),
     );
   }
 

@@ -20,7 +20,6 @@ import 'main_objects/main_user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // bind app with FireBase
-  await Database.createDatabase(); // bind app with SQL Database
   await setTheme();
   runApp(MyApp());
 }
@@ -32,8 +31,12 @@ setTheme() async {
   if (user.currUser == null) {
     CurrentTheme.setTheme(CurrentTheme.orangeTheme);
   } else {
+    try{
     String theme = await user.getProfileTheme();
     CurrentTheme.setTheme(theme);
+    } catch(e){
+      CurrentTheme.setTheme(CurrentTheme.orangeTheme);
+    }
   }
 }
 

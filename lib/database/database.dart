@@ -3,12 +3,11 @@ import 'package:buku/main_objects/book.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Database {
+class Database { //TODO: this class is deprecated. Pls do not use under any circumstances (._.)
 
   static Future<void> createDatabase() async{
 
     //pls don't delete this function, it's used to create the database
-    //TODO: change connection
 
     String _dir = await getDatabasesPath();
     String _path = _dir + 'buku_database.db';

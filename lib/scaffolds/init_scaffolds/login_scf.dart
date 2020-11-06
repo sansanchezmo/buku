@@ -1,5 +1,6 @@
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/utilities/validate_data.dart';
 import 'package:buku/widgets/gradient_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class LoginScaffold extends StatefulWidget {
 class _LoginScaffoldState extends State<LoginScaffold> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  bool boolEmail;
 
   @override
   void dispose() {
@@ -28,6 +30,8 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   void initState() {
     emailController.text = widget.email;
     passController.text = widget.pass;
+    boolEmail = true;
+    super.initState();
   }
 
   @override
@@ -57,7 +61,13 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                       controller: emailController,
                       cursorColor: CurrentTheme.textColor1,
                       style: TextStyle(color: CurrentTheme.textColor1),
+                      onChanged: (text) {
+                        setState(() {
+                          boolEmail = true;
+                        });
+                      },
                       decoration: InputDecoration(
+                          errorText: boolEmail ? null : 'Invalid email, please correct it',
                           labelText: 'EMAIL',
                           labelStyle: TextStyle(
                             fontSize: 15.0,
@@ -105,8 +115,14 @@ class _LoginScaffoldState extends State<LoginScaffold> {
               GradientButton(
                   text: 'LOGIN',
                   tap: () {
-                    MainUser().login(
-                        emailController.text, passController.text, context);
+                    if(!ValidateData.checkEmail(emailController.text)){
+                      setState(() {
+                        boolEmail = false;
+                      });
+                    }
+                    else{
+                      MainUser().login(emailController.text, passController.text, context);
+                    }
                   }),
               SizedBox(
                 height: 8.0,

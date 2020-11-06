@@ -1,17 +1,12 @@
 import 'package:buku/main_objects/book.dart';
-import 'package:buku/widgets/gradient_button.dart';
 import 'package:buku/widgets/recommended_list.dart';
-import 'package:buku/widgets/recommended_list_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'init_scaffolds/config_widgets/interesting_tags.dart';
-
-class Test extends StatefulWidget {
-  _TestState createState() => _TestState();
+class RecommendedListWidget extends StatefulWidget{
+  _RecommendedListWidgetState createState() => _RecommendedListWidgetState();
 }
 
-class _TestState extends State<Test> {
+class _RecommendedListWidgetState extends State<RecommendedListWidget>{
   @override
   Widget build(BuildContext context) {
     List<Book> list= [];
@@ -29,9 +24,30 @@ class _TestState extends State<Test> {
       Book book;
       list.add(book);
     }
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Center(child: RecommendedListWidget(),)
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RecommendedList(list: list),
+              SizedBox(width: 30,),
+              RecommendedList(list: list),
+            ],
+          ),
+          SizedBox(height: 50,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RecommendedList(list: list),
+              SizedBox(width: 30,),
+              RecommendedList(list: list),
+            ],
+          )
+        ],
+      ),
     );
   }
+
 }
