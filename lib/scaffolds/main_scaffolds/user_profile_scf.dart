@@ -302,7 +302,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
   _favBooksList() {
     List<Book> userFavBooks = new List<Book>();
     for(int i = 0; i<5; i++){
-      userFavBooks.add(new Book("231","Prohibido creer en historias de amor","Javier Ruescas","2","3","4","https://espacio.fundaciontelefonica.com/wp-content/uploads/2018/03/portada-libro-ruescas-700x994-563x800.jpg"));
+      //userFavBooks.add(new Book("231","Prohibido creer en historias de amor","Javier Ruescas","2","3","4","https://espacio.fundaciontelefonica.com/wp-content/uploads/2018/03/portada-libro-ruescas-700x994-563x800.jpg"));
     }
     return userFavBooks;
   }
