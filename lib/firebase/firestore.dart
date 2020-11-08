@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 
 class Firestore{
 
-  static final String nickName = 'nickName';
+  static final String nickName = 'nickname';
   static final String theme = 'theme';
   static final String name = 'name';
-  static final String description = 'description';
-  static final String userImgUrl = 'userImageUrl';
+  static final String description = 'desc';
+  static final String userImgUrl = 'image_path';
   static final String tags = 'tags';
   static final String favoriteBooks = 'favorite_books';
-  static final String searched = 'searched';
+  static final String searched = 'history';
   static final String followers = 'followers';
   static final String following = 'following';
 
@@ -28,7 +28,7 @@ class Firestore{
   void createUser(String uid, String nickName) async{
 
     await store.collection('users').doc(uid).set({
-      'nickName' : nickName
+      'nickname' : nickName
     }).then((value) => print("user added"))
         .catchError((error) => throw Exception('there´s a problem with the user: Not created'));
 
@@ -38,8 +38,8 @@ class Firestore{
     await store.collection('users').doc(uid).update({
       'theme' : theme,
       'name' : name,
-      'description' : desc,
-      'userImageUrl' : userImg,
+      'desc' : desc,
+      'image_path' : userImg,
       'tags': tags
     }).catchError((error) => throw Exception('there´s a problem with the user: Data not stored'));
 
@@ -159,7 +159,7 @@ class Firestore{
     await store.collection('books').doc(isbn_10).collection('comments').get().then((value) {
       value.docs.forEach((element) {
         var data = element.data();
-        BookComment(data['userUid'],data['userName'],data['userNickname'],data['userImage'],data['comment'],data['data']);
+        BookComment(data['user_uid'],data['user_name'],data['user_nickname'],data['user_image'],data['comment'],data['data']);
       });
     });
 
