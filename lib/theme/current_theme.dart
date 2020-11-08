@@ -28,6 +28,7 @@ class CurrentTheme{
 
   static LinearGradient primaryGradientColor;
   static LinearGradient primaryGradientColorVariant;
+  static LinearGradient primaryGradientColorInverted;
 
   static ThemeData themeData;
 
@@ -43,6 +44,7 @@ class CurrentTheme{
       primaryColorVariant = OrangeTheme.primaryColorVariant;
       primaryGradientColor = OrangeTheme.primaryGradientColor;
       primaryGradientColorVariant = OrangeTheme.primaryGradientColorVariant;
+      primaryGradientColorInverted = OrangeTheme.primaryGradientColorInverted;
       shadow1 = OrangeTheme.shadow1;
       shadow2 = OrangeTheme.shadow2;
       separatorColor = OrangeTheme.separatorColor;
@@ -62,6 +64,7 @@ class CurrentTheme{
       primaryColorVariant = DarkTheme.primaryColorVariant;
       primaryGradientColor = DarkTheme.primaryGradientColor;
       primaryGradientColorVariant = DarkTheme.primaryGradientColorVariant;
+      primaryGradientColorInverted = DarkTheme.primaryGradientColorInverted;
       shadow1 = DarkTheme.shadow1;
       shadow2 = DarkTheme.shadow2;
       separatorColor = DarkTheme.separatorColor;

@@ -1,10 +1,12 @@
-import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
+import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/book_horizontal_slider.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+//TODO: Change everything...
 
 class UserProfileScaffold extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class UserProfileScaffold extends StatefulWidget {
 }
 
 class _UserProfileScaffoldState extends State<UserProfileScaffold> {
+  MainUser user = new MainUser();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +24,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
           SizedBox(height: 25),
           Container(
             padding: EdgeInsets.only(right: 30, left: 30),
-            child: Text(
-                "This is my biography, here I write some stuff about me.",
-                style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
-                textAlign: TextAlign.center),
+            child: _descriptionBuilder(),
           ),
           SizedBox(height: 20),
           _userStatistics(),
@@ -68,26 +68,9 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "David Butcher",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 28,
-                        color: CurrentTheme.textColor1
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "@DavidButcher",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        color: CurrentTheme.textColor2),
-                  ),
+                  _nameBuilder(),
+                  SizedBox(height: 8),
+                  _nickNameBuilder(),
                 ],
               ),
             )
@@ -95,12 +78,14 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
         ),
         Positioned(
           top: 90,
-          child: new ProfileAvatar(),
+          child: _profilePicBuilder(),
         ),
         Positioned(
-          top:55, right: 30,
-          child: GestureDetector(
-            onTap: () {
+          top:50, right: 10,
+          child: RaisedButton(
+            elevation: 0,
+            color: Colors.transparent,
+            onPressed: () {
               Navigator.pushNamed(context, '/settings');
             },
             child: Icon(Icons.settings,
@@ -139,7 +124,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
           SizedBox(width: 20),
           Container(
             height: 30,
-            width: 2,
+            width: 1,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: CurrentTheme.separatorColor),
@@ -167,7 +152,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
           SizedBox(width: 20),
           Container(
             height: 30,
-            width: 2,
+            width: 1,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: CurrentTheme.separatorColor),
@@ -281,28 +266,16 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
         SizedBox(
           height: 20,
         ),
-        Container(
-          alignment: Alignment.centerLeft,
-          width: 300,
-          padding: EdgeInsets.all(25),
-          decoration: BoxDecoration(
-              color: CurrentTheme.backgroundContrast,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 3, blurRadius: 5)
-              ]),
-          child: Wrap(
-            children: _favTagsList(),
-          ),
-        )
+        _favTagsBuilder()
       ],
     );
   }
 
   _favBooksList() {
-    List<Book> userFavBooks = new List<Book>();
-    for(int i = 0; i<5; i++){
-      //userFavBooks.add(new Book("231","Prohibido creer en historias de amor","Javier Ruescas","2","3","4","https://espacio.fundaciontelefonica.com/wp-content/uploads/2018/03/portada-libro-ruescas-700x994-563x800.jpg"));
+    List<MiniBook> userFavBooks = new List<MiniBook>();
+    for(int i = 0; i<2; i++){
+      List<String> authors = ["Javier Ruescas"];
+      userFavBooks.add(new MiniBook("231","Prohibido creer en historias de amor",authors,"https://espacio.fundaciontelefonica.com/wp-content/uploads/2018/03/portada-libro-ruescas-700x994-563x800.jpg"));
     }
     return userFavBooks;
   }
@@ -341,22 +314,212 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     return userFavAuthors;
   } //TODO: Display user fav authors. Actual is a test example.
 
-  _favTagsList() {
-    var userFavTagsList = new List<Widget>();
-    var testTags = [
-      "Hola",
-      "prueba123",
-      "terror",
-      "comedia",
-      "Cálculo",
-      "tag",
-      "Tag largo de prueba",
-      "poesía",
-      "jaja",
-      "otro Tag"
-    ];
-    for (int i = 0; i < 10; i++) {
-      userFavTagsList.add(Container(
+
+
+  Widget _descriptionBuilder(){
+    return FutureBuilder(
+      future: user.getDescription(),
+      builder: (context,snapshot) {
+        if(snapshot.connectionState == ConnectionState.done){
+          if(snapshot.hasError){
+            return Text(
+                "An error has occurred!",
+                style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
+                textAlign: TextAlign.center);
+          } else {
+            return Text(
+                snapshot.data.toString(),
+                style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
+                textAlign: TextAlign.center);
+          }
+        } else {
+          return ShaderMask(
+            shaderCallback: (bounds) =>
+                LinearGradient(
+                    colors:[Colors.black12,Colors.white]
+                ).createShader(bounds),
+            child: Container(
+              height: 40,
+              width: 150,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _nameBuilder(){
+    return FutureBuilder(
+      future: user.getName(),
+      builder: (context,snapshot) {
+        if(snapshot.connectionState == ConnectionState.done){
+          if(snapshot.hasError){
+            return Text(
+                "An error has occurred!",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: CurrentTheme.textColor1
+                ),
+                textAlign: TextAlign.center);
+          } else {
+            return Text(
+              snapshot.data.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: CurrentTheme.textColor1
+              ),
+            );
+          }
+        } else {
+          return ShaderMask(
+            shaderCallback: (bounds) =>
+                LinearGradient(
+                    colors:[Colors.black12,Colors.white]
+                ).createShader(bounds),
+            child: Container(
+              height: 40,
+              width: 150,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+              ),
+            ),
+          );
+        }
+      },
+    );
+
+  }
+
+  Widget _nickNameBuilder() {
+    return FutureBuilder(
+      future: user.getNickName(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Text(
+                "An error has occurred!",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: CurrentTheme.textColor1
+                ),
+                textAlign: TextAlign.center);
+          } else {
+            return Text(
+              snapshot.data.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: CurrentTheme.textColor2),
+            );
+          }
+        } else {
+          return ShaderMask(
+            shaderCallback: (bounds) =>
+                LinearGradient(
+                    colors: [Colors.black12, Colors.white]
+                ).createShader(bounds),
+            child: Container(
+              height: 40,
+              width: 150,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _profilePicBuilder() {
+    return FutureBuilder(
+      future: user.getUserImage(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return new ProfileAvatar(profileImage: "assets/images/user");
+          } else {
+            return new ProfileAvatar(profileImage: snapshot.data);
+          }
+        } else {
+          return ShaderMask(
+            shaderCallback: (bounds) =>
+                LinearGradient(
+                    colors: [Colors.black12, Colors.white]
+                ).createShader(bounds),
+            child: Container(
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: CurrentTheme.backgroundContrast, width: 2),
+            )),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _favTagsBuilder() {
+    return FutureBuilder(
+      future: user.getTagList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Container(
+                width: 300,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10))
+                ),
+                child: Text("Sorry, an error has occurred"),
+            );
+          } else {
+            return Container(
+              alignment: Alignment.centerLeft,
+              width: 300,
+              padding: EdgeInsets.all(25),
+              decoration: BoxDecoration(
+                  color: CurrentTheme.backgroundContrast,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 3, blurRadius: 5)
+                  ]),
+              child: Wrap(
+                children: _favTagsToWidgets(snapshot.data),
+              ),
+            );
+          }
+        } else {
+          return ShaderMask(
+            shaderCallback: (bounds) =>
+                LinearGradient(
+                    colors: [Colors.black12, Colors.white]
+                ).createShader(bounds),
+            child: Container(
+                height: 200,
+                width: 300,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10))
+                )
+            )
+          );
+        }
+      },
+    );
+  }
+
+  List<Widget> _favTagsToWidgets(List<String> userFavTagsList) {
+    List<Widget> favTagsWidgets;
+    for (int i = 0; i < userFavTagsList.length; i++) {
+      favTagsWidgets.add(Container(
         height: 33,
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -364,12 +527,13 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
             border: Border.all(color: CurrentTheme.primaryColor),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Text(
-          testTags[i],
+          userFavTagsList[i],
           style: TextStyle(color: CurrentTheme.textColor2, fontSize: 13),
         ),
       ));
-      userFavTagsList.add(SizedBox(width: 10, height: 40));
+      favTagsWidgets.add(SizedBox(width: 10, height: 40));
     }
-    return userFavTagsList;
-  } //TODO: Display user fav Tags. Actual is a test example.
+    return favTagsWidgets;
+  }
+
 }

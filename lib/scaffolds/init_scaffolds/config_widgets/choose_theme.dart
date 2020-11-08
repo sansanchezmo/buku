@@ -36,7 +36,9 @@ class _ChooseThemeState extends State<ChooseTheme>{
             ClipPath(
               clipper: Clip1(),
               child: Container(
-                color: CurrentTheme.primaryColor,
+                decoration: BoxDecoration(
+                  gradient: CurrentTheme.primaryGradientColorInverted,
+                ),
               ),
             ),
             Positioned(
@@ -108,31 +110,31 @@ class _ChooseThemeState extends State<ChooseTheme>{
               )
             ),
             Positioned(
-              top: 150, left: 10,
-              child: Align(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 110,),
-                    Text('Choose theme',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                          color: CurrentTheme.textColor1,
-                          fontSize: 40
-                      ),
+              top: 270, left: 20,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Choose the theme',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                        color: CurrentTheme.textColor1,
+                        fontSize: 40
                     ),
-                    Text(
-                      'How would you like to\n see Buku interface',
+                  ),
+                  Container(
+                    width: 200,
+                    child: Text(
+                      'How would you like to see Buku interface?',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: CurrentTheme.textColor2,
                           fontSize: 18
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
           ],

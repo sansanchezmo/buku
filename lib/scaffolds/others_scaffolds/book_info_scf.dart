@@ -3,6 +3,7 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+//TODO: Change everything :)
 
 class BookInfoScaffold extends StatefulWidget {
   final Book book;

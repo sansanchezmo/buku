@@ -2,7 +2,6 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//TODO: get user's avatar. <--- well, now I already change that :D
 
 class ProfileAvatar extends StatefulWidget{
   double size;
@@ -24,7 +23,7 @@ class _ProfileAvatarState extends State<ProfileAvatar>{
       width: widget.size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: CurrentTheme.backgroundContrast, width: 0.5),
+          border: Border.all(color: CurrentTheme.backgroundContrast, width: 2),
           image: DecorationImage(
               fit: BoxFit.fill,
               image: AssetImage( widget.profileImage == null?

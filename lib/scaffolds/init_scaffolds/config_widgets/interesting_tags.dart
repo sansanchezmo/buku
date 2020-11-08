@@ -25,29 +25,37 @@ class _InterestingTagsState extends State<InterestingTags>{
             ClipPath(
               clipper: Clip3(),
               child: Container(
-                color: CurrentTheme.primaryColor,
+                decoration: BoxDecoration(
+                  gradient: CurrentTheme.primaryGradientColor
+                ),
               ),
             ),
             Positioned(
-                top: 150, right: 10,
+                top: 140, left: 20,
                 child: Container(
                   child: Column(
                     children: [
-                      Text(
-                        'Tags you\nshould know',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: CurrentTheme.textColor1,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40
+                      Container(
+                        width: 200,
+                        child: Text(
+                          'Choose your interests',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40
+                          ),
                         ),
                       ),
-                      Text(
-                        'Maybe you can find \nsome tags to follow',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            color: CurrentTheme.textColor2,
-                            fontSize: 18
+                      Container(
+                        width: 200,
+                        child: Text(
+                          'Select some tags to start exploring',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 18
+                          ),
                         ),
                       )
                     ],
@@ -55,38 +63,45 @@ class _InterestingTagsState extends State<InterestingTags>{
                 )
             ),
             Positioned(
-              bottom: 90,
+              bottom: 200,
               child: _favTagsWidget(),
             ),
             Positioned(
-              bottom: 10,
-              left: 10,
-              child: GestureDetector(
-                onTap: () async {
-
-                  ConfigCache.name = widget.name.text;
-                  ConfigCache.description = widget.desc.text;
-
-                  if(ConfigCache.nameEmpty()) ConfigCache.name = await MainUser().getNickName() ;
-                  if(ConfigCache.descriptionEmpty()) ConfigCache.description = 'Hi there! I´m using Buku';
-
-                  ConfigCache.storeCache();
-
-                  Navigator.of(context).pushNamed('/menu');
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: CurrentTheme.primaryColor,
-                    //boxShadow: [BoxShadow(color: CurrentTheme.shadow2,spreadRadius: 5,blurRadius: 5)],
-                    borderRadius: BorderRadius.all(Radius.circular(40))
-                  ),
-                  padding: EdgeInsets.only(top: 10,bottom: 10,left: 20,right: 20),
-                  child: Text('DONE', style: TextStyle(
-                    color: CurrentTheme.background,
-                    fontWeight: FontWeight.bold
-                  ),)
+              bottom: 100,
+              child: Container(
+                width: 150,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: CurrentTheme.primaryColorVariant,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  boxShadow: [BoxShadow(
+                    color: CurrentTheme.shadow2,
+                    spreadRadius: 2,
+                    blurRadius: 5
+                  )]
                 ),
-              ),
+                child: RaisedButton(
+                  onPressed: () async {
+                    ConfigCache.name = widget.name.text;
+                    ConfigCache.description = widget.desc.text;
+
+                    if(ConfigCache.nameEmpty()) ConfigCache.name = await MainUser().getNickName() ;
+                    if(ConfigCache.descriptionEmpty()) ConfigCache.description = 'Hi there! I´m using Buku';
+
+                    ConfigCache.storeCache();
+
+                    Navigator.of(context).pushNamed('/menu');
+                  },
+                  elevation: 0,
+                  color: Colors.transparent,
+                  child: Text("Let's go!",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white
+                  ),),
+                ),
+              )
+
             )
           ],
         ),
@@ -94,42 +109,43 @@ class _InterestingTagsState extends State<InterestingTags>{
     );
   }
   _favTagsWidget() {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          width: 300,
-          padding: EdgeInsets.all(25),
-          decoration: BoxDecoration(
-              color: CurrentTheme.backgroundContrast,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 10, blurRadius: 10)
-              ]),
-          child: Wrap(
-            children: _favTagsList(),
-          ),
-        )
-      ],
+    return Container(
+      alignment: Alignment.center,
+      width: 300,
+      padding: EdgeInsets.all(25),
+      decoration: BoxDecoration(
+          color: CurrentTheme.backgroundContrast,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+                color: CurrentTheme.shadow2,
+                spreadRadius: 2,
+                blurRadius: 10,
+              offset: Offset(5,5)
+            )
+          ]),
+      child: Wrap(
+        children: _favTagsList(),
+      ),
     );
   }
   _favTagsList() { //TODO: change tags
     var userFavTagsList = new List<Widget>();
     var testTags = [
-      "fantasy",
-      "adventure",
-      "romance",
-      "mystery",
-      "horror",
-      "art",
-      "history",
-      "development",
-      "academic",
-      "motivational",
+      "Fantasy",
+      "Adventure",
+      "Romance",
+      "Mystery",
+      "Horror",
+      "Art",
+      "History",
+      "Development",
+      "Academic",
+      "Motivational",
     ];
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < testTags.length; i++) {
       userFavTagsList.add(Tag(testTags[i]));
-      userFavTagsList.add(SizedBox(width: 10, height: 40));
+      i != testTags.length -1? userFavTagsList.add(SizedBox(width: 10, height: 40)) : 0;
     }
     return userFavTagsList;
   }

@@ -73,26 +73,32 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
   }
 
   Widget _menuButton({@required IconData icon, @required String text, @required Color color, @required Function onTapFunction}){
-    return GestureDetector(
-      onTap: onTapFunction,
-      child: Container(
-        width: double.infinity,
+    return SizedBox(
+      //height: 65,
+      width: double.infinity,
+      child: Align(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(
-            top:20.0, bottom: 20.0,
-            left:30.0, right: 30.0),
-        child: Row(
-          children: [
-            Icon(icon,
-                size: 20,
-                color: color),
-            SizedBox(width: 15),
-            Text(text,
-              style: TextStyle(
-                  fontSize: 16,
-                  color: color
-              ),),
-          ],
+        child: RaisedButton(
+          textColor: color,
+          onPressed: onTapFunction,
+          elevation: 0,
+          color: Colors.transparent,
+          child: Row(
+            children: [
+              Icon(icon,
+                  size: 20,
+                  color: color),
+              SizedBox(width: 15),
+              Text(text,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: color
+                ),),
+            ],
+          ),
+          padding: EdgeInsets.only(
+              top:20.0, bottom: 20.0,
+              left:30.0, right: 30.0),
         ),
       ),
     );

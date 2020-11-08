@@ -4,7 +4,9 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BookHorizontalSlider extends StatefulWidget{
+//TODO: emptyList widget
+
+class BookHorizontalSlider extends StatefulWidget {
   String sliderTitle;
   List<MiniBook> miniBookList;
   BookHorizontalSlider(this.sliderTitle, this.miniBookList, {Key key}) : super(key: key);
@@ -54,33 +56,39 @@ class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
         SizedBox(
           height: 10,
         ),
-        Container(
-          height: 220,
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: Row(
-            children: [
-              Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: _favBooksList(),
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-            ],
-          ),
-        ),
+        this.miniBookList.length > 0? _favBooksScroll() : _emptyBookList()
+
       ],
     );
   }
 
-  _favBooksList() {
+  Widget _favBooksScroll() {
     List<Widget> userFavBooks = List<Widget>();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < this.miniBookList.length; i++) {
       MiniBook book = this.miniBookList[i];
-      String title = book.title, author = book.authors[0];
       userFavBooks.add(book.toWidget(context));
     }
-    return userFavBooks;
+    return Container(
+      height: 235,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: Row(
+        children: [
+          Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              children: userFavBooks,
+              scrollDirection: Axis.horizontal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _emptyBookList(){
+    return Container(
+
+    );
   }
 }

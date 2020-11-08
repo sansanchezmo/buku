@@ -15,11 +15,11 @@ class Book {
   final int _views;
   final int _pages;
   final double _rating;
-  List<String> _authors;
-  List<String> _tags;
+  List<dynamic> _authors;
+  List<dynamic> _tags;
   List<BookComment> _comments;
   List<Map<String, dynamic>> _pdfLinks;
-  Map<String, String> _buyURL;
+  Map<String, dynamic> _buyURL;
   Map<String, dynamic> _isbn;
 
 
@@ -96,9 +96,9 @@ class Book {
     if (len<=3){
       text = this._views.toString();
     } else if (len <=6){
-      text = (this._views/100).toStringAsFixed(1)+"K";
+      text = (this._views/1000).toStringAsFixed(1)+"K";
     } else {
-      text = (this._views/100000).toStringAsFixed(1)+"M";
+      text = (this._views/1000000).toStringAsFixed(1)+"M";
     }
     text = text + " views";
     return text;
@@ -173,10 +173,10 @@ class Book {
     );
   }
 
-  Widget bookImage(){
+  Widget bookImage({double width: 175.0}){
     return Container(
-        height: 280,
-        width: 175,
+        height: width*1.6,
+        width: width,
         decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fill,

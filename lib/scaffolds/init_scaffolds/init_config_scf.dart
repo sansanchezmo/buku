@@ -52,7 +52,7 @@ class _InitConfigScaffoldState extends State<InitConfigScaffold> {
                   controller: controller,
                   count: 3,
                   effect: SwapEffect(dotColor: CurrentTheme.textColor2,activeDotColor: CurrentTheme.primaryColor,
-                  dotHeight: 14, dotWidth: 14),
+                  dotHeight: 10, dotWidth: 10),
                 )
               ),
             ),

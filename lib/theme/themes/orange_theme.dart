@@ -19,7 +19,8 @@ class OrangeTheme extends Theme{
   static Color navigatorBarColor = Colors.white;
 
   static LinearGradient primaryGradientColor = LinearGradient(colors: [Colors.orange, Colors.deepOrange]);
-  static LinearGradient primaryGradientColorVariant = LinearGradient(colors: [Colors.orange, Colors.orange]);
+  static LinearGradient primaryGradientColorVariant = LinearGradient(colors: [Colors.orange,Colors.amber, Colors.orange]);
+  static LinearGradient primaryGradientColorInverted = LinearGradient(colors: [Colors.deepOrange, Colors.orange]);
 
   static ThemeData getTheme(){
     return ThemeData(
