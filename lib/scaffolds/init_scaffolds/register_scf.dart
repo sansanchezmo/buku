@@ -16,10 +16,12 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
   final nameController = TextEditingController();
 
   bool boolEmail, boolPass, boolName;
+  String nameErrorText;
 
   @override
   void initState() {
     boolEmail = boolPass = boolName = true;
+    nameErrorText = 'name already taken';
     super.initState();
   }
 
@@ -129,13 +131,15 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
                             controller: nameController,
                             cursorColor: CurrentTheme.textColor1,
                             style: TextStyle(color: CurrentTheme.textColor1),
+                            maxLength: 50,
                             onChanged: (text){
                               setState(() {
                                 boolName = true;
+                                nameErrorText = 'name already taken';
                               });
                             },
                             decoration: InputDecoration(
-                                errorText: boolName ? null:'name already taken',
+                                errorText: boolName ? null: nameErrorText,
                                 labelText: 'NICK NAME',
                                 labelStyle: TextStyle(
                                     fontFamily: 'ProductSans',
@@ -160,6 +164,7 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
                                   boolEmail = list[0];
                                   boolPass = list[1];
                                   boolName = list[2];
+                                  nameErrorText = list[3];
                                 });
                               }else{
                                 MainUser().register(emailController.text, passController.text, nameController.text, context);

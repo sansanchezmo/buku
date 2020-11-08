@@ -44,9 +44,8 @@ class MainUser {
   }
 
   Future<String> getNickName() async{
-
-   return await store.getData(currUser.uid, Firestore.nickName);
-
+    String nickName = await store.getData(currUser.uid, Firestore.nickName);
+    return '@' + nickName;
   }
   Future<String> getProfileTheme() async{
 

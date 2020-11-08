@@ -13,13 +13,38 @@ class ValidateData{
     return true;
   }
 
-  static Future<List<bool>> validatingData(String email, String password, String name) async{
+  static Future<List<dynamic>> checkName(String name) async {
+
+    String validCharacters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz_0123456789. ';
+
+    if(name == ''){
+      return[false, 'that´s empty :v'];
+    }
+
+    for(int i=0; i< name.length; i++){
+      if(!validCharacters.contains(name[i])){
+        return [false, 'there are some weird characters :c'];
+      }
+    }
+    for(int i=0; i< name.length; i++){
+      if(name[i] == ' '){
+        return [false,'I do not accept empty spaces'];
+      }
+    }
+
+    bool boolName = await Firestore().checkName(name);
+
+    return [boolName, 'name already taken'];
+
+  }
+
+  static Future<List<dynamic>> validatingData(String email, String password, String name) async{
 
     bool boolEmail = checkEmail(email);
     bool boolPass = password.length >= 6;
-    bool boolName = await Firestore().checkName(name);
+    List<dynamic> list = await checkName(name);
 
-    return [boolEmail, boolPass, boolName];
+    return [boolEmail, boolPass, list[0], list[1]];
 
   }
 }

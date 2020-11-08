@@ -57,7 +57,7 @@ class Auth {
           bool isNew = await Firestore().isNew(userCredential.user.uid);
 
           if(isNew){
-            await Firestore().setOldUser(userCredential.user.uid);
+            //await Firestore().setOldUser(userCredential.user.uid);
             Navigator.of(context).pushNamed('/newUser');
 
           }else{
