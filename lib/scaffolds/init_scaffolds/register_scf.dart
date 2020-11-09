@@ -167,7 +167,7 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
                                   nameErrorText = list[3];
                                 });
                               }else{
-                                MainUser(loadUserInfo: false).register(emailController.text, passController.text, nameController.text, context);
+                                MainUser().register(emailController.text, passController.text, nameController.text, context);
                               }
                             },
                           ),

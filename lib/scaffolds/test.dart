@@ -1,4 +1,5 @@
 import 'package:buku/main_objects/book.dart';
+import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/widgets/gradient_button.dart';
 import 'package:buku/widgets/recommended_list.dart';
 import 'package:buku/widgets/recommended_list_widget.dart';
@@ -12,26 +13,30 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
+  MainUser user = MainUser();
+
   @override
   Widget build(BuildContext context) {
-    List<Book> list= [];
-    for (int i = 0; i < 5; i++) {
-      /*Book book = new Book(
-          "0002005018",
-          "Classical Mythology",
-          "Mark P. O. Morford",
-          "2002",
-          "Oxford University Press",
-          "Building on the bestselling tradition of previous editions, Classical Mythology, Tenth Edition, is the most comprehensive survey of classical mythology available--and the first full-color textbook of its kind. Featuring the authors' clear and extensive translations of original sources, it brings to life the myths and legends of Greece and Rome in a lucid and engaging style. The text contains a wide variety of faithfully translated passages from Greek and Latin sources, including Homer, Hesiod, all the Homeric Hymns, Pindar, Aeschylus, Sophocles, Euripides, Herodotus, Plato, Lucian, Lucretius, Vergil, Ovid, and Seneca. ",
-          "http://images.amazon.com/images/P/0195153448.01.THUMBZZZ.jpg",
-          "link2",
-          "http://images.amazon.com/images/P/0195153448.01.LZZZZZZZ.jpg");*/
-      Book book;
-      list.add(book);
-    }
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Center(child: RecommendedListWidget(),)
+    return FutureBuilder(
+      future: user.setUser(),
+      builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.done){
+          return Scaffold(
+              resizeToAvoidBottomPadding: false,
+              body: Center(child: Text(
+                  'hello' + user.user.name
+              ),)
+          );
+        }
+
+        return Scaffold(
+          body: Center(
+            child: Text(
+              'We are loading we'
+            ),
+          ),
+        );
+      }
     );
   }
 }

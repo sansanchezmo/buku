@@ -1,4 +1,3 @@
-import 'package:buku/main_objects/book.dart';
 import 'package:buku/scaffolds/init_scaffolds/init_config_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/login_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/register_scf.dart';
@@ -11,8 +10,6 @@ import 'package:buku/scaffolds/splash_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:buku/database/database.dart';
-import 'package:buku/scaffolds/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'main_objects/main_user.dart';
@@ -27,7 +24,7 @@ void main() async {
 setTheme() async {
   /*the function bellow select the theme for initialize MyApp or set default theme
   if the user does not choose theme yet*/
-  var user = MainUser(loadUserInfo: false);
+  var user = MainUser();
   if (user.currUser == null) {
     CurrentTheme.setTheme(CurrentTheme.orangeTheme);
   } else {

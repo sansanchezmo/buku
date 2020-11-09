@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:buku/main_objects/user.dart' as Usr;
 
-class MainUser extends Usr.User{
+class MainUser{
 
   Auth _auth;
   Firestore _store;
@@ -15,19 +15,17 @@ class MainUser extends Usr.User{
   User get currUser => _currUser;
   Usr.User get user => _user;
 
-  MainUser({loadUserInfo: true}) : super.empty(){
+  MainUser(){
 
     _auth = Auth();
     _store = Firestore();
     _currUser = _auth.getCurrentUser();
 
-    if(loadUserInfo){
-      _setUser();
-    }
   }
 
-  void _setUser() async{
+  Future<Usr.User> setUser() async{
     _user = await _store.getUser(currUser.uid);
+    return _user;
   }
   void login(String email, String password, BuildContext context) async{
 
