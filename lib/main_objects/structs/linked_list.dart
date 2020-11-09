@@ -39,8 +39,10 @@ class LinkedList<T> {
   }
 
   Node<T> front() {
+    /*
     if (empty())
       throw RangeError('front from an empty list');
+    */
     return _head;
   }
 
@@ -186,6 +188,23 @@ class LinkedList<T> {
     }
 
     return null;
+  }
+
+  void eraseNode(T val) {
+    Node itr = _head;
+
+    if (itr.data() == val) {
+      popFront();
+      return;
+    }
+
+    while (itr.next() != null) {
+      if (itr.next().data() == val) {
+        itr.setNextTo(itr.next().next());
+        return;
+      }
+      itr = itr.next();
+    }
   }
   //private methods - nothing here
 }

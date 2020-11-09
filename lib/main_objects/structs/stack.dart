@@ -1,6 +1,5 @@
 import 'package:buku/main_objects/structs/linked_list.dart';
-
-import 'vector.dart';
+import 'package:buku/main_objects/structs/vector.dart';
 
 class ArrayStack<T> {
   Vector<T> _arr;
@@ -57,6 +56,5 @@ class ListStack<T> {
     return _list.popFront();
   }
 }
-
 
 class Stack<T> extends ListStack<T>{}
