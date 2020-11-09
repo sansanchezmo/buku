@@ -1,22 +1,39 @@
+import 'package:buku/firebase/firestore.dart';
+import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
-import 'package:buku/main_objects/mini_book.dart';
+import 'package:buku/main_objects/mini_author.dart';
+import 'package:buku/scaffolds/loading_scaffolds/profile_loading_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/book_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/book_horizontal_slider.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//TODO: Change everything...
-
 class UserProfileScaffold extends StatefulWidget {
   @override
   _UserProfileScaffoldState createState() => _UserProfileScaffoldState();
 }
 
-class _UserProfileScaffoldState extends State<UserProfileScaffold> {
-  MainUser user = new MainUser();
+class _UserProfileScaffoldState extends State<UserProfileScaffold>{
+  MainUser _user = MainUser();
+
+
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _user.setUser(),
+      builder: (context, snapshot){
+        if(snapshot.connectionState == ConnectionState.done){
+          return _profileScaffold();
+        } else {
+          return ProfileLoadingScaffold();
+        }
+      },
+    );
+  }
+
+  Scaffold _profileScaffold(){
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -26,10 +43,11 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
             padding: EdgeInsets.only(right: 30, left: 30),
             child: _descriptionBuilder(),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 25),
           _userStatistics(),
           SizedBox(height: 20),
-          BookHorizontalSlider("Favorite books",_favBooksList()),
+          _user.user.favBooks.length != 0? BookHorizontalSlider("Favorite books", _user.user.favBooks):
+              _favBookWidget(),
           _favAuthorsWidget(),
           _favTagsWidget(),
           SizedBox(height: 30),
@@ -37,6 +55,8 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
       ),
     );
   }
+
+
 
   Widget _profileHeader(BuildContext context){
     return Stack(
@@ -85,8 +105,15 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
           child: RaisedButton(
             elevation: 0,
             color: Colors.transparent,
-            onPressed: () {
+            onPressed: () async {
               Navigator.pushNamed(context, '/settings');
+              //G
+              /*Book book = await Firestore().getBook("0002551675");
+              print(book.imageURL);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BookInfoScaffold(book: book)),
+              );*/
             },
             child: Icon(Icons.settings,
                 color: CurrentTheme.background,
@@ -106,7 +133,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "2.5k",
+                _user.user.statistics["followers"].toString() == null? "null" : _user.user.statistics["followers"].toString(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -121,7 +148,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
               )
             ],
           ),
-          SizedBox(width: 20),
+          SizedBox(width: 25),
           Container(
             height: 30,
             width: 1,
@@ -129,12 +156,12 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: CurrentTheme.separatorColor),
           ),
-          SizedBox(width: 20),
+          SizedBox(width: 25),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "385",
+                _user.user.statistics["following"].toString() == null? "null" : _user.user.statistics["following"].toString(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -149,7 +176,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
               )
             ],
           ),
-          SizedBox(width: 20),
+          SizedBox(width: 25),
           Container(
             height: 30,
             width: 1,
@@ -157,12 +184,12 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: CurrentTheme.separatorColor),
           ),
-          SizedBox(width: 20),
+          SizedBox(width: 25),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "137",
+                _user.user.statistics["books"].toString() == null? "null" : _user.user.statistics["books"].toString(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -182,6 +209,59 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     );
   }
 
+  Widget _favBookWidget(){
+    return Column(
+      children: [
+        SizedBox(
+          height: 30,
+        ),
+        Row(
+          children: [
+            Container(
+              height: 30,
+              width: 40,
+              decoration: BoxDecoration(
+                  color: CurrentTheme.primaryColorVariant,
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+            ),
+            SizedBox(width: 15),
+            Text(
+              "Favorite books",
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  color: CurrentTheme.textColor3),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Column(
+          children: [
+            Text("You don\'t have any favourite books yet",style: TextStyle(color: CurrentTheme.textColor3)),
+            FlatButton(
+                onPressed: (){
+
+                },
+                textColor: Colors.white,
+                child: Container(
+                    height: 30, width: 200,
+                    padding: EdgeInsets.only(left:10,right: 10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: CurrentTheme.primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                    child: Text("Discover new content!")))
+          ],
+        )
+      ],
+    );
+  }
+
   Widget _favAuthorsWidget() {
     return Column(
       children: [
@@ -191,45 +271,63 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
         Row(
           children: [
             Container(
-              height: 35,
-              width: 45,
+              height: 30,
+              width: 40,
               decoration: BoxDecoration(
                   color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      topRight: Radius.circular(10))),
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20))),
             ),
-            Container(
-                padding: EdgeInsets.only(left: 25),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Favorite Authors",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: CurrentTheme.textColor3),
-                )),
+            SizedBox(width: 15),
+            Text(
+              "Favorite authors",
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  color: CurrentTheme.textColor3),
+            ),
           ],
         ),
         SizedBox(
           height: 10,
         ),
-        Container(
-          height: 130,
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: Row(
-            children: [
-              Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: _favAuthorsList(),
-                  scrollDirection: Axis.horizontal,
+        _user.user.favAuthors.length != 0?
+          Container(
+            height: 130,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: Row(
+              children: [
+                Flexible(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: _favAuthorsList(),
+                    scrollDirection: Axis.horizontal,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          ) : Column( children:
+            [
+              Text("You don\'t have any favourite authors yet",
+              style: TextStyle(color: CurrentTheme.textColor3, fontSize: 16)),
+              FlatButton(
+                  onPressed: (){
+
+                  },
+                  textColor: Colors.white,
+                  child: Container(
+                    width: 200,
+                      height: 30,
+                      padding: EdgeInsets.only(left:10,right: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: CurrentTheme.primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(20))
+                      ),
+                      child: Text("Discover new content!")))
+            ])
       ],
     );
   }
@@ -243,24 +341,22 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
         Row(
           children: [
             Container(
-              height: 35,
-              width: 45,
+              height: 30,
+              width: 40,
               decoration: BoxDecoration(
                   color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      topRight: Radius.circular(10))),
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20))),
             ),
-            Container(
-                padding: EdgeInsets.only(left: 25),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Favorite Tags",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: CurrentTheme.textColor3),
-                )),
+            SizedBox(width: 15),
+            Text(
+              "Favorite tags",
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  color: CurrentTheme.textColor3),
+            ),
           ],
         ),
         SizedBox(
@@ -271,253 +367,86 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
     );
   }
 
-  _favBooksList() {
-    List<MiniBook> userFavBooks = new List<MiniBook>();
-    for(int i = 0; i<2; i++){
-      List<String> authors = ["Javier Ruescas"];
-      userFavBooks.add(new MiniBook("231","Prohibido creer en historias de amor",authors,"https://espacio.fundaciontelefonica.com/wp-content/uploads/2018/03/portada-libro-ruescas-700x994-563x800.jpg"));
-    }
-    return userFavBooks;
-  }
-
-  _favAuthorsList() {
-    var userFavAuthors = new List<Widget>();
-    for (int i = 0; i < 7; i++) {
-      userFavAuthors.add(Container(
-        alignment: Alignment.center,
-        width: 108,
-        padding: EdgeInsets.only(right: 10, left: 10),
-        child: Column(
-          children: [
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRvpVkmlEuN8y_vJ1eBZ8k7E62OGAUdEL3l9Q&usqp=CAU"),
-                      fit: BoxFit.fill)),
-            ),
-            SizedBox(height: 10),
-            Text("Mark P. O. Morford",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: CurrentTheme.textColor2,
-                ))
-          ],
-        ),
-      ));
+  List<Widget> _favAuthorsList() {
+    List<Widget> userFavAuthors = new List<Widget>();
+    for (MiniAuthor auth in _user.user.favAuthors) {
+      userFavAuthors.add(auth.toWidget(context));
     }
     return userFavAuthors;
-  } //TODO: Display user fav authors. Actual is a test example.
-
-
+  }
 
   Widget _descriptionBuilder(){
-    return FutureBuilder(
-      future: user.getDescription(),
-      builder: (context,snapshot) {
-        if(snapshot.connectionState == ConnectionState.done){
-          if(snapshot.hasError){
-            return Text(
-                "An error has occurred!",
-                style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
-                textAlign: TextAlign.center);
-          } else {
-            return Text(
-                snapshot.data.toString(),
-                style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
-                textAlign: TextAlign.center);
-          }
-        } else {
-          return ShaderMask(
-            shaderCallback: (bounds) =>
-                LinearGradient(
-                    colors:[Colors.black12,Colors.white]
-                ).createShader(bounds),
-            child: Container(
-              height: 40,
-              width: 150,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))
-              ),
-            ),
-          );
-        }
-      },
-    );
+    return Text(
+        _user.user.description == null? "null" : _user.user.description,
+        style: TextStyle(fontSize: 15, color: CurrentTheme.textColor1),
+        textAlign: TextAlign.center);
   }
 
   Widget _nameBuilder(){
-    return FutureBuilder(
-      future: user.getName(),
-      builder: (context,snapshot) {
-        if(snapshot.connectionState == ConnectionState.done){
-          if(snapshot.hasError){
-            return Text(
-                "An error has occurred!",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: CurrentTheme.textColor1
-                ),
-                textAlign: TextAlign.center);
-          } else {
-            return Text(
-              snapshot.data.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                  color: CurrentTheme.textColor1
-              ),
-            );
-          }
-        } else {
-          return ShaderMask(
-            shaderCallback: (bounds) =>
-                LinearGradient(
-                    colors:[Colors.black12,Colors.white]
-                ).createShader(bounds),
-            child: Container(
-              height: 40,
-              width: 150,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))
-              ),
-            ),
-          );
-        }
-      },
+    return Text(
+      _user.user.name == null? "null" : _user.user.name,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 28,
+          color: CurrentTheme.textColor1
+      ),
     );
 
   }
 
   Widget _nickNameBuilder() {
-    return FutureBuilder(
-      future: user.getNickName(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text(
-                "An error has occurred!",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: CurrentTheme.textColor1
-                ),
-                textAlign: TextAlign.center);
-          } else {
-            return Text(
-              snapshot.data.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: CurrentTheme.textColor2),
-            );
-          }
-        } else {
-          return ShaderMask(
-            shaderCallback: (bounds) =>
-                LinearGradient(
-                    colors: [Colors.black12, Colors.white]
-                ).createShader(bounds),
-            child: Container(
-              height: 40,
-              width: 150,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))
-              ),
-            ),
-          );
-        }
-      },
+    return Text(
+      _user.user.nickname == null? "null" : "@"+_user.user.nickname,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+          color: CurrentTheme.textColor2),
     );
   }
 
   Widget _profilePicBuilder() {
-    return FutureBuilder(
-      future: user.getUserImage(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return new ProfileAvatar(profileImage: "assets/images/user");
-          } else {
-            return new ProfileAvatar(profileImage: snapshot.data);
-          }
-        } else {
-          return ShaderMask(
-            shaderCallback: (bounds) =>
-                LinearGradient(
-                    colors: [Colors.black12, Colors.white]
-                ).createShader(bounds),
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: CurrentTheme.backgroundContrast, width: 2),
-            )),
-          );
-        }
-      },
-    );
+    return new ProfileAvatar(profileImage: _user.user.userImageUrl);
   }
 
   Widget _favTagsBuilder() {
-    return FutureBuilder(
-      future: user.getTagList(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Container(
-                width: 300,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10))
-                ),
-                child: Text("Sorry, an error has occurred"),
-            );
-          } else {
-            return Container(
-              alignment: Alignment.centerLeft,
-              width: 300,
-              padding: EdgeInsets.all(25),
-              decoration: BoxDecoration(
-                  color: CurrentTheme.backgroundContrast,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 3, blurRadius: 5)
-                  ]),
-              child: Wrap(
-                children: _favTagsToWidgets(snapshot.data),
-              ),
-            );
-          }
-        } else {
-          return ShaderMask(
-            shaderCallback: (bounds) =>
-                LinearGradient(
-                    colors: [Colors.black12, Colors.white]
-                ).createShader(bounds),
-            child: Container(
-                height: 200,
-                width: 300,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10))
-                )
-            )
-          );
-        }
-      },
+    return Container(
+      alignment: Alignment.centerLeft,
+      width: 300,
+      padding: EdgeInsets.all(25),
+      decoration: BoxDecoration(
+          color: CurrentTheme.backgroundContrast,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 3, blurRadius: 5)
+          ]),
+      child: _user.user.tags.length != 0? Wrap(
+        children: _favTagsToWidgets(_user.user.tags),
+      ) : Column(
+        children: [
+          Text("You don\'t have any favourite tags yet"),
+          FlatButton(
+              onPressed: (){
+
+              },
+              textColor: Colors.white,
+              child: Container(
+                  height: 30, width: 200,
+                  padding: EdgeInsets.only(left:10,right: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: CurrentTheme.primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  child: Text("Discover new content!")))
+        ],
+      )
     );
   }
 
-  List<Widget> _favTagsToWidgets(List<String> userFavTagsList) {
-    List<Widget> favTagsWidgets;
+  List<Widget> _favTagsToWidgets(List<dynamic> userFavTagsList) {
+    List<Widget> favTagsWidgets = new List<Widget>();
     for (int i = 0; i < userFavTagsList.length; i++) {
       favTagsWidgets.add(Container(
         height: 33,
@@ -527,7 +456,7 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold> {
             border: Border.all(color: CurrentTheme.primaryColor),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Text(
-          userFavTagsList[i],
+          userFavTagsList[i] == null? "null" : userFavTagsList[i],
           style: TextStyle(color: CurrentTheme.textColor2, fontSize: 13),
         ),
       ));

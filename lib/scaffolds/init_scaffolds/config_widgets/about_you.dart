@@ -178,10 +178,10 @@ class _AboutYouState extends State<AboutYou> {
                         height: 20,
                       ),
                       Flexible(
-                        child: ListView(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: userImages(),
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            children: userImages(),
+                          ),
                         ),
                       ),
                     ],
@@ -189,85 +189,29 @@ class _AboutYouState extends State<AboutYou> {
             ));
   }
 
-  userImages() {
-    List<Widget> list = [];
-    for (int i = 0; i < numImages ~/ 3; i++) {
-      list.add(Row(
+  List<Widget> userImages() {
+    List<Widget> avatarList = [];
+    for (int i = 0; i < numImages; i++) {
+      avatarList.add(Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
             onTap: () {
               setProfileImage(
-                  'assets/user_images/user_' + ((3 * i)).toString() + '.png');
+                  'assets/user_images/user_' + i.toString() + '.png');
             },
-            child: ProfileAvatar(
-                size: 70,
-                profileImage:
-                    'assets/user_images/user_' + ((3 * i)).toString() + '.png'),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          GestureDetector(
-            onTap: () {
-              setProfileImage('assets/user_images/user_' +
-                  ((3 * i) + 1).toString() +
-                  '.png');
-            },
-            child: ProfileAvatar(
-                size: 70,
-                profileImage: 'assets/user_images/user_' +
-                    ((3 * i) + 1).toString() +
-                    '.png'),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          GestureDetector(
-            onTap: () {
-              setProfileImage('assets/user_images/user_' +
-                  ((3 * i) + 2).toString() +
-                  '.png');
-            },
-            child: ProfileAvatar(
-                size: 70,
-                profileImage: 'assets/user_images/user_' +
-                    ((3 * i) + 2).toString() +
-                    '.png'),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: ProfileAvatar(
+                  size: 70,
+                  profileImage:
+                      'assets/user_images/user_' + i.toString() + '.png'),
+            ),
           ),
         ],
       ));
     }
-    if (numImages % 3 != 0) {
-      List<Widget> lastRow = List<Widget>();
-      for (int i = 0; i < numImages % 3; i++) {
-        lastRow.add(
-          GestureDetector(
-            onTap: () {
-              setProfileImage('assets/user_images/user_' +
-                  ((numImages - numImages % 3) + i).toString() +
-                  '.png');
-            },
-            child: ProfileAvatar(
-                size: 70,
-                profileImage: 'assets/user_images/user_' +
-                    ((numImages - numImages % 3) + i).toString() +
-                    '.png'),
-          ),
-        );
-        lastRow.add(
-          SizedBox(
-            width: 10,
-          ),
-        );
-      }
-      list.add(Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: lastRow,
-      ));
-    }
-
-    return list;
+    return avatarList;
   }
 
   setProfileImage(String url) {

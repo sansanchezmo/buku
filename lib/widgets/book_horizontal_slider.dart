@@ -33,24 +33,22 @@ class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
         Row(
           children: [
             Container(
-              height: 35,
-              width: 45,
+              height: 30,
+              width: 40,
               decoration: BoxDecoration(
                   color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      topRight: Radius.circular(10))),
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20))),
             ),
-            Container(
-                padding: EdgeInsets.only(left: 25),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  this.sliderTitle,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: CurrentTheme.textColor3),
-                )),
+            SizedBox(width: 15),
+            Text(
+              this.sliderTitle,
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  color: CurrentTheme.textColor3),
+            ),
           ],
         ),
         SizedBox(

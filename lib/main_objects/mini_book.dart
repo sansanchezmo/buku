@@ -18,7 +18,7 @@ class MiniBook{
   //Getters
   String get isbn10 => _isbn10;
   String get title => _title;
-  List<String> get authors => _authors;
+  List<dynamic> get authors => _authors;
   String get imageURL => _imageURL;
 
   Widget toWidget(BuildContext context){

@@ -2,6 +2,7 @@ import 'package:buku/scaffolds/init_scaffolds/init_config_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/login_scf.dart';
 import 'package:buku/scaffolds/init_scaffolds/register_scf.dart';
 import 'package:buku/scaffolds/main_scaffolds/main_menu_navbar.dart';
+import 'package:buku/scaffolds/others_scaffolds/edit_profile_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/settings_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/test_pages_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/testdata_book_scf.dart';
@@ -10,8 +11,10 @@ import 'package:buku/scaffolds/splash_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:buku/scaffolds/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'firebase/firestore.dart';
 import 'main_objects/main_user.dart';
 
 void main() async {
@@ -43,6 +46,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicTheme(
       //This widgets allows us to change the whole theme in runtime
+      // ignore: non_constant_identifier_names
       data: (Brightness) => CurrentTheme.getTheme(),
       themedWidgetBuilder: (context, theme) {
         return GestureDetector(
@@ -57,6 +61,7 @@ class MyApp extends StatelessWidget {
               '/login': (BuildContext context) => LoginScaffold(),
               '/newUser': (BuildContext context) => InitConfigScaffold(),
               '/settings': (BuildContext context) => SettingsScaffold(),
+              '/editprofile': (BuildContext context) => EditProfileScaffold(),
               '/testpages': (BuildContext context) => TestPagesScaffold(),
               '/testprimitive': (BuildContext context) =>
                   PrimitiveTestScaffold(),

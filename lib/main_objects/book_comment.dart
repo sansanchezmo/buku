@@ -48,12 +48,18 @@ class BookComment {
                width: 270,
                padding: EdgeInsets.only(right: 20),
                child: Text(this._userName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                softWrap: true,
                 style: TextStyle(
                   fontSize: 17,
                   color: CurrentTheme.textColor1
                 )),
              ),
              Text(this._userNickName,
+                 overflow: TextOverflow.fade,
+                 maxLines: 1,
+                 softWrap: true,
                  style: TextStyle(
                    fontSize: 13,
                    color: CurrentTheme.textColor2

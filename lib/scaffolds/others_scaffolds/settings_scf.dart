@@ -10,6 +10,21 @@ class SettingsScaffold extends StatefulWidget{
 }
 
 class _SettingsScaffoldState extends State<SettingsScaffold>{
+  String selectedRadio;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRadio = CurrentTheme.getThemeKey();
+  }
+
+  setSelectedRadio(String radio){
+    CurrentTheme.setTheme(radio, context: context);
+    setState(() {
+      selectedRadio = radio;
+    });
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -50,7 +65,9 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
               icon: Icons.edit,
               text: "Edit Profile",
               color: CurrentTheme.textColor3,
-              onTapFunction: (){}
+              onTapFunction: (){
+                Navigator.pushNamed(context, '/editprofile');
+              }
             ),
             Divider(height: 0.1, thickness: 1,),
             _menuButton(
@@ -109,29 +126,14 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
         context: context,
         barrierDismissible: true,
         builder: (_) =>  AlertDialog(
-          title: Text("Choose your favourite theme!"),
-          content: CustomScrollView(
-            primary: false,
-              slivers: <Widget>[
-                SliverPadding(
-                  padding: EdgeInsets.all(20),
-                  sliver: SliverGrid.count(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: (){},
-                        )
-
-                      ],
-                  ),
-                )
-              ],
-          ),
+          title: Text("Choose the theme you like",
+          style: TextStyle(color: CurrentTheme.textColor1)),
+          backgroundColor: CurrentTheme.background,
+          content: _themeOptions(),
           actions: <Widget>[
             FlatButton(
-              child: Text('Close me!'),
+              textColor: CurrentTheme.primaryColor,
+              child: Text('Done'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -140,7 +142,64 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
         ));
   }
 
-  Widget _themeOption(Color color,String theme){
+  Widget _themeOptions(){
+    return SizedBox(
+      height: 110,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Radio(
+                value: 'orange',
+                groupValue: selectedRadio,
+                activeColor: CurrentTheme.primaryColor,
+                onChanged: (val){
+                  setSelectedRadio(val);
+                },
+              ),
+              GestureDetector(
+                  onTap: (){
+                    setSelectedRadio('orange');
+                  },
+                  child: Text(
+                    'Orange',
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: CurrentTheme.textColor2
+                    ),
+                  )
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Radio(
+                value: 'dark',
+                groupValue: selectedRadio,
+                activeColor: CurrentTheme.primaryColor,
+                onChanged: (val){
+                  setSelectedRadio(val);
+                },
+              ),
+              GestureDetector(
+                  onTap: (){
+                    setSelectedRadio('dark');
+                  },
+                  child: Text(
+                    'Dark',
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: CurrentTheme.textColor2
+                    ),
+                  )
+              )
+            ],
+          )
+        ],
+      ),
+    );
 
   }
 

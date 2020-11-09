@@ -1,11 +1,10 @@
-
 import 'package:buku/main_objects/book_comment.dart';
+import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/material.dart';
 
 class Book {
-
   //Instance attributes
   final String _title;
   final String _language;
@@ -23,12 +22,23 @@ class Book {
   Map<String, dynamic> _buyURL;
   Map<String, dynamic> _isbn;
 
-
-
   //Constructor
-  Book(this._title, this._language, this._year, this._publisher, this._synopsis, this._imageURL, this._views, this._pages, this._rating,
-      List<dynamic> authors, List<dynamic> tags, List<BookComment> comments, List<dynamic> pdfLinks,
-      Map<String, dynamic> buyURL, Map<String, dynamic> isbn){
+  Book(
+      this._title,
+      this._language,
+      this._year,
+      this._publisher,
+      this._synopsis,
+      this._imageURL,
+      this._views,
+      this._pages,
+      this._rating,
+      List<dynamic> authors,
+      List<dynamic> tags,
+      List<BookComment> comments,
+      List<dynamic> pdfLinks,
+      Map<String, dynamic> buyURL,
+      Map<String, dynamic> isbn) {
     this._authors = authors;
     this._tags = tags;
     this._comments = comments;
@@ -36,7 +46,6 @@ class Book {
     this._buyURL = buyURL;
     this._isbn = isbn;
   }
-
 
   //Getters
   String get title => _title;
@@ -55,143 +64,133 @@ class Book {
   Map<String, dynamic> get buyURL => _buyURL;
   Map<String, dynamic> get isbn => _isbn;
 
-
-  Widget bookStatistics(){
-    double rat = double.parse(_rating.toStringAsFixed(1));
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
+  
+  List<Widget> authorWidgetList(){
+    List<Widget> authorList = new List<Widget>();
+    for(String author in this.authors){
+      authorList.add(
+        Padding(
+          padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _ratingStars(rat),
-              Text(rat.toString())
+              Container(
+                height: 25, width: 25,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle
+                ),
+                child: Image.network("https://wallpapercave.com/wp/wp3635857.jpg",
+                fit: BoxFit.fill),
+              ),
+              SizedBox(width: 15),
+              Container(width: 130,
+                child: Text(author,
+                style: TextStyle(
+                  fontWeight: FontWeight.w200,
+                  fontSize: 14.5
+                ),),
+              )
             ],
           ),
-          SizedBox(width: 25),
-
-          Container(
-            height: 20,
-            width: 1,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              color:CurrentTheme.separatorColor,
-            ),
-          ),
-
-          SizedBox(width: 25),
-
-          Column(
-            children: [
-              Icon(Icons.visibility,
-                  color: CurrentTheme.primaryColor,
-                  size:20.0),
-              Text(FormatString.formatStatistic(this._views) + 'views')
-            ],
-          )
-        ]);
+        )
+      );
+      return authorList;
+    }
   }
 
-  /*String _formatViews(){
-    int len = this._views.toString().length;
-    String text;
-    if (len<=3){
-      text = this._views.toString();
-    } else if (len <=6){
-      text = (this._views/1000).toStringAsFixed(1)+"K";
-    } else {
-      text = (this._views/1000000).toStringAsFixed(1)+"M";
-    }
-    text = text + " views";
-    return text;
-  }*/
-
-  Widget _ratingStars(double rating){
+  Widget ratingStars(double rating) {
     double rat = rating;
     List<Widget> ratingStars = List<Widget>(5);
-    for(int i = 0; i<5;i++){
-      if(rat>=1){
-        ratingStars[i] = Icon(Icons.star,
-            color: CurrentTheme.primaryColor,
-            size:15.0);
-      } else if (rat>0){
-        ratingStars[i] = Icon(Icons.star_half,
-            color: CurrentTheme.primaryColor,
-            size:15.0);
+    for (int i = 0; i < 5; i++) {
+      if (rat >= 1) {
+        ratingStars[i] =
+            Icon(Icons.star, color: CurrentTheme.primaryColor, size: 15.0);
+      } else if (rat > 0) {
+        ratingStars[i] =
+            Icon(Icons.star_half, color: CurrentTheme.primaryColor, size: 15.0);
         rat = 0;
-      } else if (rat<=0){
+      } else if (rat <= 0) {
         ratingStars[i] = Icon(Icons.star_border,
-            color: CurrentTheme.primaryColor,
-            size:15.0);
+            color: CurrentTheme.primaryColor, size: 15.0);
       }
       rat--;
     }
     return Row(children: ratingStars);
   }
 
-  Widget bookInfo(){
-    return Column(
+  Widget bookImage({double width: 175.0}) {
+    return Stack(
       children: [
         Container(
-          width: double.infinity,
-          alignment: Alignment.topCenter,
-          child: Text("Book info",
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-            ),),),
-        SizedBox(height: 10),
+          height: width * 1.6,
+          width: width,
+          decoration: BoxDecoration(
+            color: CurrentTheme.backgroundContrast,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              boxShadow: [
+                BoxShadow(
+                    color: CurrentTheme.shadow2, spreadRadius: 5, blurRadius: 20)
+              ]),
+        ),
         Container(
-          child: Column(
-            children: [
-              _infoText("Year: ",this._year),
-              SizedBox(height: 10),
-              _infoText("Publisher: ",this._publisher),
-              SizedBox(height: 10),
-              _infoText("Pages: ",this._pages.toString()),
-              SizedBox(height: 10),
-              _infoText("Language: ",this._language),
-              SizedBox(height: 10),
-              _infoText("ISBN-10: ",this._isbn["isbn_10"]),
-              SizedBox(height: 10),
-              _infoText("ISBN-13: ",this._isbn["isbn_13"]),
-              SizedBox(height: 10),
-              //TODO: display tags.
-            ],
+          height: width * 1.6,
+          width: width,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: Image.network(
+            this._imageURL,
+            fit: BoxFit.fill,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null,
+                ),
+              );
+            },
+          )),
+      ]
+    );
+  }
+
+  List<Widget> tagWidgetList(){
+    List<Widget> tagList = new List<Widget>();
+    for(String tag in tags){
+      tagList.add(
+        FlatButton(
+          textColor: CurrentTheme.textColor3,
+          onPressed: (){
+            //TODO: go to tag method.
+          },
+          child: Container(
+            height: 25,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                color: CurrentTheme.backgroundContrast,
+                border: Border.all(color: CurrentTheme.primaryColorVariant),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Text(
+              tag,
+              style: TextStyle(color: CurrentTheme.textColor3, fontSize: 14.5),
+            ),
           ),
         )
-      ],
-    );
+      );
+      return tagList;
+    }
   }
 
-  Widget _infoText(String item, String value){
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text.rich(TextSpan(
-          children: [
-            TextSpan(text: item, style: TextStyle(fontWeight: FontWeight.bold)),
-            TextSpan(text: value)
-          ])),
-    );
+  List<Widget> commentWidgetList(){
+    List<Widget> commentsList = new List<Widget>();
+    for(BookComment comment in _comments){
+      commentsList.add(comment.toWidget());
+    }
+    return commentsList;
   }
-
-  Widget bookImage({double width: 175.0}){
-    return Container(
-        height: width*1.6,
-        width: width,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(this._imageURL),
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                  color: CurrentTheme.shadow1,
-                  spreadRadius: 5,
-                  blurRadius: 20
-              )]
-        )
-    );
-  }
-
 }

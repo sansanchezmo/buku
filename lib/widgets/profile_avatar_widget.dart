@@ -27,7 +27,7 @@ class _ProfileAvatarState extends State<ProfileAvatar>{
           image: DecorationImage(
               fit: BoxFit.fill,
               image: AssetImage( widget.profileImage == null?
-                  "assets/user_images/user_0": widget.profileImage))),
+                  "assets/user_images/user_0.png": widget.profileImage))),
     );
   }
 

@@ -67,14 +67,14 @@ class _MenuState extends State<Menu> {
             size: 30,
           ),
           Icon(
-            Icons.library_books,
+            Icons.home,
             color: numbpage == 2
                 ? CurrentTheme.navigatorBarColor
                 : CurrentTheme.primaryColor,
             size: 30,
           ),
           Icon(
-            Icons.format_list_bulleted,
+            Icons.library_books,
             color: numbpage == 3
                 ? CurrentTheme.navigatorBarColor
                 : CurrentTheme.primaryColor,
