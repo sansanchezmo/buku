@@ -27,7 +27,7 @@ void main() async {
 setTheme() async {
   /*the function bellow select the theme for initialize MyApp or set default theme
   if the user does not choose theme yet*/
-  var user = MainUser();
+  var user = MainUser(loadUserInfo: false);
   if (user.currUser == null) {
     CurrentTheme.setTheme(CurrentTheme.orangeTheme);
   } else {

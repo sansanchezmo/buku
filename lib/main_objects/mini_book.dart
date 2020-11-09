@@ -9,7 +9,7 @@ class MiniBook{
   //Instance attributes
   String _isbn10;
   String _title;
-  List<String> _authors;
+  List<dynamic> _authors;
   String _imageURL;
 
   //Constructor

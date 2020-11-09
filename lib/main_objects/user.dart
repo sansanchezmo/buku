@@ -12,6 +12,8 @@ class User {
   List<MiniBook> _favBooks, _history;
   Map<String,String> _statistics;
 
+  User.empty();
+
   User(
       this._uid,
       this._name,
@@ -24,7 +26,32 @@ class User {
       this._tags,
       this._favAuthors,
       this._favBooks,
-      this._history);
+      this._history,
+      this._statistics);
 
+  Map<String, String> get statistics => _statistics;
 
+  get history => _history;
+
+  List<MiniBook> get favBooks => _favBooks;
+
+  List<MiniAuthor> get favAuthors => _favAuthors;
+
+  List<dynamic> get tags => _tags;
+
+  get following => _following;
+
+  List<MiniUser> get followers => _followers;
+
+  get userImageUrl => _userImageUrl;
+
+  get theme => _theme;
+
+  get description => _description;
+
+  get nickname => _nickname;
+
+  get name => _name;
+
+  String get uid => _uid;
 }

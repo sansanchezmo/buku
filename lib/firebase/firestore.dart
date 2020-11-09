@@ -1,6 +1,10 @@
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/book_comment.dart';
+import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
+import 'package:buku/main_objects/mini_user.dart';
+import 'package:buku/main_objects/user.dart';
+import 'package:buku/utilities/format_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,7 +17,7 @@ class Firestore{
   static final String userImgUrl = 'image_path';
   static final String tags = 'tags';
   static final String favoriteBooks = 'favorite_books';
-  static final String searched = 'history';
+  static final String history = 'history';
   static final String followers = 'followers';
   static final String following = 'following';
 
@@ -45,6 +49,45 @@ class Firestore{
 
   }
 
+  Future<User> getUser(String uid) async{
+
+    List<MiniAuthor> favAuthors = await getFavAuthors(uid);
+    List<MiniBook> favBooks = await getMiniBookCollection(uid, Firestore.favoriteBooks);
+    List<MiniBook> history = await getMiniBookCollection(uid, Firestore.history);
+    List<MiniUser> following = await getFollow(uid, Firestore.following);
+    List<MiniUser> followers = await getFollow(uid, Firestore.followers);
+
+    Map<String,String> stadistics = {
+      'books':FormatString.formatStatistic(favBooks.length),
+      'followers':FormatString.formatStatistic(followers.length),
+      'following':FormatString.formatStatistic(following.length)
+    };
+
+    User user;
+    await store.collection('users').doc(uid).get()
+    .then((value) {
+      var data = value.data();
+      user = User(
+        uid,
+        data['name'],
+        data['nickname'],
+        data['desc'],
+        data['theme'],
+        data['image_path'],
+        followers,
+        following,
+        data['tags'],
+        favAuthors,
+        favBooks,
+        history,
+        stadistics
+      );
+    });
+
+    return user;
+
+  }
+
   Future<dynamic> getData(String uid, String data) async {
     String nickName;
     await store.collection('users').doc(uid).get()
@@ -56,13 +99,17 @@ class Firestore{
 
   }
 
-  Future<List<Map<String,String>>> getFavAuthors(String uid) async{
+  Future<List<MiniAuthor>> getFavAuthors(String uid) async{
 
-    List<Map<String,String>> fav = [];
+    List<MiniAuthor> fav = [];
     await store.collection('users').doc(uid).collection('favorite_authors').get()
     .then((value) {
       value.docs.forEach((element) {
-        fav.add(element.data());
+        var data = element.data();
+        fav.add(MiniAuthor(
+          data['name'],
+          data['image_url']
+        ));
       });
     });
 
@@ -87,14 +134,20 @@ class Firestore{
     return list;
   }
 
-  Future<List<Map<String,String>>> getFollow(String uid, String collectionName) async{
+  Future<List<MiniUser>> getFollow(String uid, String collectionName) async{
 
-    List<Map<String,String>> users = [];
+    List<MiniUser> users = [];
 
     await store.collection('users').doc(uid).collection(collectionName).get()
     .then((value) {
       value.docs.forEach((element) {
-        users.add(element.data());
+        var data = element.data();
+        users.add(MiniUser(
+          element.id,
+          data['name'],
+          data['nickname'],
+          data['image_path']
+        ));
       });
     });
 

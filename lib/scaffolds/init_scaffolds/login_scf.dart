@@ -121,7 +121,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                       });
                     }
                     else{
-                      MainUser().login(emailController.text, passController.text, context);
+                      MainUser(loadUserInfo: false).login(emailController.text, passController.text, context);
                     }
                   }),
               SizedBox(

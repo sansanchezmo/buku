@@ -1,6 +1,7 @@
 
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/material.dart';
 
 class Book {
@@ -18,7 +19,7 @@ class Book {
   List<dynamic> _authors;
   List<dynamic> _tags;
   List<BookComment> _comments;
-  List<Map<String, dynamic>> _pdfLinks;
+  List<dynamic> _pdfLinks;
   Map<String, dynamic> _buyURL;
   Map<String, dynamic> _isbn;
 
@@ -26,8 +27,8 @@ class Book {
 
   //Constructor
   Book(this._title, this._language, this._year, this._publisher, this._synopsis, this._imageURL, this._views, this._pages, this._rating,
-      List<String> authors, List<String> tags, List<BookComment> comments, List<Map<String, dynamic>> pdfLinks,
-      Map<String, String> buyURL, Map<String, dynamic> isbn){
+      List<dynamic> authors, List<dynamic> tags, List<BookComment> comments, List<dynamic> pdfLinks,
+      Map<String, dynamic> buyURL, Map<String, dynamic> isbn){
     this._authors = authors;
     this._tags = tags;
     this._comments = comments;
@@ -47,11 +48,11 @@ class Book {
   int get views => _views;
   int get pages => _pages;
   double get rating => _rating;
-  List<String> get authors => _authors;
-  List<String> get tags => _tags;
-  List<BookComment> get comments => _comments;
-  List<Map<String, dynamic>> get pdfLinks => _pdfLinks;
-  Map<String, String> get buyURL => _buyURL;
+  List<dynamic> get authors => _authors;
+  List<dynamic> get tags => _tags;
+  List<dynamic> get comments => _comments;
+  List<dynamic> get pdfLinks => _pdfLinks;
+  Map<String, dynamic> get buyURL => _buyURL;
   Map<String, dynamic> get isbn => _isbn;
 
 
@@ -84,13 +85,13 @@ class Book {
               Icon(Icons.visibility,
                   color: CurrentTheme.primaryColor,
                   size:20.0),
-              Text(_formatViews())
+              Text(FormatString.formatStatistic(this._views) + 'views')
             ],
           )
         ]);
   }
 
-  String _formatViews(){
+  /*String _formatViews(){
     int len = this._views.toString().length;
     String text;
     if (len<=3){
@@ -102,7 +103,7 @@ class Book {
     }
     text = text + " views";
     return text;
-  }
+  }*/
 
   Widget _ratingStars(double rating){
     double rat = rating;
