@@ -16,6 +16,15 @@ class UserProfileScaffold extends StatefulWidget {
 }
 
 class _UserProfileScaffoldState extends State<UserProfileScaffold>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+
+}
+
+/*class _UserProfileScaffoldState extends State<UserProfileScaffold>{
   MainUser _user = MainUser();
 
 
@@ -466,3 +475,4 @@ class _UserProfileScaffoldState extends State<UserProfileScaffold>{
   }
 
 }
+*/

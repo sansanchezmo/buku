@@ -14,9 +14,9 @@ class ConfigCache{
     _tags = List<String>();
   }
 
-  static storeCache(){
+  static storeCache() async{
 
-    MainUser().storeMainData(_theme, _name, _description, _userImageUrl, _tags);
+     await MainUser.storeMainData(_theme, _name, _description, _userImageUrl, _tags);
 
   }
 

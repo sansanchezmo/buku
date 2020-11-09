@@ -27,9 +27,9 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold>{
     user.getName().then((data) {
       nameController..text = data;
     });
-    user.getNickName().then((data) {
+    /*user.getNickName().then((data) {
       nickNameController..text = data;
-    });
+    });*/
     user.getDescription().then((data) {
       descController..text = data;
     });

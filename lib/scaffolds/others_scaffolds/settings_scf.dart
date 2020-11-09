@@ -81,7 +81,7 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
                 icon: Icons.error_outline,
                 text: "Sign out",
                 color: CurrentTheme.primaryColor,
-                onTapFunction: (){MainUser().signOut(context);}
+                onTapFunction: (){MainUser.signOut(context);}
             ),
             Divider(height: 0.1, thickness: 1,),
           ],

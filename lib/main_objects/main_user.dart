@@ -5,35 +5,40 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:buku/main_objects/user.dart' as Usr;
 
+import 'mini_book.dart';
+
 class MainUser{
 
-  Auth _auth;
-  Firestore _store;
-  User _currUser;
-  Usr.User _user;
+  static Auth _auth;
+  static Firestore _store;
+  static User _currUser;
+  static Usr.User _user;
 
-  User get currUser => _currUser;
-  Usr.User get user => _user;
+  static User get currUser => _currUser;
+  static String get uid => _currUser.uid;
+  static Usr.User get user => _user;
 
-  MainUser(){
+  static init({loadUserInfo:true}) async{
 
     _auth = Auth();
     _store = Firestore();
     _currUser = _auth.getCurrentUser();
 
+    if(loadUserInfo) await _setUser();
+
   }
 
-  Future<Usr.User> setUser() async{
+  static Future<Usr.User> _setUser() async{
     _user = await _store.getUser(currUser.uid);
     return _user;
   }
-  void login(String email, String password, BuildContext context) async{
-
+  static void login(String email, String password, BuildContext context) async{
+    await init();
     await _auth.loginUser(email, password, context);
 
   }
 
-  void register(String email, String password, String nickName,
+  static void register(String email, String password, String nickName,
       BuildContext context) async{
     await _auth.registerUser(email, password, nickName, context);
     _currUser = _auth.getCurrentUser();
@@ -41,23 +46,53 @@ class MainUser{
 
   }
 
-  void signOut(BuildContext context) async{
+  static void signOut(BuildContext context) async{
 
     await _auth.signout();
+    _auth = null;
+    _store = null;
+    _currUser = null;
+    _user = null;
     Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
 
   }
 
-  void storeMainData(String theme, String name, String desc, String userImg, List<String> tags) async{
+  static void storeMainData(String theme, String name, String desc, String userImg, List<String> tags) async{
 
     await _store.storeMainData(_currUser.uid, theme, name, desc, userImg, tags);
+    await MainUser.init();
 
   }
-  @deprecated
-  Future<String> getNickName() async{
-    return null;
+
+  static bool haveFavoriteBook(String isbn){
+
+    if(_user == null) throw Exception('user not loaded yet');
+
+    for(MiniBook book in user.favBooks){
+      if(book.isbn10 == isbn) return true;
+    }
+
+    return false;
   }
-  Future<String> getProfileTheme() async{
+
+  static Future<void> updateProfile(Map<String, dynamic> cache) async{
+
+    await _store.updateUserInfo(uid, cache);
+    await init();
+
+  }
+
+  static Future<void> setTheme(String option) async{
+
+    await _store.setUserTheme(uid, option);
+
+  }
+
+  static Future<String> getNickName() async{
+    return await _store.getData(currUser.uid,Firestore.theme);
+  }
+
+  static Future<String> getProfileTheme() async{
     return await _store.getData(currUser.uid,Firestore.theme);
   }
   @deprecated

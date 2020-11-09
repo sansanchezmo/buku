@@ -1,3 +1,4 @@
+import 'package:buku/main_objects/main_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,12 @@ class _SplashScaffoldState extends State<SplashScaffold> {
     super.initState();
   }
 
-  Future<bool> checkUser() async {
+  Future<void> checkUser() async {
     User user = await FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       if(user.emailVerified){
+        await MainUser.init();
         Navigator.of(context).pushNamed('/menu');
       }else
         Navigator.of(context).pushNamed('/login');

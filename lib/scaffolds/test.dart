@@ -17,26 +17,12 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: user.setUser(),
-      builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.done){
-          return Scaffold(
-              resizeToAvoidBottomPadding: false,
-              body: Center(child: Text(
-                  'hello' + user.user.name
-              ),)
-          );
-        }
-
-        return Scaffold(
-          body: Center(
-            child: Text(
-              'We are loading we'
-            ),
-          ),
-        );
-      }
+    Scaffold(
+      body: Center(
+        child: Text(
+            'We are loading we'
+        ),
+      ),
     );
   }
 }

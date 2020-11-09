@@ -85,10 +85,10 @@ class _InterestingTagsState extends State<InterestingTags>{
                     ConfigCache.name = widget.name.text;
                     ConfigCache.description = widget.desc.text;
 
-                    if(ConfigCache.nameEmpty()) ConfigCache.name = await MainUser().getNickName() ;
+                    if(ConfigCache.nameEmpty()) ConfigCache.name = await MainUser.getNickName() ;
                     if(ConfigCache.descriptionEmpty()) ConfigCache.description = 'Hi there! I´m using Buku';
 
-                    ConfigCache.storeCache();
+                    await ConfigCache.storeCache();
 
                     Navigator.of(context).pushNamed('/menu');
                   },

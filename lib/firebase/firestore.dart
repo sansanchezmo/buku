@@ -4,17 +4,18 @@ import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/main_objects/user.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class Firestore{
 
-  static final String nickName = 'nickname';
+  static final String nickname = 'nickname';
   static final String theme = 'theme';
   static final String name = 'name';
-  static final String description = 'desc';
-  static final String userImgUrl = 'image_path';
+  static final String biography = 'desc';
+  static final String userImgPath = 'image_path';
   static final String tags = 'tags';
   static final String favoriteBooks = 'favorite_books';
   static final String history = 'history';
@@ -26,6 +27,8 @@ class Firestore{
   Firestore(){
     store = FirebaseFirestore.instance;
   }
+
+  //GETTERS
 
   // users methods ----------------------------------------------------------------------------
 
@@ -169,7 +172,7 @@ class Firestore{
   Future<bool> checkName(String name) async{
     List<String> names = [];
     await store.collection('users').get().then((value) {
-      value.docs.forEach((element) {names.add(element.data()[nickName]);});
+      value.docs.forEach((element) {names.add(element.data()[nickname]);});
     });
 
     for(int i = 0; i<names.length;i++){
@@ -207,6 +210,16 @@ class Firestore{
       isbn = data['identifier'];
     });
 
+    List<MiniAuthor> authorList = [];
+    for( dynamic author in authors){ //TODO: add real author images
+      authorList.add(
+        MiniAuthor(
+          author.toString(),
+          'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'
+        )
+      );
+    }
+
     List<BookComment> comments= [];
 
     await store.collection('books').doc(isbn_10).collection('comments').get().then((value) {
@@ -218,10 +231,91 @@ class Firestore{
 
     Book book = Book(
       title,lan,year,publisher,desc,img,views,pages,
-      rate,authors,tags,comments,pdf,buy,isbn
+      rate,authorList,tags,comments,pdf,buy,isbn
     );
 
     return book;
 
   }
+
+  //SETTERS
+
+  //user methods
+
+  Future<void> updateUserInfo(String uid,Map<String,dynamic> cache) async{
+
+    await store.collection('users').doc(uid).update(cache);
+
+  }
+
+  Future<void> setUserTheme(String uid, String option) async{
+
+    if(option != CurrentTheme.orangeTheme && option != CurrentTheme.darkTheme) throw Exception('Invalid theme');
+
+    await store.collection('users').doc(uid).update({
+      'theme' : option
+    });
+
+  }
+
+  //book method
+
+  Future<void> rateBook(String isbn, double stars) async{
+
+    int numUser;
+    double sumStars;
+
+    var bookRef = store.collection('books').doc(isbn);
+
+    await bookRef.get()
+    .then((value) {
+      var data = value.data()['rate'];
+      numUser = data['num_users'];
+      sumStars = data['sum_stars'];
+    });
+
+    numUser+=1;
+    sumStars+=stars;
+    stars = sumStars/numUser;
+
+    String starsText = stars.toStringAsFixed(2);
+    stars = double.parse(starsText);
+
+    await bookRef.update({
+      'rate': {
+        'num_users' : numUser,
+        'stars' : stars,
+        'sum_stars' : sumStars
+      }
+    });
+  }
+
+  Future<void> updateBookViews(String isbn) async{
+
+    int views;
+
+    var bookRef = store.collection('books').doc(isbn);
+
+    await bookRef.get()
+    .then((value) {
+      var data = value.data();
+      views = data['views'];
+    });
+
+    if(views == null) views = 1;
+    else views+=1;
+
+    await bookRef.update({
+      'views' : views
+    });
+
+  }
+
+  /*Future<void> addComment(String isbn, BookComment bc) async{
+
+    await store.collection('books').doc(isbn).collection('comments').add({
+      'user_uid':bc.
+    });
+  }*/
+
 }

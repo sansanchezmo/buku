@@ -20,6 +20,7 @@ import 'main_objects/main_user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // bind app with FireBase
+  await MainUser.init(loadUserInfo: false); // initialize main user
   await setTheme();
   runApp(MyApp());
 }
@@ -27,12 +28,11 @@ void main() async {
 setTheme() async {
   /*the function bellow select the theme for initialize MyApp or set default theme
   if the user does not choose theme yet*/
-  var user = MainUser();
-  if (user.currUser == null) {
+  if (MainUser.currUser == null) {
     CurrentTheme.setTheme(CurrentTheme.orangeTheme);
   } else {
     try{
-    String theme = await user.getProfileTheme();
+    String theme = await MainUser.getProfileTheme();
     CurrentTheme.setTheme(theme);
     } catch(e){
       CurrentTheme.setTheme(CurrentTheme.orangeTheme);
