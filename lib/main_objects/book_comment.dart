@@ -3,7 +3,30 @@ import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class BookComment {
+
+  // ignore: slash_for_doc_comments
+  /**This class contains the info of the book comments.
+  *+ Attributes:
+  *   _userUID. The user's identification. This is used when we want to access another user profile.
+  *   _userName. The user's name.
+  *   _userNickName. The user's nickName. It contains the '@'
+   *   _userProfilePic. The path where the user profile picture is. (Example: assets/user_images/user_3.png)
+  *   _comment. The text of the comment.
+  *   _date. The date when the comment was updated.
+  *
+  * Methods:
+  *
+  *+ Public methods:
+  *   - (Widget) toWidget() -> returns a widget that display the formatted comment. Used in the BookInfoScaffold.
+  *
+  *+ Private methods:
+  *   - (Widget) _userInfoWidget() -> returns the header of the toWidget comment.
+  *   - (Widget) _commentText() -> returns the text of the comment (body of the toWidget comment).
+  */
+
+  ///Instance Attributes
   final String _userUID;
   final String _userName;
   final String _userNickName;
@@ -11,9 +34,23 @@ class BookComment {
   final String _comment;
   final String _date;
 
- BookComment(this._userUID, this._userName, this._userNickName, this._userProfilePic, this._comment, this._date);
+  ///Constructor
+  BookComment(this._userUID, this._userName, this._userNickName, this._userProfilePic, this._comment, this._date);
+
+  ///Getters
+  String get userUID => _userUID;
+  String get userName => _userName;
+  String get userNickName => _userNickName;
+  String get userProfilePic => _userProfilePic;
+  String get comment => _comment;
+  String get date => _date;
+
+  ///---------------------------PUBLIC METHODS------------------------------///
 
   Widget toWidget(){
+    /**
+     * returns a widget that display the formatted comment. Used in the BookInfoScaffold.
+     **/
    return Container(
      //padding: EdgeInsets.only(top:10,bottom: 10),
      child: Column(
@@ -33,7 +70,12 @@ class BookComment {
    );
   }
 
+  ///-------------------------PRIVATE METHODS-----------------------------///
+
   Widget _userInfoWidget(){
+    /**
+     * returns the header of the toWidget comment.
+     **/
    return Container(padding: EdgeInsets.only(left:20,right: 20),
      alignment: Alignment.centerLeft,
      child: Row(
@@ -72,6 +114,9 @@ class BookComment {
   }
 
   Widget _commentText(){
+    /**
+     * returns the text of the comment (body of the toWidget comment).
+    * */
    return Container(
      padding: EdgeInsets.only(
          top: 10.0, right: 20.0,left: 20.0, bottom: 10.0),
@@ -90,4 +135,5 @@ class BookComment {
      )
    );
   }
+
 }

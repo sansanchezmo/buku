@@ -14,6 +14,7 @@ class MainUser{
   static User _currUser;
   static Usr.User _user;
 
+  static Auth get auth => _auth;
   static User get currUser => _currUser;
   static String get uid => _currUser.uid;
   static Usr.User get user => _user;
@@ -33,9 +34,8 @@ class MainUser{
     return _user;
   }
   static void login(String email, String password, BuildContext context) async{
-    await init();
     await _auth.loginUser(email, password, context);
-
+    await init();
   }
 
   static void register(String email, String password, String nickName,

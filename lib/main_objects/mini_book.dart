@@ -3,6 +3,7 @@ import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/scaffolds/others_scaffolds/book_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MiniBook{
@@ -76,13 +77,28 @@ class MiniBook{
   }
 
   Widget miniBookImage({double width: 90}){
-    return Container(
-      height: width*1.6, width: width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        image: DecorationImage(
-            image: NetworkImage(this._imageURL), fit: BoxFit.fill),
-      ),
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.all(5),
+          height: width*1.6, width: width,
+          alignment: Alignment.center,
+          child: Text(this.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: CurrentTheme.textColor3
+          ),),
+        ),
+        Container(
+        height: width*1.6, width: width,
+        decoration: BoxDecoration(
+          color: CurrentTheme.shadow1,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+              image: NetworkImage(this._imageURL), fit: BoxFit.fill),
+        ),
+      ),]
     );
   }
 

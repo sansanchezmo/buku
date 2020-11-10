@@ -4,8 +4,14 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/material.dart';
 
 class MiniAuthor {
+  ///Attributes
   String _name, _imageURL;
 
+  ///Getters
+  String get name => _name;
+  String get imageURL => _imageURL;
+
+  ///Constructor
   MiniAuthor(this._name, this._imageURL);
 
   Widget toWidget(BuildContext context){

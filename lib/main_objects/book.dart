@@ -2,6 +2,7 @@ import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Book {
@@ -67,7 +68,7 @@ class Book {
   
   List<Widget> authorWidgetList(){
     List<Widget> authorList = new List<Widget>();
-    for(String author in this.authors){
+    for(MiniAuthor author in this.authors){
       authorList.add(
         Padding(
           padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
@@ -79,12 +80,12 @@ class Book {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle
                 ),
-                child: Image.network("https://wallpapercave.com/wp/wp3635857.jpg",
+                child: Image.network(author.imageURL,
                 fit: BoxFit.fill),
               ),
               SizedBox(width: 15),
               Container(width: 130,
-                child: Text(author,
+                child: Text(author.name,
                 style: TextStyle(
                   fontWeight: FontWeight.w200,
                   fontSize: 14.5
@@ -124,6 +125,7 @@ class Book {
         Container(
           height: width * 1.6,
           width: width,
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: CurrentTheme.backgroundContrast,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -131,29 +133,21 @@ class Book {
                 BoxShadow(
                     color: CurrentTheme.shadow2, spreadRadius: 5, blurRadius: 20)
               ]),
+          child: Text(this.title, style: TextStyle(fontSize: 20, color: CurrentTheme.textColor3), maxLines: 2, overflow: TextOverflow.ellipsis,),
         ),
         Container(
           height: width * 1.6,
           width: width,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                    this.imageURL
+                  )
+              )
           ),
-          child: Image.network(
-            this._imageURL,
-            fit: BoxFit.fill,
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                      : null,
-                ),
-              );
-            },
-          )),
+        )
       ]
     );
   }

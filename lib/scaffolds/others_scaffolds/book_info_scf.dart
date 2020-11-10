@@ -90,7 +90,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
                       _secondStatistics(),
                       SizedBox(height: 40),
                       _finalInfo(),
-                      SizedBox(height: 40)
+                      SizedBox(height: 30)
                     ],
                   ),
                 ),
@@ -114,11 +114,11 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
       overflow: Overflow.visible,
       children: <Widget>[
         SizedBox(
-          height: 370.0,
+          height: 400.0,
           width: screenWidth,
         ),
         Positioned(
-          top: 200,
+          top: 230,
           left: 0,
           child: Container(
             height: 500,
@@ -141,7 +141,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
           ),
         ),
         Positioned(
-            top: 50,
+            top: 80,
             child: book.bookImage(width: 170)
         )
       ],
@@ -254,7 +254,8 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold> {
           TableRow(children: [
             Padding(
               padding: const EdgeInsets.only(top:10,bottom: 10,left: 30),
-              child: Text("Categories:", style: TextStyle(fontWeight: FontWeight.w700)),
+              child: Text(book.tags.length > 1 ? "Categories:":"Category:",
+                  style: TextStyle(fontWeight: FontWeight.w700)),
             ),
             Container(
               child: Wrap(

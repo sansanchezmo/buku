@@ -114,14 +114,15 @@ class _LoginScaffoldState extends State<LoginScaffold> {
               ),
               GradientButton(
                   text: 'LOGIN',
-                  tap: () {
+                  tap: () async {
                     if(!ValidateData.checkEmail(emailController.text)){
                       setState(() {
                         boolEmail = false;
                       });
                     }
                     else{
-                      MainUser.login(emailController.text, passController.text, context);
+                      await MainUser.init(loadUserInfo: false);
+                      await MainUser.login(emailController.text, passController.text, context);
                     }
                   }),
               SizedBox(

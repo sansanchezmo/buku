@@ -20,7 +20,8 @@ import 'main_objects/main_user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // bind app with FireBase
-  await MainUser.init(loadUserInfo: false); // initialize main user
+  await MainUser.init(loadUserInfo: false);// initialize main user
+  print(MainUser.auth);
   await setTheme();
   runApp(MyApp());
 }

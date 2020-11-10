@@ -4,24 +4,21 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//TODO: emptyList widget
-
+// ignore: must_be_immutable
 class BookHorizontalSlider extends StatefulWidget {
   String sliderTitle;
   List<MiniBook> miniBookList;
-  BookHorizontalSlider(this.sliderTitle, this.miniBookList, {Key key}) : super(key: key);
+  Widget emptyListWidget;
+
+  BookHorizontalSlider(this.sliderTitle, this.miniBookList, this.emptyListWidget, {Key key}) : super(key: key);
 
 
   @override
-  _BookHorizontalSliderState createState() => _BookHorizontalSliderState(this.sliderTitle, this.miniBookList);
+  _BookHorizontalSliderState createState() => _BookHorizontalSliderState();
   
 }
 
 class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
-  String sliderTitle;
-  List<MiniBook> miniBookList;
-
-  _BookHorizontalSliderState(this.sliderTitle, this.miniBookList);
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +30,7 @@ class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
         Row(
           children: [
             Container(
-              height: 30,
-              width: 40,
+              height: 30, width: 40,
               decoration: BoxDecoration(
                   color: CurrentTheme.primaryColorVariant,
                   borderRadius: BorderRadius.only(
@@ -43,7 +39,7 @@ class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
             ),
             SizedBox(width: 15),
             Text(
-              this.sliderTitle,
+              widget.sliderTitle,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
@@ -51,19 +47,16 @@ class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
             ),
           ],
         ),
-        SizedBox(
-          height: 10,
-        ),
-        this.miniBookList.length > 0? _favBooksScroll() : _emptyBookList()
-
+        SizedBox(height: 10),
+        widget.miniBookList.length > 0? _favBooksScroll() : widget.emptyListWidget
       ],
     );
   }
 
   Widget _favBooksScroll() {
     List<Widget> userFavBooks = List<Widget>();
-    for (int i = 0; i < this.miniBookList.length; i++) {
-      MiniBook book = this.miniBookList[i];
+    for (int i = 0; i < widget.miniBookList.length; i++) {
+      MiniBook book = widget.miniBookList[i];
       userFavBooks.add(book.toWidget(context));
     }
     return Container(
@@ -81,12 +74,6 @@ class _BookHorizontalSliderState extends State<BookHorizontalSlider>{
           ),
         ],
       ),
-    );
-  }
-
-  Widget _emptyBookList(){
-    return Container(
-
     );
   }
 }
