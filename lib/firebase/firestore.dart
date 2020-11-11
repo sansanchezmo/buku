@@ -18,7 +18,7 @@ class Firestore{
   static final String userImgPath = 'image_path';
   static final String tags = 'tags';
   static final String favoriteBooks = 'favorite_books';
-  static final String history = 'history';
+  static final String openHistory = 'open_history';
   static final String followers = 'followers';
   static final String following = 'following';
 
@@ -28,7 +28,7 @@ class Firestore{
     store = FirebaseFirestore.instance;
   }
 
-  //GETTERS
+  //GETTERS////////////////////////////////////////////////////////////////////////////////////
 
   // users methods ----------------------------------------------------------------------------
 
@@ -56,11 +56,11 @@ class Firestore{
 
     List<MiniAuthor> favAuthors = await getFavAuthors(uid);
     List<MiniBook> favBooks = await getMiniBookCollection(uid, Firestore.favoriteBooks);
-    List<MiniBook> history = await getMiniBookCollection(uid, Firestore.history);
+    List<MiniBook> history = await getMiniBookCollection(uid, Firestore.openHistory);
     List<MiniUser> following = await getFollow(uid, Firestore.following);
     List<MiniUser> followers = await getFollow(uid, Firestore.followers);
 
-    Map<String,String> stadistics = {
+    Map<String,String> statistics = {
       'books':FormatString.formatStatistic(favBooks.length),
       'followers':FormatString.formatStatistic(followers.length),
       'following':FormatString.formatStatistic(following.length)
@@ -83,7 +83,7 @@ class Firestore{
         favAuthors,
         favBooks,
         history,
-        stadistics
+        statistics
       );
     });
 
@@ -181,6 +181,20 @@ class Firestore{
     return true;
   }
 
+  Future<Map<String, dynamic>> loadUserCache(String uid) async{
+    Map<String, dynamic> map = {};
+
+    await store.collection('users').doc(uid).get()
+    .then((value) {
+      map = value.data()['cache'];
+    });
+
+    if(map == null) map = {};
+
+    return map;
+
+  }
+
   // Books methods ----------------------------------------------------------------------------------------
 
   Future<Book> getBook(String isbn_10) async{
@@ -220,12 +234,12 @@ class Firestore{
       );
     }
 
-    List<BookComment> comments= [];
+    List<BookComment> comments= []; //TODO: sort comments by date
 
     await store.collection('books').doc(isbn_10).collection('comments').get().then((value) {
       value.docs.forEach((element) {
         var data = element.data();
-        BookComment(data['user_uid'],data['user_name'],data['user_nickname'],data['user_image'],data['comment'],data['data']);
+        BookComment(data['user_uid'],data['user_name'],data['user_nickname'],data['user_image'],data['comment'],data['date']);
       });
     });
 
@@ -238,9 +252,25 @@ class Firestore{
 
   }
 
-  //SETTERS
+  //SETTERS///////////////////////////////////////////////////////////////////////////////////////
 
-  //user methods
+  //user methods-------------------------------------------------------------------
+
+  Future<void> addToMiniBookCollection(String uid, String collectionName, MiniBook mini) async{
+
+    await store.collection('users').doc(uid).collection(collectionName).doc(mini.isbn10).set({
+      'authors' : mini.authors,
+      'image_url' : mini.imageURL,
+      'title' : mini.title
+    });
+
+  }
+
+  Future<void> removeFromMiniBookCollection(String uid, String collectionName, String isbn) async{
+
+    await store.collection('users').doc(uid).collection(collectionName).doc(isbn).delete();
+
+  }
 
   Future<void> updateUserInfo(String uid,Map<String,dynamic> cache) async{
 
@@ -258,9 +288,17 @@ class Firestore{
 
   }
 
-  //book method
+  Future<void> saveUserCache(String uid, Map<String, dynamic> map) async{
 
-  Future<void> rateBook(String isbn, double stars) async{
+    await store.collection('users').doc(uid).update({
+      'cache' : map
+    });
+
+  }
+
+  //book method----------------------------------------------------------------------------------------------
+
+  Future<void> rateBook(String isbn, double stars, double currentUserRate) async{
 
     int numUser;
     double sumStars;
@@ -275,7 +313,7 @@ class Firestore{
     });
 
     numUser+=1;
-    sumStars+=stars;
+    sumStars= sumStars + stars - currentUserRate;
     stars = sumStars/numUser;
 
     String starsText = stars.toStringAsFixed(2);
@@ -311,11 +349,15 @@ class Firestore{
 
   }
 
-  /*Future<void> addComment(String isbn, BookComment bc) async{
+  Future<void> addComment(String isbn, BookComment bc) async{
 
     await store.collection('books').doc(isbn).collection('comments').add({
-      'user_uid':bc.
+      'user_uid':bc.userUID,
+      'user_name': bc.userName,
+      'user_nickname' : bc.userNickName,
+      'user_image' : bc.userProfilePic,
+      'comment' : bc.comment,
+      'date' : bc.date
     });
-  }*/
-
+  }
 }

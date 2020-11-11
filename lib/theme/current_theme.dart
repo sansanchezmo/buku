@@ -1,3 +1,4 @@
+import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/theme/themes/dark_theme.dart';
 import 'package:buku/theme/themes/orange_theme.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -77,6 +78,7 @@ class CurrentTheme{
       navigatorBarColor = DarkTheme.navigatorBarColor;
       themeData = DarkTheme.getTheme();
     }
+    MainUser.setTheme(option);
     if(context != null){
       DynamicTheme.of(context).setThemeData(themeData);
     }

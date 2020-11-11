@@ -13,11 +13,15 @@ class MainUser{
   static Firestore _store;
   static User _currUser;
   static Usr.User _user;
+  static Map<String, dynamic> _cache;
 
   static Auth get auth => _auth;
   static User get currUser => _currUser;
   static String get uid => _currUser.uid;
   static Usr.User get user => _user;
+  static Map<String, dynamic> get cache => _cache;
+
+  //initialize user attributes
 
   static init({loadUserInfo:true}) async{
 
@@ -25,14 +29,24 @@ class MainUser{
     _store = Firestore();
     _currUser = _auth.getCurrentUser();
 
-    if(loadUserInfo) await _setUser();
+    if(loadUserInfo) {
+      await _setUser();
+      await _loadCache();
+    }
 
+  }
+
+  static Future<void> _loadCache() async{
+    _cache = await _store.loadUserCache( uid);
   }
 
   static Future<Usr.User> _setUser() async{
     _user = await _store.getUser(currUser.uid);
     return _user;
   }
+
+  //auth topic
+
   static void login(String email, String password, BuildContext context) async{
     await _auth.loginUser(email, password, context);
     await init();
@@ -64,6 +78,31 @@ class MainUser{
 
   }
 
+  //user treatment
+
+  static double currentBookRate(String isbn) {
+
+    Map<String, dynamic> bookCache = _cache[isbn];
+
+    if(bookCache == null) return 0.0;
+    return bookCache['stars'] == null ? 0.0 : bookCache['stars'];
+
+  }
+
+  static Future<void> rateBook(String isbn, double stars) async{
+
+    Map<String, dynamic> bookCache = _cache[isbn];
+
+    if(bookCache == null){
+      bookCache = {};
+    }
+
+    bookCache['stars'] = stars;
+
+    await _store.saveUserCache(uid,_cache);
+
+  }
+
   static bool haveFavoriteBook(String isbn){
 
     if(_user == null) throw Exception('user not loaded yet');
@@ -75,11 +114,24 @@ class MainUser{
     return false;
   }
 
-  static Future<void> updateProfile(Map<String, dynamic> cache) async{
+  static Future<void> addBookToFavorites(MiniBook mini) async{
+    await _store.addToMiniBookCollection(uid, Firestore.favoriteBooks, mini);
+    await init();
+  }
 
+  static Future<void> addToOpenHistory(MiniBook mini) async{
+    await _store.addToMiniBookCollection(uid, Firestore.openHistory, mini);
+    await init();
+  }
+
+  static Future<void> removeBookFromFavorites(String isbn) async{
+    await _store.removeFromMiniBookCollection(uid, Firestore.favoriteBooks, isbn);
+    await init();
+  }
+
+  static Future<void> updateProfile(Map<String, dynamic> cache) async {
     await _store.updateUserInfo(uid, cache);
     await init();
-
   }
 
   static Future<void> setTheme(String option) async{
@@ -88,6 +140,8 @@ class MainUser{
 
   }
 
+  //get some usefull data
+
   static Future<String> getNickName() async{
     return await _store.getData(currUser.uid,Firestore.theme);
   }
@@ -95,6 +149,9 @@ class MainUser{
   static Future<String> getProfileTheme() async{
     return await _store.getData(currUser.uid,Firestore.theme);
   }
+
+  //deprecated
+
   @deprecated
   Future<String> getName() async{
     return null;

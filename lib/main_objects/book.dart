@@ -1,9 +1,13 @@
+import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'main_user.dart';
+import 'mini_book.dart';
 
 class Book {
   //Instance attributes
@@ -46,6 +50,8 @@ class Book {
     this._pdfLinks = pdfLinks;
     this._buyURL = buyURL;
     this._isbn = isbn;
+    updateViews();
+    addToHistory();
   }
 
   //Getters
@@ -65,6 +71,52 @@ class Book {
   Map<String, dynamic> get buyURL => _buyURL;
   Map<String, dynamic> get isbn => _isbn;
 
+  //Book methods
+
+  void updateViews() async{
+    await Firestore().updateBookViews(isbn['isbn_10']);
+  }
+  void addToHistory() async{
+    MiniBook mini = toMiniBook();
+    await MainUser.addToOpenHistory(mini);
+  }
+
+  Future<void> rate(double stars) async{
+    double currentStars = MainUser.currentBookRate(isbn['isbn_10']);
+    await Firestore().rateBook(isbn['isbn_10'], stars, currentStars);
+    await MainUser.rateBook(isbn['isbn_10'], stars);
+  }
+
+  Future<void> commentBook(BookComment comment) async{
+    await Firestore().addComment(isbn['isbn_10'], comment);
+  }
+
+  Future<void> addToFavorites() async{
+    MiniBook mini = toMiniBook();
+    await MainUser.addBookToFavorites(mini);
+  }
+
+  Future<void> removeFromFavorites() async{
+    await MainUser.removeBookFromFavorites(isbn['isbn_10']);
+  }
+
+  MiniBook toMiniBook(){
+
+    List<dynamic> authorList = [];
+
+    for(MiniAuthor miniAuthor in authors){
+      authorList.add(miniAuthor.name);
+    }
+
+    return MiniBook(
+      _isbn['isbn_10'],
+      _title,
+      authorList,
+      _imageURL
+    );
+  }
+
+  // widget methods
   
   List<Widget> authorWidgetList(){
     List<Widget> authorList = new List<Widget>();
@@ -78,15 +130,19 @@ class Book {
               Container(
                 height: 25, width: 25,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle
-                ),
-                child: Image.network(author.imageURL,
-                fit: BoxFit.fill),
+                  color: CurrentTheme.backgroundContrast,
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: author.imageURL == null? AssetImage('assets/images/user_notFound.png') : NetworkImage(author.imageURL),
+                    fit: BoxFit.fill
+                  )
+                )
               ),
               SizedBox(width: 15),
               Container(width: 130,
                 child: Text(author.name,
                 style: TextStyle(
+                  color: CurrentTheme.textColor1,
                   fontWeight: FontWeight.w200,
                   fontSize: 14.5
                 ),),
