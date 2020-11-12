@@ -1,4 +1,5 @@
 import 'package:buku/main_objects/main_user.dart';
+import 'package:buku/scaffolds/main_scaffolds/main_menu_navbar.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Menu(4)));
                     },
                     child: Icon( Icons.arrow_back_ios,
                       color: CurrentTheme.background,

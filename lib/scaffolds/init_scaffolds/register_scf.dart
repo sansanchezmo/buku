@@ -184,7 +184,7 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: CurrentTheme.textColor1,
+                                      color: CurrentTheme.textColor2,
                                       style: BorderStyle.solid,
                                       width: 2.0),
                                   color: Colors.transparent,
@@ -195,13 +195,18 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
                                     'Go Back',
                                     style: TextStyle(
                                         fontFamily: 'ProductSans',
-                                        color: CurrentTheme.textColor1,
+                                        color: CurrentTheme.textColor2,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                          Container(
+                            height: 150,
+                            width: double.infinity,
+                            color: CurrentTheme.background
+                          )
                         ],
                       )),
                 )

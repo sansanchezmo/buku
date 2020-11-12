@@ -42,7 +42,7 @@ class MiniAuthor {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: NetworkImage(this._imageURL),
+                      image: this._imageURL == null? AssetImage('assets/images/user_notFound.png') : NetworkImage(this._imageURL),
                       fit: BoxFit.fill)),
             ),
             SizedBox(height: 10),

@@ -274,7 +274,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
                 FlatButton(
                   textColor: CurrentTheme.primaryColor,
                   child: Text('YES'),
-                  onPressed: () {
+                  onPressed: () async {
                     Map<String, dynamic> newInfo = new Map<String, dynamic>();
 
                     if (this.newProfilePic != MainUser.user.imageUrl) {
@@ -293,13 +293,12 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
                     }
 
                     if (newInfo.length != 0) {
-                      MainUser.updateProfile(newInfo);
+                      await MainUser.updateProfile(newInfo);
                     }
 
-                    Navigator.popUntil(
-                        context, ModalRoute.withName('/menu'));
+                    
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed('/menu');
+                    Navigator.pop(context);
                   },
                 ),
                 FlatButton(

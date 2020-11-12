@@ -82,7 +82,7 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
             elevation: 0,
             color: Colors.transparent,
             onPressed: () async {
-              Navigator.pushNamed(context, '/settings');
+              Navigator.pushReplacementNamed(context, '/settings');
               //G
               /*Book book = await Firestore().getBook("0002551675");
               print(book.imageURL);

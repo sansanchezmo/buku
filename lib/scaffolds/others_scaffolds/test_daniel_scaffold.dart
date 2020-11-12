@@ -1,6 +1,7 @@
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_user.dart';
+import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,17 @@ class _TestDanielScaffoldState extends State<TestDanielScaffold>{
             user2.toWidget(context),
             user3.toWidget(context),
             user4.toWidget(context),
+            /*Container(
+              height: 25, width: 25,
+              decoration: BoxDecoration(
+                color: CurrentTheme.backgroundContrast,
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: author.imageURL == null? AssetImage('assets/images/user_notFound.png') : NetworkImage(author.imageURL),
+                  fit: BoxFit.fill
+                )
+              )
+            ),*/
           ],
         ),
       ),

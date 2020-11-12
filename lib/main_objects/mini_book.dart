@@ -1,7 +1,7 @@
 
 import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
-import 'package:buku/scaffolds/others_scaffolds/book_info_scf.dart';
+import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
