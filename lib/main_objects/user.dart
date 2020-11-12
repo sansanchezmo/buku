@@ -1,22 +1,23 @@
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
+import 'package:buku/main_objects/structs/queue.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 
 class User {
-
   /**
    * Contains a user complete info. It is used to build user profile.
    */
 
   ///Attributes
   String _uid, _name, _nickname, _description, _theme, _imageUrl;
+  ArrayQueue<MiniBook> _recommendsQueue;
   List<MiniUser> _followers, _following;
   List<dynamic> _tags;
   List<MiniAuthor> _favAuthors;
   List<MiniBook> _favBooks, _history;
-  Map<String,String> _statistics;
+  Map<String, String> _statistics;
 
   ///Constructor
   User(
@@ -50,7 +51,7 @@ class User {
   Map<String, String> get statistics => _statistics;
 
   ///------------------------Public Method----------------------------///
-  List<Widget> tagsToWidget(){
+  List<Widget> tagsToWidget() {
     /**
      * Returns a list of widgets. Each widget is a tag inside a container.
      */
