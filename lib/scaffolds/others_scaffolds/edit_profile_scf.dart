@@ -6,6 +6,18 @@ import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// In this scaffold, the user can update its information. It contains a form
+/// where it´s possible to change the user profile pic, the name, the nickname
+/// and the biography.
+///
+/// scaffold()
+///      _profileHeader()
+///          _doneAlertDialog(BuildContext context) //Finish the proces of editing profile.
+///          _editProfilePicBuilder()
+///          _showChoosePicDialog(context)
+///              userImages()
+///      editProfileForm()
+
 class EditProfileScaffold extends StatefulWidget {
   @override
   _EditProfileScaffoldState createState() => _EditProfileScaffoldState();
@@ -52,6 +64,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
     );
   }
 
+  ///Displays the top container ( with the choose profile pic widget )
   Widget _profileHeader(BuildContext context) {
     return Stack(
       alignment: Alignment.topCenter,
@@ -129,6 +142,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
     );
   }
 
+  ///Contains the textFields where the user change its info.
   Widget _editProfileForm() {
     return Container(
         width: 300,
@@ -198,6 +212,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
         ));
   }
 
+  ///Shows the dialog where the user choose its avatar.
   void _showChoosePicDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -218,6 +233,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
             ));
   }
 
+  ///Returns the list of avatars.
   List<Widget> userImages() {
     List<Widget> avatarList = [];
     for (int i = 0; i < numImages; i++) {
@@ -239,6 +255,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
     return avatarList;
   }
 
+  ///Shows the widget where the user can change it user profile pic
   Widget _editProfilePicBuilder() {
     return Stack(overflow: Overflow.visible, children: [
       ProfileAvatar(profileImage: newProfilePic),
@@ -259,6 +276,7 @@ class _EditProfileScaffoldState extends State<EditProfileScaffold> {
     ]);
   }
 
+  ///It is the final dialog, it updates the user info if it changed.
   void _doneAlertDialog(BuildContext context) {
     showDialog(
         context: context,
