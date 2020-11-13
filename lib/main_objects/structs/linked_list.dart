@@ -47,8 +47,10 @@ class LinkedList<T> {
   }
 
   Node<T> back() {
+    /*
     if (empty())
       throw RangeError('back from an empty list');
+    */
     return _tail;
   }
 
@@ -190,21 +192,27 @@ class LinkedList<T> {
     return null;
   }
 
-  void eraseNode(T val) {
+  bool eraseNode(T val) {
     Node itr = _head;
+
+    if (empty())
+      return false;
 
     if (itr.data() == val) {
       popFront();
-      return;
+      return true;
     }
 
     while (itr.next() != null) {
       if (itr.next().data() == val) {
         itr.setNextTo(itr.next().next());
-        return;
+        _size--;
+        return true;
       }
       itr = itr.next();
     }
+
+    return false;
   }
   //private methods - nothing here
 }

@@ -289,7 +289,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
               SizedBox(height: 30.0),
 
 //-----------------------------Fourth_Widget------------------------------------
-              // Divider (- Write Here the Fourth Widget's name -)
+              // Divider (- Tag cloud -)
               Row(children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(15.0),
@@ -312,14 +312,15 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                       )),
                 ),
               ]),
-              // --- Add your widget HERE --
+              TagCloud(), // --- Add your widget HERE --
+              /*
               Image(
                 image: AssetImage(
                   'assets/images/open-book.png',
                 ),
                 width: 150.0,
                 height: 150.0,
-              ),
+              ),*/
             ],
           ),
         ),

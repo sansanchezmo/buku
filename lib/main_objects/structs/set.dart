@@ -18,11 +18,22 @@ class UnorderedSet<T> {
 
   // public methods
   UnorderedSet() {
+    /*
     try {
-      T.hashCode;
+      T a;
+      T b;
+      bool x = (a == b);
+    } catch(e) {
+      throw Exception('UnorderedSet element has no operation \"==\"');
+    }
+
+    try {
+      T a;
+      a.hashCode;
     } catch(e) {
       throw Exception('UnorderedSet element has no hashCode property');
     }
+    */
 
     _size = 0;
     _tableSize = 4;
@@ -32,18 +43,22 @@ class UnorderedSet<T> {
       _table.add(new LinkedList<T>());
   }
 
-  bool get isEmpty => _size == 0;
   int get length => _size;
   bool get single => _size == 1;
+  bool get isEmpty => _size == 0;
 
   bool contains(T val) => _table[val.hashCode % _tableSize].found(val);
 
-  void add(T val) {
+  bool add(T val) {
+    if (contains(val))
+      return false;
+
     if (_size >= _tableSize * _load_factor)
       _reHash();
 
     _table[val.hashCode % _tableSize].pushFront(val);
     _size++;
+    return true;
   }
 
   void addAll(Iterable<T> elements) {
@@ -52,14 +67,12 @@ class UnorderedSet<T> {
   }
 
   bool remove(T val) {
-    if (contains(val)) {
-      _table[val.hashCode % _tableSize].eraseNode(val);
-      _size--;
-      return true;
-    }
-    else {
+    if (!contains(val))
       return false;
-    }
+
+    _table[val.hashCode % _tableSize].eraseNode(val);
+    _size--;
+    return true;
   }
 
   void removeAll(Iterable<T> elements) {

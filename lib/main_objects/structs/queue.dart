@@ -22,6 +22,8 @@ class ArrayQueue<T> {
     _data = new List(_capacity);
   }
 
+  int get length => _size;
+
   bool empty() {
     return _size == 0;
   }
@@ -84,6 +86,8 @@ class ListQueue<T> {
   ListQueue() {
     _list = new LinkedList<T>();
   }
+
+  int get length => _list.size();
 
   bool empty() {
     return _list.empty();
