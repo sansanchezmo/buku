@@ -5,6 +5,7 @@ import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 class BookInfoScaffold extends StatefulWidget {
   final Book book;
@@ -110,7 +111,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
             bubbleColor: CurrentTheme.primaryColor,
             titleStyle: TextStyle(color: Colors.white70, fontSize: 16),
             onPress: () {
-              print("Buy scaffold");
+              _showBuyScaffold();
               _floatingButtonAnimationController.reverse();
             }),
         Bubble(
@@ -159,41 +160,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
             bubbleColor: CurrentTheme.primaryColor,
             titleStyle: TextStyle(color: Colors.white70, fontSize: 16),
             onPress: () {
-              showDialog<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    backgroundColor: CurrentTheme.backgroundContrast,
-                    title: Text('Remove from favorites'),
-                    titleTextStyle: TextStyle(color: CurrentTheme.textColor1,fontWeight: FontWeight.w700),
-                    content: Text(
-                      'Would you like remove this book form your favorites list?',
-                      style: TextStyle(color: CurrentTheme.textColor1,fontWeight: FontWeight.w300),
-                    ),
-                    actions: <Widget>[
-                      GestureDetector(
-                        child: Text('Yes',
-                            style: TextStyle(color: CurrentTheme.primaryColor, fontSize: 16)),
-                        onTap: () {
-                          book.removeFromFavorites();
-                          Navigator.of(context).pop();
-                          this.setState(() {
-                            this.isFavorite = false;
-                          });
-                        },
-                      ),
-                      GestureDetector(
-                        child: Text('No',
-                            style: TextStyle(color: CurrentTheme.primaryColor, fontSize: 16)),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-
-                },
-              );
+              _showRemoveFromFavsDialog();
               _floatingButtonAnimationController.reverse();
             })
         : Bubble(
@@ -245,12 +212,12 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
     );
   }
 
-  Widget _firstInfo(){
+  Widget _firstInfo() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          book.title,
+          book.title == 'null' ? "Not found" : book.title,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: CurrentTheme.textColor1,
@@ -258,24 +225,26 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
               fontWeight: FontWeight.w800),
         ),
         SizedBox(height: 15),
-        Text(book.publisher,
+        Text(book.publisher == 'null' ? "Not found" : book.publisher,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: CurrentTheme.textColor1,
+                color: CurrentTheme.textColor3,
                 fontWeight: FontWeight.w400,
                 fontSize: 20)),
         SizedBox(height: 10),
-        Text(book.year,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: CurrentTheme.textColor1,
-                fontWeight: FontWeight.w100,
-                fontSize: 20)),
+        book.year.toString() == '0' || book.year.toString() == 'null'
+            ? null
+            : Text(book.year.toString(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: CurrentTheme.textColor3,
+                    fontWeight: FontWeight.w100,
+                    fontSize: 20)),
         SizedBox(height: 40),
         _firstStatistics(),
         SizedBox(height: 40),
         Text(
-          book.synopsis == null || book.synopsis.length == 0
+          book.synopsis == 'null' || book.synopsis.length == 0
               ? "Synopsis is no available."
               : book.synopsis,
           textAlign: TextAlign.justify,
@@ -308,7 +277,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
           children: [
             Text(
               book.rating.toStringAsFixed(1),
-              style: TextStyle(color: CurrentTheme.textColor1, fontSize: 30),
+              style: TextStyle(color: CurrentTheme.textColor3, fontSize: 30),
             ),
             book.ratingStars(book.rating)
           ],
@@ -336,12 +305,12 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
           SizedBox(height: 5),
           Text(
             FormatString.formatStatistic(book.views) + ' views',
-            style: TextStyle(color: CurrentTheme.textColor1),
+            style: TextStyle(color: CurrentTheme.textColor3),
           )
         ],
       ),
     );
-    if (book.pages != null && book.pages != 0) {
+    if (book.pages.toString() != 'null' && book.pages.toString() != '0') {
       statistics.add(
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -359,12 +328,12 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                 size: 30, color: CurrentTheme.textColor1),
             SizedBox(height: 5),
             Text(book.pages.toString() + ' pages',
-                style: TextStyle(color: CurrentTheme.textColor1))
+                style: TextStyle(color: CurrentTheme.textColor3))
           ],
         ),
       );
     }
-    if (book.language != null && book.language.length != 0) {
+    if (book.language != 'null' && book.language.length != 0) {
       statistics.add(
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -381,7 +350,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
             Icon(Icons.language, size: 30, color: CurrentTheme.textColor1),
             SizedBox(height: 5),
             Text(book.language,
-                style: TextStyle(color: CurrentTheme.textColor1))
+                style: TextStyle(color: CurrentTheme.textColor3))
           ],
         ),
       );
@@ -391,10 +360,10 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
 
   Widget _finalInfo() {
     return Table(
-      columnWidths: {1: FractionColumnWidth(.7)},
+      columnWidths: {1: FractionColumnWidth(.6)},
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: [
-        book.isbn["isbn_10"] != null
+        book.isbn["isbn_10"] != 'null'
             ? TableRow(children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10, left: 30),
@@ -402,24 +371,24 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                     "ISBN-10:",
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: CurrentTheme.textColor1),
+                        color: CurrentTheme.textColor3),
                   ),
                 ),
                 Text(book.isbn["isbn_10"],
-                    style: TextStyle(color: CurrentTheme.textColor1))
+                    style: TextStyle(color: CurrentTheme.textColor3))
               ])
             : null,
-        book.isbn["isbn_13"] != null
+        book.isbn["isbn_13"] != 'null'
             ? TableRow(children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10, left: 30),
                   child: Text("ISBN-13:",
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: CurrentTheme.textColor1)),
+                          color: CurrentTheme.textColor3)),
                 ),
                 Text(book.isbn["isbn_13"],
-                    style: TextStyle(color: CurrentTheme.textColor1))
+                    style: TextStyle(color: CurrentTheme.textColor3))
               ])
             : null,
         TableRow(children: [
@@ -428,12 +397,12 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
             child: Text("Categories:",
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: CurrentTheme.textColor1)),
+                    color: CurrentTheme.textColor3)),
           ),
           Container(
             child: book.tags.length == 0
                 ? Text("This book has not categories.",
-                    style: TextStyle(color: CurrentTheme.textColor1))
+                    style: TextStyle(color: CurrentTheme.textColor3))
                 : Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
                     children: book.tagWidgetList(),
@@ -467,7 +436,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
-                  color: CurrentTheme.textColor1),
+                  color: CurrentTheme.textColor3),
             )
           ]),
         ),
@@ -478,7 +447,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                   ? book.commentWidgetList()
                   : [
                       Text("No comments yet",
-                          style: TextStyle(color: CurrentTheme.textColor1)),
+                          style: TextStyle(color: CurrentTheme.textColor3)),
                       FlatButton(
                           onPressed: () {
                             _showCommentDialog();
@@ -499,9 +468,116 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
     );
   }
 
+  void _showRemoveFromFavsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: CurrentTheme.backgroundContrast,
+          title: Text('Remove from favorites'),
+          titleTextStyle: TextStyle(
+              color: CurrentTheme.textColor3,
+              fontWeight: FontWeight.w700,
+              fontSize: 16),
+          content: Text(
+            'Would you like remove this book form your favorites list?',
+            style: TextStyle(
+                color: CurrentTheme.textColor3,
+                fontWeight: FontWeight.w300,
+                fontSize: 14.5),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              textColor: CurrentTheme.primaryColor,
+              child: Text('YES'),
+              onPressed: () {
+                book.removeFromFavorites();
+                Navigator.of(context).pop();
+                this.setState(() {
+                  this.isFavorite = false;
+                });
+              },
+            ),
+            FlatButton(
+              textColor: CurrentTheme.primaryColor,
+              child: Text('CANCEL'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showRateDialog() {}
 
   void _showCommentDialog() {}
 
   void _showAddToListDialog() {}
+
+  void _showBuyScaffold() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: CurrentTheme.backgroundContrast,
+          title: Text('Get this book'),
+          titleTextStyle: TextStyle(
+              color: CurrentTheme.textColor3,
+              fontWeight: FontWeight.w700,
+              fontSize: 16),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 50,
+                width: 220,
+                padding: EdgeInsets.only(top:15,bottom: 15, right: 30,left: 30),
+                child: Text("Amazon link",
+                  style: TextStyle(
+                      color: CurrentTheme.textColor3,
+                      fontSize: 16),
+                ),
+                decoration: BoxDecoration(
+                  color: CurrentTheme.primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 50,
+                width: 220,
+                padding: EdgeInsets.only(top:15,bottom: 15, right: 30,left: 30),
+                child: Text("Google link",
+                  style: TextStyle(
+                      color: CurrentTheme.textColor3,
+                      fontSize: 16),
+                ),
+                decoration: BoxDecoration(
+                  color: CurrentTheme.primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Go back',
+                style:
+                    TextStyle(color: CurrentTheme.primaryColor, fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

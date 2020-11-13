@@ -9,8 +9,12 @@ import 'package:flutter/material.dart';
 import 'main_user.dart';
 import 'mini_book.dart';
 
+/**
+ * This class contains the complete info of a book. The null attributes are stored as a string 'null'.
+ * Some list are managed as dynamic values.
+ */
 class Book {
-  //Instance attributes
+  ///Instance attributes
   final String _title;
   final String _language;
   final String _year;
@@ -27,7 +31,7 @@ class Book {
   Map<String, dynamic> _buyURL;
   Map<String, dynamic> _isbn;
 
-  //Constructor
+  ///Constructor
   Book(
       this._title,
       this._language,
@@ -54,7 +58,7 @@ class Book {
     addToHistory();
   }
 
-  //Getters
+  ///Getters
   String get title => _title;
   String get language => _language;
   String get year => _year;
@@ -71,91 +75,112 @@ class Book {
   Map<String, dynamic> get buyURL => _buyURL;
   Map<String, dynamic> get isbn => _isbn;
 
-  //Book methods
+  ///---------------------------- Book methods -------------------------------
 
-  void updateViews() async{
+  void updateViews() async {
+    /**
+     * Increments the views by 1 each time a user get into the info scaffold.
+     */
     await Firestore().updateBookViews(isbn['isbn_10']);
   }
-  void addToHistory() async{
+
+  void addToHistory() async {
     MiniBook mini = toMiniBook();
     await MainUser.addToOpenHistory(mini);
   }
 
-  Future<void> rate(double stars) async{
+  Future<void> rate(double stars) async {
+    /**
+     * updates the book rating when a user gives his rate.
+     */
     double currentStars = MainUser.currentBookRate(isbn['isbn_10']);
     await Firestore().rateBook(isbn['isbn_10'], stars, currentStars);
     await MainUser.rateBook(isbn['isbn_10'], stars);
   }
 
-  Future<void> commentBook(BookComment comment) async{
+  Future<void> commentBook(BookComment comment) async {
+    /**
+     * Updates the book comments section.
+     */
     await Firestore().addComment(isbn['isbn_10'], comment);
   }
 
-  Future<void> addToFavorites() async{
+  Future<void> addToFavorites() async {
+    /**
+     * Adds the book to the user's fav list.
+     */
     MiniBook mini = toMiniBook();
     await MainUser.addBookToFavorites(mini);
   }
 
-  Future<void> removeFromFavorites() async{
+  Future<void> removeFromFavorites() async {
+    /**
+     * Removes the book from the user's fav list.
+     */
     await MainUser.removeBookFromFavorites(isbn['isbn_10']);
   }
 
-  MiniBook toMiniBook(){
-
+  MiniBook toMiniBook() {
+    /**
+     * Returns the MiniBook version of the book.
+     * class: MiniBook.
+     */
     List<dynamic> authorList = [];
 
-    for(MiniAuthor miniAuthor in authors){
+    for (MiniAuthor miniAuthor in authors) {
       authorList.add(miniAuthor.name);
     }
 
-    return MiniBook(
-      _isbn['isbn_10'],
-      _title,
-      authorList,
-      _imageURL
-    );
+    return MiniBook(_isbn['isbn_10'], _title, authorList, _imageURL);
   }
 
-  // widget methods
-  
-  List<Widget> authorWidgetList(){
+  /// ----------------------- widget methods ---------------------------
+
+  // ignore: missing_return
+  List<Widget> authorWidgetList() {
+    /**
+     * Returns the author list as a widget to display at the book info scaffold.
+     */
     List<Widget> authorList = new List<Widget>();
-    for(MiniAuthor author in this.authors){
-      authorList.add(
-        Padding(
-          padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: 25, width: 25,
+    for (MiniAuthor author in this.authors) {
+      authorList.add(Padding(
+        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+                height: 25,
+                width: 25,
                 decoration: BoxDecoration(
-                  color: CurrentTheme.backgroundContrast,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: author.imageURL == null? AssetImage('assets/images/user_notFound.png') : NetworkImage(author.imageURL),
-                    fit: BoxFit.fill
-                  )
-                )
-              ),
-              SizedBox(width: 15),
-              Container(width: 130,
-                child: Text(author.name,
+                    color: CurrentTheme.backgroundContrast,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: author.imageURL == null
+                            ? AssetImage('assets/images/user_notFound.png')
+                            : NetworkImage(author.imageURL),
+                        fit: BoxFit.fill))),
+            SizedBox(width: 15),
+            Container(
+              width: 130,
+              child: Text(
+                author.name,
                 style: TextStyle(
-                  color: CurrentTheme.textColor1,
-                  fontWeight: FontWeight.w200,
-                  fontSize: 14.5
-                ),),
-              )
-            ],
-          ),
-        )
-      );
+                    color: CurrentTheme.textColor1,
+                    fontWeight: FontWeight.w200,
+                    fontSize: 14.5),
+              ),
+            )
+          ],
+        ),
+      ));
       return authorList;
     }
   }
 
   Widget ratingStars(double rating) {
+    /**
+     * Returns the stars icons in a row, depending on the book´s rating.
+     */
     double rat = rating;
     List<Widget> ratingStars = List<Widget>(5);
     for (int i = 0; i < 5; i++) {
@@ -176,69 +201,96 @@ class Book {
   }
 
   Widget bookImage({double width: 175.0}) {
-    return Stack(
-      children: [
-        Container(
-          height: width * 1.6,
-          width: width,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
+    /**
+     * Returns the book image as a container.
+     * params: width (default: 175) -> It get que height according to the proportion
+     * 1:1.6
+     */
+    return Stack(children: [
+      Container(
+        height: width * 1.6,
+        width: width,
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
             color: CurrentTheme.backgroundContrast,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                    color: CurrentTheme.shadow2, spreadRadius: 5, blurRadius: 20)
-              ]),
-          child: Text(this.title, style: TextStyle(fontSize: 20, color: CurrentTheme.textColor3), maxLines: 2, overflow: TextOverflow.ellipsis,),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: [
+              BoxShadow(
+                  color: CurrentTheme.shadow2, spreadRadius: 5, blurRadius: 15)
+            ]),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Text(
+              this.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, color: CurrentTheme.textColor3),
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Expanded(child: SizedBox()),
+            Text(
+              _authorNames(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15, color: CurrentTheme.textColor3),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 10)
+          ],
         ),
-        Container(
-          height: width * 1.6,
-          width: width,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(
-                    this.imageURL
-                  )
-              )
-          ),
-        )
-      ]
-    );
+      ),
+      Container(
+        height: width * 1.6,
+        width: width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            image: DecorationImage(
+                fit: BoxFit.fill, image: NetworkImage(this.imageURL))),
+      )
+    ]);
   }
 
-  List<Widget> tagWidgetList(){
+  String _authorNames(){
+    MiniAuthor auth = this._authors[0];
+    String names = auth.name;
+    for(int i = 1; i<this._authors.length; i++){
+      auth = this._authors[i];
+      names = names + ", " + auth.name;
+    }
+    return names;
+  }
+
+  List<Widget> tagWidgetList() {
     List<Widget> tagList = new List<Widget>();
-    for(String tag in tags){
-      tagList.add(
-        FlatButton(
-          textColor: CurrentTheme.textColor3,
-          onPressed: (){
-            //TODO: go to tag method.
-          },
-          child: Container(
-            height: 25,
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-                color: CurrentTheme.backgroundContrast,
-                border: Border.all(color: CurrentTheme.primaryColorVariant),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Text(
-              tag,
-              style: TextStyle(color: CurrentTheme.textColor3, fontSize: 14.5),
-            ),
+    for (String tag in tags) {
+      tagList.add(FlatButton(
+        textColor: CurrentTheme.textColor3,
+        onPressed: () {
+          //TODO: go to tag method.
+        },
+        child: Container(
+          height: 25,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: 10, right: 10),
+          decoration: BoxDecoration(
+              color: CurrentTheme.backgroundContrast,
+              border: Border.all(color: CurrentTheme.primaryColorVariant),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Text(
+            tag,
+            style: TextStyle(color: CurrentTheme.textColor3, fontSize: 14.5),
           ),
-        )
-      );
+        ),
+      ));
       return tagList;
     }
   }
 
-  List<Widget> commentWidgetList(){
+  List<Widget> commentWidgetList() {
     List<Widget> commentsList = new List<Widget>();
-    for(BookComment comment in _comments){
+    for (BookComment comment in _comments) {
       commentsList.add(comment.toWidget());
     }
     return commentsList;
