@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:buku/main_objects/user.dart' as Usr;
 
+import 'mini_author.dart';
 import 'mini_book.dart';
 
 class MainUser{
@@ -17,7 +18,11 @@ class MainUser{
 
   static Auth get auth => _auth;
   static User get currUser => _currUser;
-  static String get uid => _currUser.uid;
+  static String get uid => _currUser== null ? null : _currUser.uid;
+  static List<MiniBook> get openHistory => _user==null? null: _user.history;
+  static List<MiniBook> get favBooks => _user==null? null: _user.favBooks;
+  static List<MiniAuthor> get favAuthors => _user==null? null: _user.favAuthors;
+  static List<dynamic> get tags => _user==null? null: _user.tags;
   static Usr.User get user => _user;
   static Map<String, dynamic> get cache => _cache;
 
@@ -140,7 +145,7 @@ class MainUser{
 
   }
 
-  //get some usefull data
+  //get some useful data
 
   static Future<String> getNickName() async{
     return await _store.getData(currUser.uid,Firestore.theme);

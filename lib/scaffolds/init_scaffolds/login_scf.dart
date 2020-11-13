@@ -135,6 +135,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                   Text(
                     'New in Buku?',
                     style: TextStyle(
+                      color: CurrentTheme.textColor1,
                       fontFamily: 'ProductSans',
                       fontSize: 15,
                     ),

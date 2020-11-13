@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
@@ -6,6 +8,7 @@ import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/main_objects/user.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
+import 'package:buku/utilities/sort.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -56,7 +59,7 @@ class Firestore{
 
     List<MiniAuthor> favAuthors = await getFavAuthors(uid);
     List<MiniBook> favBooks = await getMiniBookCollection(uid, Firestore.favoriteBooks);
-    List<MiniBook> history = await getMiniBookCollection(uid, Firestore.openHistory);
+    List<MiniBook> history = await getHistoryCollection(uid, Firestore.openHistory);
     List<MiniUser> following = await getFollow(uid, Firestore.following);
     List<MiniUser> followers = await getFollow(uid, Firestore.followers);
 
@@ -117,6 +120,29 @@ class Firestore{
     });
 
     return fav;
+  }
+
+  Future<List<MiniBook>> getHistoryCollection(String uid, String collectionName) async{
+
+    List<Map<String, dynamic>> dataList = [];
+
+    await store.collection('users').doc(uid).collection(collectionName).get()
+        .then((value) {
+      value.docs.forEach((element) {
+        var data = element.data();
+        dataList.add({
+          'isbn' : element.id,
+          'title' : data['title'],
+          'authors' : data['authors'],
+          'image_url': data['image_url'],
+          'date' : data['date']
+        });
+      });
+    });
+
+    List<MiniBook> list = Sort.sortMiniBookByTimeStamp(dataList);
+
+    return list;
   }
 
   Future<List<MiniBook>> getMiniBookCollection(String uid, String collectionName) async{
@@ -215,10 +241,10 @@ class Firestore{
       desc = data['desc'];
       img = data['image_url'];
       views = data['views']==null?0:data['views'];
-      pages = data['pages'];
+      pages = data['pages']=='null'?0:data['pages'];
       rate = data['rate']['stars'];
       authors = data['authors'];
-      tags = data['categories'];
+      tags = data['categories']==null?[]:data['categories'];
       pdf = data['pdf_toread'];
       buy = data['buy'];
       isbn = data['identifier'];
@@ -261,7 +287,8 @@ class Firestore{
     await store.collection('users').doc(uid).collection(collectionName).doc(mini.isbn10).set({
       'authors' : mini.authors,
       'image_url' : mini.imageURL,
-      'title' : mini.title
+      'title' : mini.title,
+      'date' : Timestamp.now()
     });
 
   }

@@ -35,7 +35,7 @@ class CurrentTheme{
 
   static final double borderRadius = 40;
 
-  static setTheme(String option, {BuildContext context = null}){
+  static setTheme(String option, {BuildContext context = null, saveUserTheme = true}){
     _theme = option;
     if(option == orangeTheme){
       textColor1 = OrangeTheme.textColor1;
@@ -78,7 +78,7 @@ class CurrentTheme{
       navigatorBarColor = DarkTheme.navigatorBarColor;
       themeData = DarkTheme.getTheme();
     }
-    MainUser.setTheme(option);
+    if(saveUserTheme) MainUser.setTheme(option);
     if(context != null){
       DynamicTheme.of(context).setThemeData(themeData);
     }

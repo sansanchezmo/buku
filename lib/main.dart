@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:buku/scaffolds/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'firebase/ML_kit.dart';
 import 'firebase/firestore.dart';
 import 'main_objects/main_user.dart';
 
@@ -21,7 +22,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // bind app with FireBase
   await MainUser.init(loadUserInfo: false);// initialize main user
-  print(MainUser.auth);
   await setTheme();
   runApp(MyApp());
 }
@@ -30,13 +30,13 @@ setTheme() async {
   /*the function bellow select the theme for initialize MyApp or set default theme
   if the user does not choose theme yet*/
   if (MainUser.currUser == null) {
-    CurrentTheme.setTheme(CurrentTheme.orangeTheme);
+    CurrentTheme.setTheme(CurrentTheme.orangeTheme, saveUserTheme: false);
   } else {
     try{
     String theme = await MainUser.getProfileTheme();
-    CurrentTheme.setTheme(theme);
+    CurrentTheme.setTheme(theme, saveUserTheme: false);
     } catch(e){
-      CurrentTheme.setTheme(CurrentTheme.orangeTheme);
+      CurrentTheme.setTheme(CurrentTheme.orangeTheme, saveUserTheme: false);
     }
   }
 }
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                   PrimitiveTestScaffold(),
               '/testbook': (BuildContext context) => BookTestScaffold(),
             },
-            home: SplashScaffold(),
+            home: Test(),
           ),
           onTap: () {
             //this part is used to fix some Text Field bugs

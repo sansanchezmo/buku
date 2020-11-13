@@ -139,6 +139,7 @@ class _RegisterScaffoldState extends State<RegisterScaffold> {
                               });
                             },
                             decoration: InputDecoration(
+                              counterStyle: TextStyle(color: CurrentTheme.textFieldHint),
                                 errorText: boolName ? null: nameErrorText,
                                 labelText: 'NICK NAME',
                                 labelStyle: TextStyle(
