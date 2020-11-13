@@ -1,7 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:buku/firebase/ML_kit.dart';
+import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
+import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/structs/linked_list.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/gradient_button.dart';
@@ -15,13 +17,20 @@ import 'package:buku/main_objects/structs/vector.dart';
 import 'package:buku/scaffolds/others_scaffolds/tag_cloud_scf.dart';
 import 'package:swipe_to/swipe_to.dart';
 
+Firestore _store = new Firestore();
+
 class MainPageScaffold extends StatefulWidget {
   _MainPageScaffoldState createState() => _MainPageScaffoldState();
 }
 
 class _MainPageScaffoldState extends State<MainPageScaffold> {
+  ArrayQueue<MiniBook> recommendsQueue = new ArrayQueue<MiniBook>();
+
   @override
   Widget build(BuildContext context) {
+    recommendsQueue.empty() == true
+        ? addInfo()
+        : print('Recommendations found. No info added');
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -33,6 +42,14 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Image(
+                    height: 25,
+                    width: 25,
+                    image: AssetImage(
+                      'assets/images/bukusymbol.png',
+                    ),
+                  ),
+                  SizedBox(width: 10),
                   Text(
                     'Test',
                     style: TextStyle(
@@ -78,32 +95,26 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                 Center(
                   child: SizedBox(
                     width: 250.0,
-                    child: ColorizeAnimatedTextKit(
-                        repeatForever: false,
-                        totalRepeatCount: 1.0,
-                        onTap: () {
-                          print("Tap Event");
-                        },
-                        text: [
-                          "Recommends",
-                          "Recommends",
-                          "Recommends",
-                        ],
-                        textStyle: TextStyle(
-                          fontSize: 40.0,
-                          fontFamily: "ProductSans",
+                    child: ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        final gradient = LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.yellow, Colors.red],
+                        );
+                        return gradient.createShader(Offset.zero & bounds.size);
+                      },
+                      child: Text(
+                        'Recommends',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 40.0,
+                          color: Colors
+                              .white, // must be white for the gradient shader to work
                         ),
-                        colors: [
-                          Colors.indigoAccent[100],
-                          Colors.indigoAccent[200],
-                          Colors.lightBlueAccent,
-                          Colors.blue,
-                        ],
-                        textAlign: TextAlign.start,
-                        alignment: AlignmentDirectional
-                            .topStart // or Alignment.topLeft
-                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -122,45 +133,67 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                   'Find books that fit to your pleasures.',
                   style: TextStyle(
                     color: CurrentTheme.textColor1,
-                    fontSize: 20,
+                    fontSize: 15,
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              SwipeTo(
-                offsetDx: 2.0,
-                onLeftSwipe: () {
-                  print('Left swipe');
-                },
-                onRightSwipe: () {
-                  print('Right swipe');
-                },
-                leftSwipeWidget: Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                    size: 50.0,
-                  ),
-                ),
-                rightSwipeWidget: Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Icon(
-                    Icons.cancel_outlined,
-                    color: Colors.red,
-                    size: 50.0,
-                  ),
-                ),
-                child: Container(
-                  child: Image(
-                    image: AssetImage(
-                      'assets/images/open-book.png',
+              SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(120)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CurrentTheme.shadow1,
+                      spreadRadius: 6, //(x,y)
+                      blurRadius: 20.0,
                     ),
-                    width: 150.0,
-                    height: 150.0,
+                  ],
+                  gradient: LinearGradient(
+                      colors: [Colors.deepOrange, Colors.orange]),
+                ),
+                child: SwipeTo(
+                  offsetDx: 2.0,
+                  onLeftSwipe: () {
+                    setState(() {
+                      recommendsQueue.dequeue();
+                      print('Left swipe');
+                    });
+                  },
+                  onRightSwipe: () {
+                    setState(() {
+                      recommendsQueue.dequeue();
+                      print('Right swipe');
+                    });
+                  },
+                  leftSwipeWidget: Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.greenAccent[400],
+                      size: 50.0,
+                    ),
                   ),
+                  rightSwipeWidget: Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      color: Colors.red[700],
+                      size: 50.0,
+                    ),
+                  ),
+                  child: recommendsQueue.empty() == true
+                      ? Container(
+                          child: Image(
+                            image: NetworkImage(
+                                'https://image.flaticon.com/icons/png/512/152/152565.png'),
+                            width: 150.0,
+                            height: 345.0,
+                          ),
+                        )
+                      : recommendsQueue.front().toBigWidget(context),
                 ),
               ),
+              SizedBox(height: 10.0),
               Padding(
                 padding: EdgeInsets.all(5),
                 child: Text.rich(
@@ -283,7 +316,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
               // --- Add your widget HERE --
               GradientButton(
                 text: 'ML kit test',
-                tap: (){
+                tap: () {
                   print(ML.getRecommendedReadList(4));
                 },
               ),
@@ -327,5 +360,13 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
         ),
       ),
     );
+  }
+
+  void addInfo() async {
+    ArrayQueue<MiniBook> arrayQueue = await _store.getRecommendsQueue(20);
+    setState(() {
+      recommendsQueue = arrayQueue;
+      print('Queue succesfully created');
+    });
   }
 }

@@ -1,5 +1,8 @@
+import 'package:buku/firebase/firestore.dart';
+import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_author.dart';
+import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/book_horizontal_slider.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
@@ -83,13 +86,16 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
             color: Colors.transparent,
             onPressed: () async {
               Navigator.pushReplacementNamed(context, '/settings');
-              //G
-              /*Book book = await Firestore().getBook("0002551675");
+              /*
+              Book book = await Firestore().getBook("0001046438");
               print(book.imageURL);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BookInfoScaffold(book: book)),
-              );*/
+                MaterialPageRoute(
+                    builder: (context) => BookInfoScaffold(book: book)),
+              );
+
+               */
             },
             child: Icon(Icons.settings,
                 color: CurrentTheme.background, size: 24.0),
@@ -141,11 +147,11 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: CurrentTheme.primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(20))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
                         child: Text("Discover new content!")))
               ],
-            )
-        ),
+            )),
         _favAuthorsWidget(),
         _favTagsWidget(),
       ],
@@ -354,33 +360,35 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
-                      color: CurrentTheme.shadow2, spreadRadius: 3, blurRadius: 5)
+                      color: CurrentTheme.shadow2,
+                      spreadRadius: 3,
+                      blurRadius: 5)
                 ]),
             child: MainUser.user.tags.length != 0
                 ? Wrap(
-              children: MainUser.user.tagsToWidget(),
-            )
+                    children: MainUser.user.tagsToWidget(),
+                  )
                 : Column(
-              children: [
-                Text("You don\'t have any favourite tags yet"),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed('/menu');
-                    },
-                    textColor: Colors.white,
-                    child: Container(
-                        height: 30,
-                        width: 200,
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: CurrentTheme.primaryColor,
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(20))),
-                        child: Text("Discover new content!")))
-              ],
-            ))
+                    children: [
+                      Text("You don\'t have any favourite tags yet"),
+                      FlatButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.of(context).pushNamed('/menu');
+                          },
+                          textColor: Colors.white,
+                          child: Container(
+                              height: 30,
+                              width: 200,
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: CurrentTheme.primaryColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: Text("Discover new content!")))
+                    ],
+                  ))
       ],
     );
   }
@@ -391,17 +399,19 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-      Text(
-      MainUser.user.name == null ? "null" : MainUser.user.name,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            color: CurrentTheme.textColor1),
-      ),
+          Text(
+            MainUser.user.name == null ? "null" : MainUser.user.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+                color: CurrentTheme.textColor1),
+          ),
           SizedBox(height: 8),
           Text(
-            MainUser.user.nickname == null ? "null" : "@" + MainUser.user.nickname,
+            MainUser.user.nickname == null
+                ? "null"
+                : "@" + MainUser.user.nickname,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -417,11 +427,10 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
     List<Widget> userFavAuthors = new List<Widget>();
     for (MiniAuthor auth in MainUser.user.favAuthors) {
       userFavAuthors.add(Padding(
-        padding: const EdgeInsets.only(left:12.5,right: 12.5),
+        padding: const EdgeInsets.only(left: 12.5, right: 12.5),
         child: auth.toWidget(context),
       ));
     }
     return userFavAuthors;
   }
-
 }
