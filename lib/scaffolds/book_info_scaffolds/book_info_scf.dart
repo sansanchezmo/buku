@@ -5,7 +5,9 @@ import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
-//import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class BookInfoScaffold extends StatefulWidget {
   final Book book;
@@ -175,13 +177,13 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                 this.isFavorite = true;
               });
               _floatingButtonAnimationController.reverse();
+              Fluttertoast.showToast(msg: "The book was added to favorites.");
             });
   }
 
   Widget _headerStack(double screenWidth) {
     return Stack(
       alignment: Alignment.topCenter,
-      overflow: Overflow.visible,
       children: <Widget>[
         SizedBox(
           height: 400.0,
@@ -496,6 +498,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                 this.setState(() {
                   this.isFavorite = false;
                 });
+                Fluttertoast.showToast(msg: "The book was removed from favorites.");
               },
             ),
             FlatButton(
@@ -511,7 +514,65 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
     );
   }
 
-  void _showRateDialog() {}
+  void _showRateDialog() {
+    double rate = 0.0;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: CurrentTheme.backgroundContrast,
+          title: Text('Rate this book'),
+          titleTextStyle: TextStyle(
+              color: CurrentTheme.textColor3,
+              fontWeight: FontWeight.w700,
+              fontSize: 16),
+          content: Center(
+            child: RatingBar.builder(
+              initialRating: 3,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                size: 10,
+                color: CurrentTheme.primaryColor,
+              ),
+              onRatingUpdate: (rating) {
+                rate = rating;
+                print(rate);
+                print(rating);
+              },
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              textColor: CurrentTheme.primaryColor,
+              child: Text('SUBMIT'),
+              onPressed: () {
+                if(rate == 0.0 || rate == null){
+                  Fluttertoast.showToast(msg: "Please rate the book to continue");
+                } else {
+                  Navigator.of(context).pop();
+                  book.rate(rate);
+                  Fluttertoast.showToast(msg: "Thanks for rating.");
+                }
+
+              },
+            ),
+            FlatButton(
+              textColor: CurrentTheme.primaryColor,
+              child: Text('CANCEL'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _showCommentDialog() {}
 
@@ -528,40 +589,55 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
               color: CurrentTheme.textColor3,
               fontWeight: FontWeight.w700,
               fontSize: 16),
-          content: Column(
+          content: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 50,
-                width: 220,
-                padding: EdgeInsets.only(top:15,bottom: 15, right: 30,left: 30),
-                child: Text("Amazon link",
-                  style: TextStyle(
-                      color: CurrentTheme.textColor3,
-                      fontSize: 16),
+              FlatButton(
+                child: Container(
+                  width: 55, height: 55,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: CurrentTheme.primaryColor,
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/amazon.png')
+                    )
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: CurrentTheme.primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
+                onPressed: () async{
+                  String url = book.buyURL['amazon'];
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    Fluttertoast.showToast(msg: "Link not available");
+                  }
+                  Navigator.of(context).pop();
+                },
               ),
-              SizedBox(
-                height: 20,
+              book.buyURL['google'] == 'null'? null : FlatButton(
+                child: Container(
+                  width: 55, height: 55,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: CurrentTheme.primaryColor,
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage('assets/images/google.png')
+                      )
+                  ),
+                ),
+                onPressed: () async{
+                  String url = book.buyURL['google'];
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    Fluttertoast.showToast(msg: "Link not available");
+                  }
+                  Navigator.of(context).pop();
+                },
               ),
-              Container(
-                height: 50,
-                width: 220,
-                padding: EdgeInsets.only(top:15,bottom: 15, right: 30,left: 30),
-                child: Text("Google link",
-                  style: TextStyle(
-                      color: CurrentTheme.textColor3,
-                      fontSize: 16),
-                ),
-                decoration: BoxDecoration(
-                  color: CurrentTheme.primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-              )
             ],
           ),
           actions: <Widget>[
