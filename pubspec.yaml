@@ -35,7 +35,8 @@ dependencies:
   floating_action_bubble: ^1.1.2
   animated_text_kit: ^2.5.4
   swipe_to: ^0.0.1+8
-  #url_launcher: ^5.7.10
+  url_launcher: ^5.7.10
+  flutter_rating_bar: ^3.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
