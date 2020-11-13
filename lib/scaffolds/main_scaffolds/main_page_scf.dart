@@ -1,8 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:buku/firebase/ML_kit.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/structs/linked_list.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/widgets/gradient_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -279,12 +281,11 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                 ),
               ]),
               // --- Add your widget HERE --
-              Image(
-                image: AssetImage(
-                  'assets/images/open-book.png',
-                ),
-                width: 150.0,
-                height: 150.0,
+              GradientButton(
+                text: 'ML kit test',
+                tap: (){
+                  print(ML.getRecommendedReadList(4));
+                },
               ),
               SizedBox(height: 30.0),
 

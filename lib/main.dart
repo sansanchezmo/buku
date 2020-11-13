@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                   PrimitiveTestScaffold(),
               '/testbook': (BuildContext context) => BookTestScaffold(),
             },
-            home: Test(),
+            home: SplashScaffold(),
           ),
           onTap: () {
             //this part is used to fix some Text Field bugs

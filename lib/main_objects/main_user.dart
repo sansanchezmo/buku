@@ -1,4 +1,5 @@
 
+import 'package:buku/firebase/ML_kit.dart';
 import 'package:buku/firebase/auth.dart';
 import 'package:buku/firebase/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,6 +38,7 @@ class MainUser{
     if(loadUserInfo) {
       await _setUser();
       await _loadCache();
+      //await ML.init();
     }
 
   }
@@ -96,13 +98,13 @@ class MainUser{
 
   static Future<void> rateBook(String isbn, double stars) async{
 
-    Map<String, dynamic> bookCache = _cache[isbn];
+    //Map<String, dynamic> bookCache = _cache[isbn];
 
-    if(bookCache == null){
-      bookCache = {};
+    if(_cache[isbn] == null){
+      _cache[isbn] = {};
     }
 
-    bookCache['stars'] = stars;
+    _cache[isbn]['stars'] = stars;
 
     await _store.saveUserCache(uid,_cache);
 

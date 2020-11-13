@@ -6,6 +6,7 @@ import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/book.dart';
+import 'package:buku/main_objects/read_list.dart';
 import 'package:buku/main_objects/structs/queue.dart';
 import 'package:buku/main_objects/structs/set.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,7 @@ class ML{
 
   static Queue<MiniBook> bookRecommendationQueue = Queue<MiniBook>();
   static Queue<String> tagRecommendationQueue = Queue<String>();
-  static Queue<List<Book>> readListRecommendationQueue = Queue<List<Book>>();
+  static Queue<ReadList> readListRecommendationQueue = Queue<ReadList>();
 
   static UnorderedSet<String> userTags = UnorderedSet<String>();
   static UnorderedSet<String> userBooks = UnorderedSet<String>();
@@ -33,9 +34,12 @@ class ML{
     }
     await spanRecommendedTags();
     randomRecommendedTags(100);
+    print('-------------------------------TAGS COMPLETE----------------------------------------------');
     await spanRecommendedBooks();
     await randomRecommendedBooks(100);
-    await spanRecommendedReadList(listsCount: 16);
+    print('-------------------------------BOOKS COMPLETE----------------------------------------------');
+    await spanRecommendedReadList(listsCount: 24);
+    print('-------------------------------READLIST COMPLETE----------------------------------------------');
 
   }
 
@@ -46,11 +50,20 @@ class ML{
   static List<MiniBook> getRecommendedBooks(int i){
     List<MiniBook> list = [];
 
-    while(list.length < i){
+    /*while(list.length < i){
       while(!bookRecommendationQueue.empty() && list.length<i){
         list.add(bookRecommendationQueue.dequeue());
       }
       if(list.length<i){
+        spanRecommendedBooks();
+        randomRecommendedBooks(100);
+      }
+    }*/
+
+    while(list.length > i){
+
+      list.add(bookRecommendationQueue.dequeue());
+      if(bookRecommendationQueue.length < 30){
         spanRecommendedBooks();
         randomRecommendedBooks(100);
       }
@@ -59,16 +72,24 @@ class ML{
     return list;
   }
 
-  static List<List<Book>> getRecommendedReadList(int i){
+  static List<ReadList> getRecommendedReadList(int i){
 
-    List<List<Book>> list = [];
+    List<ReadList> list = [];
 
-    while(list.length <i){
+    /*while(list.length <i){
       while(!tagRecommendationQueue.empty() && list.length<i){
         list.add(readListRecommendationQueue.dequeue());
       }
       if(list.length<i){
         spanRecommendedReadList(listsCount: 64);
+      }
+    }*/
+
+    while(list.length<i){
+
+      list.add(readListRecommendationQueue.dequeue());
+      if(readListRecommendationQueue.length < 30){
+        spanRecommendedReadList(listsCount: 24);
       }
     }
 
@@ -79,11 +100,19 @@ class ML{
 
     List<String> list = [];
 
-    while(list.length <i){
+    /*while(list.length <i){
       while(!tagRecommendationQueue.empty() && list.length<i){
         list.add(tagRecommendationQueue.dequeue());
       }
       if(list.length<i){
+        spanRecommendedTags();
+        randomRecommendedTags(100);
+      }
+    }*/
+
+    while(list.length < i){
+      list.add(tagRecommendationQueue.dequeue());
+      if(tagRecommendationQueue.length < 30){
         spanRecommendedTags();
         randomRecommendedTags(100);
       }
@@ -113,7 +142,7 @@ class ML{
       
       for(var map in authorDictList){
         if(!userBooks.contains(map['isbn10'])){
-          Book book = await Firestore().getBook(map['isbn_10']);
+          Book book = await Firestore().getBook(map['isbn_10'], userInitialize: false);
           MiniBook mini = book.toMiniBook();
           bookRecommendationQueue.enqueue(mini);
         }
@@ -124,13 +153,13 @@ class ML{
   static recommendedBooksByBook()async{
 
     for(MiniBook mini in MainUser.favBooks){
-      Book book = await Firestore().getBook(mini.isbn10);
+      Book book = await Firestore().getBook(mini.isbn10, userInitialize: false);
 
       for(dynamic tag in book.tags){
         List<dynamic> tagDictList = tagMap[tag.toString()];
         for(var map in tagDictList){
           if(!userBooks.contains(map['isbn_10'])){
-            Book book = await Firestore().getBook(map['isbn_10']);
+            Book book = await Firestore().getBook(map['isbn_10'], userInitialize: false);
             MiniBook mini = book.toMiniBook();
             bookRecommendationQueue.enqueue(mini);
           }
@@ -141,7 +170,7 @@ class ML{
         List<dynamic> authorDictList = authorMap[author.name];
         for(var map in authorDictList){
           if(!userBooks.contains(map['isbn_10'])){
-            Book book = await Firestore().getBook(map['isbn_10']);
+            Book book = await Firestore().getBook(map['isbn_10'], userInitialize: false);
             MiniBook mini = book.toMiniBook();
             bookRecommendationQueue.enqueue(mini);
           }
@@ -162,7 +191,7 @@ class ML{
         
         if(!userBooks.contains(map['isbn_10'])){
           if(!userBooks.contains(map['isbn10'])){
-            Book book = await Firestore().getBook(map['isbn_10']);
+            Book book = await Firestore().getBook(map['isbn_10'], userInitialize: false);
             MiniBook mini = book.toMiniBook();
             bookRecommendationQueue.enqueue(mini);
           }
@@ -178,7 +207,7 @@ class ML{
 
     while(count<i){
       String isbn = tagMap['isbn'][random.nextInt(tagMap['isbn'].length)];
-      Book book = await Firestore().getBook(isbn);
+      Book book = await Firestore().getBook(isbn, userInitialize: false);
       bookRecommendationQueue.enqueue(book.toMiniBook());
       count++;
     }
@@ -220,10 +249,10 @@ class ML{
       else{
         List<dynamic> listMap = tagMap[tag];
         for(var map in listMap){
-          Book book = await Firestore().getBook(map['isbn_10']);
+          Book book = await Firestore().getBook(map['isbn_10'], userInitialize: false);
           list.add(book);
         }
-        readListRecommendationQueue.enqueue(list);
+        readListRecommendationQueue.enqueue(ReadList(tag,list));
       }
     }
   }
@@ -238,7 +267,7 @@ class ML{
 
     for(MiniBook mini in userBooks){
 
-      Book book = await Firestore().getBook(mini.isbn10);
+      Book book = await Firestore().getBook(mini.isbn10, userInitialize: false);
 
       for(dynamic tag in book.tags){
         tag = tag.toString();

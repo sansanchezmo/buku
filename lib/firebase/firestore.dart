@@ -223,7 +223,7 @@ class Firestore{
 
   // Books methods ----------------------------------------------------------------------------------------
 
-  Future<Book> getBook(String isbn_10) async{
+  Future<Book> getBook(String isbn_10, {userInitialize: true}) async{
 
     String title, lan, year, publisher, desc, img;
     int views, pages;
@@ -244,7 +244,7 @@ class Firestore{
       pages = data['pages']=='null'?0:data['pages'];
       rate = data['rate']['stars'];
       authors = data['authors'];
-      tags = data['categories']==null?[]:data['categories'];
+      tags = data['categories']=='null'?[]:data['categories'];
       pdf = data['pdf_toread'];
       buy = data['buy'];
       isbn = data['identifier'];
@@ -271,7 +271,8 @@ class Firestore{
 
     Book book = Book(
       title,lan,year,publisher,desc,img,views,pages,
-      rate,authorList,tags,comments,pdf,buy,isbn
+      rate,authorList,tags,comments,pdf,buy,isbn,
+      userInitialize: userInitialize
     );
 
     return book;

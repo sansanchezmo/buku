@@ -47,15 +47,18 @@ class Book {
       List<BookComment> comments,
       List<dynamic> pdfLinks,
       Map<String, dynamic> buyURL,
-      Map<String, dynamic> isbn) {
+      Map<String, dynamic> isbn,
+      {userInitialize: true}) {
     this._authors = authors;
     this._tags = tags;
     this._comments = comments;
     this._pdfLinks = pdfLinks;
     this._buyURL = buyURL;
     this._isbn = isbn;
-    updateViews();
-    addToHistory();
+    if(userInitialize){
+      updateViews();
+      addToHistory();
+    }
   }
 
   ///Getters

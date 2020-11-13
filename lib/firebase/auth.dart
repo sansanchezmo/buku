@@ -60,7 +60,7 @@ class Auth {
             Navigator.of(context).pushNamed('/newUser');
 
           }else{
-            MainUser.init();
+            await MainUser.init();
             String theme = await MainUser.getProfileTheme();
             CurrentTheme.setTheme(theme, context: context);
             Navigator.of(context).pushNamed('/menu');
