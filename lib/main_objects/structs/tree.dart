@@ -18,9 +18,7 @@ class Tree<T> {
   Tree() {
     root = new TreeNode<T>();
   }
-
 }
-
 
 // Alternative: Use only the class below. The root would be a BookListComponent.
 class BookListComponent {
@@ -28,10 +26,10 @@ class BookListComponent {
   List children;
   String name;
 
-  BookListComponent([BookListComponent theParent]) {
+  BookListComponent(BookListComponent theParent, String theName) {
     parent = theParent;
     children = new List();
-    name = '';
+    name = theName;
   }
 
   bool get isEmpty => children.isEmpty;
