@@ -1,3 +1,5 @@
+import 'package:buku/main_objects/structs/tree.dart';
+import 'package:buku/scaffolds/others_scaffolds/list_info_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/comming_soon_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/testdata_primitive_scf.dart';
 import 'package:buku/theme/current_theme.dart';
@@ -17,7 +19,9 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   PageController pageControl = PageController();
+  BookListComponent listComponent;
   int numbpage = 0;
+
   void changePage(int a) {
     setState(() {
       numbpage = a;
@@ -33,6 +37,7 @@ class _MenuState extends State<Menu> {
     super.initState();
     numbpage = widget.number;
     pageControl = PageController(initialPage: numbpage);
+    listComponent = createMyLists();
   }
 
   @override
@@ -43,7 +48,7 @@ class _MenuState extends State<Menu> {
           ComingSoonScaffold(),
           SearchScaffold(),
           MainPageScaffold(),
-          ComingSoonScaffold(),
+          ListInfoScaffold(listComponent),
           UserProfileScaffold(),
         ],
         controller: pageControl,
@@ -96,5 +101,16 @@ class _MenuState extends State<Menu> {
         height: 60,
       ),
     );
+  }
+
+  BookListComponent createMyLists() {
+    BookListComponent listComponent = new BookListComponent(null, 'My Lists');
+    BookListComponent listComponent1 =
+        new BookListComponent(null, 'Lista personal 1');
+    BookListComponent listComponent2 =
+        new BookListComponent(null, 'Lista personal 2');
+    listComponent.children.add(listComponent1);
+    listComponent.children.add(listComponent2);
+    return listComponent;
   }
 }
