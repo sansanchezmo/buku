@@ -86,7 +86,8 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
             color: Colors.transparent,
             onPressed: () async {
               Navigator.pushReplacementNamed(context, '/settings');
-              /*
+              /*Book book = await Firestore().getBook("0001046438");
+              //G
               Book book = await Firestore().getBook("0001046438");
               print(book.imageURL);
               Navigator.push(
@@ -98,7 +99,7 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
                */
             },
             child: Icon(Icons.settings,
-                color: CurrentTheme.background, size: 24.0),
+                color: Colors.white70, size: 24.0),
           ),
         ),
       ],
@@ -433,4 +434,5 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
     }
     return userFavAuthors;
   }
+
 }

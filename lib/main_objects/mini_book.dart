@@ -11,6 +11,7 @@ class MiniBook {
   String _title;
   List<dynamic> _authors;
   String _imageURL;
+  double _rate = 4.5;
 
   //Constructor
   MiniBook(this._isbn10, this._title, this._authors, this._imageURL);
@@ -191,6 +192,75 @@ class MiniBook {
         ),
       ),
     ]);
+  }
+
+  Widget toResultWidget() {
+    return Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(20),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              miniBookImage(width: 75),
+              SizedBox(width: 15),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: 190,
+                      child: Text(this._title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: CurrentTheme.textColor1, fontSize: 16))),
+                  SizedBox(height: 10),
+                  Container(
+                      width: 190,
+                      child: Text(_authorNames(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: CurrentTheme.textColor3, fontSize: 14))),
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      ratingStars(_rate),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(_rate.toString(),
+                          style: TextStyle(
+                              color: CurrentTheme.textColor3, fontSize: 14.5)),
+                    ],
+                  )
+                ],
+              ),
+            ]));
+  }
+
+  Widget ratingStars(double rating) {
+    /**
+     * Returns the stars icons in a row, depending on the book´s rating.
+     */
+    double rat = rating;
+    List<Widget> ratingStars = List<Widget>(5);
+    for (int i = 0; i < 5; i++) {
+      if (rat >= 1) {
+        ratingStars[i] =
+            Icon(Icons.star, color: CurrentTheme.primaryColor, size: 15.0);
+      } else if (rat > 0) {
+        ratingStars[i] =
+            Icon(Icons.star_half, color: CurrentTheme.primaryColor, size: 15.0);
+        rat = 0;
+      } else if (rat <= 0) {
+        ratingStars[i] = Icon(Icons.star_border,
+            color: CurrentTheme.primaryColor, size: 15.0);
+      }
+      rat--;
+    }
+    return Row(children: ratingStars);
   }
 
   String _authorNames() {

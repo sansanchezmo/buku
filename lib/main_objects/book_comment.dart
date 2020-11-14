@@ -1,5 +1,6 @@
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class BookComment {
   final String _userNickName;
   final String _userProfilePic;
   final String _comment;
-  final String _date;
+  final Timestamp _date;
 
   ///Constructor
   BookComment(this._userUID, this._userName, this._userNickName, this._userProfilePic, this._comment, this._date);
@@ -43,7 +44,7 @@ class BookComment {
   String get userNickName => _userNickName;
   String get userProfilePic => _userProfilePic;
   String get comment => _comment;
-  String get date => _date;
+  Timestamp get date => _date;
 
   ///---------------------------PUBLIC METHODS------------------------------///
 
@@ -62,7 +63,7 @@ class BookComment {
            width: double.infinity,
            padding: EdgeInsets.only(right: 20),
            alignment: Alignment.centerRight,
-           child: Text(this._date),
+           child: Text(this._date.toDate().toString()),
          ),
          Divider(height: 25, thickness: 1, color: CurrentTheme.separatorColor),
        ],

@@ -1,7 +1,9 @@
 import 'package:buku/main_objects/book.dart';
+import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
@@ -22,6 +24,8 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
 
   Animation<double> _floatingButtonAnimation;
   AnimationController _floatingButtonAnimationController;
+  TabController _tabController;
+  TextEditingController _commentController = TextEditingController(text: "");
 
   _BookInfoScaffoldState(this.book);
 
@@ -37,63 +41,81 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
         curve: Curves.easeInOut, parent: _floatingButtonAnimationController);
     _floatingButtonAnimation =
         Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-        color: CurrentTheme.primaryColor,
-        child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: _floatingActionButton(),
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  _headerStack(screenWidth),
-                  Flexible(
-                    fit: FlexFit.loose,
-                    child: Container(
-                      width: screenWidth,
-                      padding: EdgeInsets.only(left: 25, right: 25, bottom: 30),
-                      decoration: BoxDecoration(
-                        color: CurrentTheme.background,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _firstInfo(),
-                          SizedBox(height: 50),
-                          _secondStatistics(),
-                          SizedBox(height: 40),
-                          _finalInfo(),
-                          SizedBox(height: 30)
-                        ],
-                      ),
-                    ),
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: _floatingActionButton(),
+      backgroundColor: CurrentTheme.background,
+      body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _headerStack(screenWidth),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Container(
+                  width: screenWidth,
+                  padding: EdgeInsets.only(left: 25, right: 25, bottom: 30),
+                  decoration: BoxDecoration(
+                    color: CurrentTheme.background,
                   ),
-                  Container(
-                      width: screenWidth,
-                      decoration: BoxDecoration(
-                        color: CurrentTheme.background,
-                      ),
-                      child: _commentSection()),
-                  Container(
-                    width: screenWidth,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: CurrentTheme.background,
-                    ),
-                  )
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _firstInfo(),
+                      SizedBox(height: 50),
+                      _secondStatistics(),
+                      SizedBox(height: 40),
+                      _finalInfo(),
+                      SizedBox(height: 30)
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                  width: double.infinity,
+                  color: CurrentTheme.background,
+                  child: _commentsTab()),
+              /*TabBar(
+                unselectedLabelColor: CurrentTheme.primaryColorVariant,
+                labelColor: CurrentTheme.primaryColor,
+                controller: _tabController,
+                indicatorSize: TabBarIndicatorSize.label,
+                tabs: [
+                  Tab(icon: Icon(Icons.comment)),
+                  Tab(icon: Icon(Icons.book))
                 ],
-              )),
-        ));
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Container(height: 100, width: 100,),
+                    Container(height: 100, width: 100,),
+                    */ /*_commentsTab(),
+                    _readTab()*/ /*
+                  ],
+                ),
+              ),*/
+              Container(
+                width: screenWidth,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: CurrentTheme.background,
+                ),
+              )
+            ],
+          )),
+    );
   }
 
   FloatingActionBubble _floatingActionButton() {
@@ -185,10 +207,10 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
-        SizedBox(
-          height: 400.0,
-          width: screenWidth,
-        ),
+        Container(
+            height: 400.0,
+            width: screenWidth,
+            color: CurrentTheme.primaryColor),
         Positioned(
           top: 230,
           left: 0,
@@ -209,7 +231,20 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                 ]),
           ),
         ),
-        Positioned(top: 80, child: book.bookImage(width: 170))
+        Positioned(top: 80, child: book.bookImage(width: 170)),
+        Positioned(
+            top: 30,
+            left: 0,
+            child: FlatButton(
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.white70,
+                size: 25,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ))
       ],
     );
   }
@@ -246,9 +281,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
         _firstStatistics(),
         SizedBox(height: 40),
         Text(
-          book.synopsis == 'null' || book.synopsis.length == 0
-              ? "Synopsis is no available."
-              : book.synopsis,
+          book.synopsis == 'null' ? "Synopsis is no available." : book.synopsis,
           textAlign: TextAlign.justify,
           style: TextStyle(
               color: CurrentTheme.textColor1,
@@ -335,7 +368,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
         ),
       );
     }
-    if (book.language != 'null' && book.language.length != 0) {
+    if (book.language != 'null') {
       statistics.add(
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -415,7 +448,29 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
     );
   }
 
-  Widget _commentSection() {
+  /*Widget _tabSection() {
+    return Column(children: [
+      TabBar(
+        unselectedLabelColor: CurrentTheme.primaryColorVariant,
+        labelColor: CurrentTheme.primaryColor,
+        controller: _tabController,
+        indicatorSize: TabBarIndicatorSize.label,
+        tabs: [
+            Tab(icon: Icon(Icons.comment)),
+            Tab(icon: Icon(Icons.book))
+          ],
+      ),
+      Expanded(
+        child: TabBarView(
+
+          controller: _tabController,
+          children: [_commentsTab(), _readTab()],
+        ),
+      ),
+    ]);
+  }*/
+
+  Widget _commentsTab() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -443,31 +498,79 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
           ]),
         ),
         SizedBox(height: 15),
-        Center(
-          child: Column(
-              children: book.comments.length != 0
-                  ? book.commentWidgetList()
-                  : [
-                      Text("No comments yet",
-                          style: TextStyle(color: CurrentTheme.textColor3)),
-                      FlatButton(
-                          onPressed: () {
-                            _showCommentDialog();
-                          },
-                          textColor: Colors.white,
-                          child: Container(
-                              height: 30,
-                              width: 150,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: CurrentTheme.primaryColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Text("Be the first comment!")))
-                    ]),
-        )
+        Center(child: Column(children: _comments()))
       ],
     );
+  }
+
+  List<Widget> _comments() {
+    List<Widget> commentList = new List<Widget>();
+    commentList.add(Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 250,
+          child: TextField(
+            controller: _commentController,
+            maxLines: null,
+            maxLength: 250,
+            cursorColor: CurrentTheme.textColor1,
+            style: TextStyle(color: CurrentTheme.textColor3),
+            decoration: InputDecoration(
+                labelText: 'Comment this book',
+                labelStyle: TextStyle(
+                  color: CurrentTheme.primaryColorVariant,
+                ),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: CurrentTheme.primaryColorVariant)),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: CurrentTheme.primaryColorVariant)),
+                helperStyle: TextStyle(color: CurrentTheme.textColor3)),
+          ),
+        ),
+        RaisedButton(
+          elevation: 0,
+          color: Colors.transparent,
+          child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: CurrentTheme.primaryColor),
+              child: Icon(
+                Icons.comment,
+                color: Colors.white70,
+              )),
+          onPressed: () {
+            if (_commentController.text != '') {
+              BookComment comment = new BookComment(
+                  MainUser.user.uid,
+                  MainUser.user.name,
+                  MainUser.user.nickname,
+                  MainUser.user.imageUrl,
+                  _commentController.text,
+                  Timestamp.now());
+              book.commentBook(comment);
+              setState(() {});
+            }
+          },
+        ),
+      ],
+    ));
+    commentList.add(Divider(height: 40, thickness: 1,));
+    var commentsWidgets = book.commentWidgetList();
+    commentList.addAll(commentsWidgets);
+    return commentList;
+  }
+
+  Widget _readTab() {
+    return Container(
+        width: double.infinity,
+        height: 300,
+        color: CurrentTheme.background,
+        child: Text("Prueba"));
   }
 
   void _showRemoveFromFavsDialog() {
@@ -498,7 +601,8 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                 this.setState(() {
                   this.isFavorite = false;
                 });
-                Fluttertoast.showToast(msg: "The book was removed from favorites.");
+                Fluttertoast.showToast(
+                    msg: "The book was removed from favorites.");
               },
             ),
             FlatButton(
@@ -551,14 +655,14 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
               textColor: CurrentTheme.primaryColor,
               child: Text('SUBMIT'),
               onPressed: () {
-                if(rate == 0.0 || rate == null){
-                  Fluttertoast.showToast(msg: "Please rate the book to continue");
+                if (rate == 0.0 || rate == null) {
+                  Fluttertoast.showToast(
+                      msg: "Please rate the book to continue");
                 } else {
                   Navigator.of(context).pop();
                   book.rate(rate);
                   Fluttertoast.showToast(msg: "Thanks for rating.");
                 }
-
               },
             ),
             FlatButton(
@@ -594,18 +698,17 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
             children: [
               FlatButton(
                 child: Container(
-                  width: 55, height: 55,
+                  width: 55,
+                  height: 55,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: CurrentTheme.primaryColor,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage('assets/images/amazon.png')
-                    )
-                  ),
+                      shape: BoxShape.circle,
+                      color: CurrentTheme.primaryColor,
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage('assets/images/amazon.png'))),
                 ),
-                onPressed: () async{
+                onPressed: () async {
                   String url = book.buyURL['amazon'];
                   if (await canLaunch(url)) {
                     await launch(url);
@@ -615,29 +718,30 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
                   Navigator.of(context).pop();
                 },
               ),
-              book.buyURL['google'] == 'null'? null : FlatButton(
-                child: Container(
-                  width: 55, height: 55,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: CurrentTheme.primaryColor,
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/images/google.png')
-                      )
-                  ),
-                ),
-                onPressed: () async{
-                  String url = book.buyURL['google'];
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    Fluttertoast.showToast(msg: "Link not available");
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
+              book.buyURL['google'] == 'null'
+                  ? null
+                  : FlatButton(
+                      child: Container(
+                        width: 55,
+                        height: 55,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: CurrentTheme.primaryColor,
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage('assets/images/google.png'))),
+                      ),
+                      onPressed: () async {
+                        String url = book.buyURL['google'];
+                        if (await canLaunch(url)) {
+                          await launch(url);
+                        } else {
+                          Fluttertoast.showToast(msg: "Link not available");
+                        }
+                        Navigator.of(context).pop();
+                      },
+                    ),
             ],
           ),
           actions: <Widget>[

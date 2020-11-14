@@ -1,11 +1,14 @@
 
 import 'package:buku/main_objects/author.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/utilities/format_string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MiniAuthor {
   ///Attributes
   String _name, _imageURL;
+  Map<String,dynamic> _statistics = {"books":20,"followers":140};
 
   ///Getters
   String get name => _name;
@@ -14,7 +17,11 @@ class MiniAuthor {
   ///Constructor
   MiniAuthor(this._name, this._imageURL);
 
+
   Widget toWidget(BuildContext context){
+    /**
+     * Returns the widget used in the horizontal scroll.
+     */
     return GestureDetector(
       onTap: ()  async {
         /*Author author = await Firestore().getAuthor(this._name);
@@ -65,4 +72,47 @@ class MiniAuthor {
       ),
     );
   }
+
+  Widget toResultWidget(){
+    print("1");
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 55, width: 55,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/user.png')
+              ),
+              shape: BoxShape.circle
+            ),
+          ),
+          SizedBox(width: 25),
+          Column(
+            children: [
+              Container(
+                width: 230,
+                child: Text(this.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: CurrentTheme.textColor1,fontSize: 16)),
+              ),
+              Container(
+                width: 230,
+                child: Text(_statistics["books"].toString() + " Books - " + FormatString.formatStatistic(_statistics["followers"]) +" Followers",
+                    style: TextStyle(color: CurrentTheme.textColor3,fontSize: 14.5)),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+
 }

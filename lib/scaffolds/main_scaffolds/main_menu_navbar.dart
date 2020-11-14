@@ -1,10 +1,9 @@
+import 'package:buku/scaffolds/others_scaffolds/comming_soon_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/testdata_primitive_scf.dart';
-import 'package:buku/scaffolds/others_scaffolds/search_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-
-import '../others_scaffolds/comming_soon_scf.dart';
+import 'search_scf.dart';
 import 'main_page_scf.dart';
 import 'user_profile_scf.dart';
 

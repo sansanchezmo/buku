@@ -1,5 +1,6 @@
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
+import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,30 +16,19 @@ class TestDanielScaffold extends StatefulWidget{
 class _TestDanielScaffoldState extends State<TestDanielScaffold>{
   @override
   Widget build(BuildContext context) {
-    MiniUser user1 = new MiniUser("", "Nombre Real más largo de todos quesdfaf contiene mucho texto para mirar el textoverflow", "_nickname", "assets/user_images/user_1.png");
-    MiniUser user2 = new MiniUser("", "Andrés Sierrs", "_nickname2", "assets/user_images/user_3.png");
-    MiniUser user3 = new MiniUser("", "Camila Andrea", "_nickname3", "assets/user_images/user_4.png");
-    MiniUser user4 = new MiniUser("", "Kevin de la Torre", "_nickname4", "assets/user_images/user_2.png");
+    MiniAuthor auth = new MiniAuthor("Nombre Real", 'null');
+    MiniAuthor auth2 = new MiniAuthor("Nombre Real Por Dos Montaña jadlsf sldfja sdña lejlwj slic", 'null');
+    MiniBook book = new MiniBook("0001046438", "Título Real de un libro con nombre largo", ["Autor 1","autores"], 'http://images.amazon.com/images/P/0006275192.01.LZZZZZZZ.jpg');
+    MiniBook book2 = new MiniBook("0001046438", "Helloooo este es otro nombre", ["autores"], 'http://images.amazon.com/images/P/0006275192.01.LZZZZZZZ.jpg');
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 120),
-            user1.toWidget(context),
-            user2.toWidget(context),
-            user3.toWidget(context),
-            user4.toWidget(context),
-            /*Container(
-              height: 25, width: 25,
-              decoration: BoxDecoration(
-                color: CurrentTheme.backgroundContrast,
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: author.imageURL == null? AssetImage('assets/images/user_notFound.png') : NetworkImage(author.imageURL),
-                  fit: BoxFit.fill
-                )
-              )
-            ),*/
+            auth.toResultWidget(),
+            auth2.toResultWidget(),
+            book.toResultWidget(),
+            book2.toResultWidget()
           ],
         ),
       ),
