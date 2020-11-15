@@ -57,9 +57,10 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
               height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: CurrentTheme.primaryColor,
+                  //color: CurrentTheme.primaryColor,
+                gradient: CurrentTheme.primaryGradientColor,
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(40),
+                      //bottomLeft: Radius.circular(40),
                       bottomRight: Radius.circular(40)),
                   boxShadow: [
                     BoxShadow(

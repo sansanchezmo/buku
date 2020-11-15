@@ -6,6 +6,7 @@ import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/structs/linked_list.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:buku/widgets/book_horizontal_slider.dart';
 import 'package:buku/widgets/gradient_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,13 +44,13 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image(
-                    height: 25,
-                    width: 25,
+                    height: 30,
+                    width: 30,
                     image: AssetImage(
                       'assets/images/bukusymbol.png',
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 60),
                   Text(
                     'Test',
                     style: TextStyle(
@@ -130,7 +131,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
               Padding(
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  'Find books that fit to your pleasures.',
+                  'Find books that fit to your pleasures',
                   style: TextStyle(
                     color: CurrentTheme.textColor1,
                     fontSize: 15,
@@ -140,16 +141,15 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
               SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(120)),
-                  boxShadow: [
+                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                  /*boxShadow: [
                     BoxShadow(
                       color: CurrentTheme.shadow1,
                       spreadRadius: 6, //(x,y)
                       blurRadius: 20.0,
                     ),
-                  ],
-                  gradient: LinearGradient(
-                      colors: [Colors.deepOrange, Colors.orange]),
+                  ],*/
+                  gradient: CurrentTheme.primaryGradientColor,
                 ),
                 child: SwipeTo(
                   offsetDx: 2.0,
@@ -252,42 +252,17 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                   ),
                 ),
               ),
-              SizedBox(height: 30.0),
 
 //-----------------------------Second_Widget------------------------------------
-              // Divider (- Write Here the Second Widget's name -)
-              Row(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    "Second Widget",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      color: CurrentTheme.textColor3,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'ProductSans',
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: new Container(
-                      margin: EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 36,
-                      )),
-                ),
-              ]),
-              // --- Add your widget HERE --
-              Image(
-                image: AssetImage(
-                  'assets/images/open-book.png',
-                ),
-                width: 150.0,
-                height: 150.0,
+              BookHorizontalSlider(
+                "Book history",
+                MainUser.openHistory,
+                  Container(
+                    width: 250,
+                    child: Text("You haven\'t seen any books yet. Keep discovering new content!",
+                        style: TextStyle(color: CurrentTheme.textColor3)),
+                  )
               ),
-              SizedBox(height: 30.0),
 
 //-----------------------------Third_Widget-------------------------------------
               // Divider (- Write Here the Third Widget's name -)

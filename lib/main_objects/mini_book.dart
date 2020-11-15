@@ -166,9 +166,9 @@ class MiniBook {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: CurrentTheme.shadow1,
-              spreadRadius: 8, //(x,y)
-              blurRadius: 15.0,
+              color: CurrentTheme.shadow2,
+              spreadRadius: 10, //(x,y)
+              blurRadius: 10.0,
             ),
           ],
         ),

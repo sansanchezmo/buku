@@ -34,107 +34,102 @@ class _ListInfoScaffoldState extends State<ListInfoScaffold> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-              height: 120,
+              height: 140,
               width: double.infinity,
-              padding: EdgeInsets.only(top: 60),
+              padding: EdgeInsets.only(top: 50),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40)),
+                    //bottomRight: Radius.circular(40)
+                  ),
                 boxShadow: [
                   BoxShadow(
                       color: CurrentTheme.shadow1,
                       spreadRadius: 5,
                       blurRadius: 10)
                 ],
-                gradient: CurrentTheme.primaryGradientColor,
+                gradient: CurrentTheme.primaryGradientColorInverted,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(30, 0, 20, 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _listComponent.name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: CurrentTheme.searchBar,
-                            fontSize: 30.0,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            String title;
-                            showDialog(
-                              context: context,
-                              barrierDismissible:
-                                  false, // user must tap button!
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('New List'),
-                                  content: SingleChildScrollView(
-                                    child: ListBody(
-                                      children: <Widget>[
-                                        Text("Type the name of your new list:"),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextField(
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            labelText: 'List Name',
-                                          ),
-                                          controller: _controller,
-                                          onSubmitted: (String value) {
-                                            title = value;
-                                          },
-                                        )
-                                      ],
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(30, 0, 30, 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      _listComponent.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        String title;
+                        showDialog(
+                          context: context,
+                          barrierDismissible:
+                              false, // user must tap button!
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('New List'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    Text("Type the name of your new list:"),
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Create'),
-                                      onPressed: () {
-                                        setState(() {
-                                          title == null
-                                              ? title =
-                                                  _listComponent.name + '01'
-                                              : print('New list: ' + title);
-                                          BookListComponent listComponent =
-                                              new BookListComponent(
-                                                  _listComponent, title);
-                                          _listComponent.children
-                                              .add(listComponent);
-                                        });
-                                        Navigator.of(context).pop();
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: 'List Name',
+                                      ),
+                                      controller: _controller,
+                                      onSubmitted: (String value) {
+                                        title = value;
                                       },
-                                    ),
-                                    TextButton(
-                                      child: Text('Cancel'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
+                                    )
                                   ],
-                                );
-                              },
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Create'),
+                                  onPressed: () {
+                                    setState(() {
+                                      title == null
+                                          ? title =
+                                              _listComponent.name + '01'
+                                          : print('New list: ' + title);
+                                      BookListComponent listComponent =
+                                          new BookListComponent(
+                                              _listComponent, title);
+                                      _listComponent.children
+                                          .add(listComponent);
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
                             );
                           },
-                          child: Icon(
-                            Icons.playlist_add,
-                            color: CurrentTheme.searchBar,
-                            size: 30,
-                          ),
-                        ),
-                      ],
+                        );
+                      },
+                      child: Icon(
+                        Icons.playlist_add,
+                        color: Colors.white70,
+                        size: 30,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )),
           Container(
             height: 500,
@@ -175,13 +170,14 @@ class _ListInfoScaffoldState extends State<ListInfoScaffold> {
                                     Text(
                                       list.name,
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         color: Colors.white,
                                       ),
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios_sharp,
                                       color: Colors.white,
+                                      size: 18,
                                     )
                                   ],
                                 )),
