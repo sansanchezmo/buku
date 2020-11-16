@@ -112,8 +112,10 @@ class BKTree {
 }
 
 void main() {
+  /*
   BKTree A = new BKTree();
   List s = ["aardvark","aardvarks","abaci","aback","abacus","abacuses","abaft","abalone","abalones","abandon","abandoned","abandoning","abandonment","abandons","abase","abased","abasement","abases","abash","abashed","abashes","abashing","abasing","abate","abated","abatement","abates","abating","abattoir","abattoirs","abbess","abbesses","abbey","abbeys","abbot","abbots","abbreviate","abbreviated","abbreviates","abbreviating","abbreviation","abbreviations","abdicate","abdicated","abdicates","abdicating","abdication","abdications","abdomen","abdomens","abdominal","abduct","abducted","abducting","abduction","abductions","abductor","abductores","abductors","abducts","abeam","abed","aberrant","aberration","aberrations","abet","abets","abetted","abetter","abetters","abetting","abettor","abettors","abeyance","abhor","abhorred","abhorrence","abhorrent","abhorring","abhors","abide","abided","abides","abiding","abidings","abilities","ability","abject","abjected","abjecting","abjectly","abjects","abjuration","abjurations","abjure","abjured","abjures","abjuring","ablative","ablatives","ablaze","able","abler","ables","ablest","abloom","ablution","ablutions","ably","abnegate","abnegated","abnegates","abnegating","abnegation","abnormal","abnormalities","abnormality","abnormally","aboard","abode","aboded","abodes","aboding","abolish","abolished","abolishes","abolishing","abolition","abolitionist","abolitionists","abominable","abominably","abominate","abominated","abominates","abominating","abomination","abominations","aboriginal","aboriginals","aborigine","aborigines","abort","aborted","aborting","abortion","abortionist","abortionists","abortions","abortive","aborts","abound","abounded","abounding","abounds","about","abouts","above","aboveboard","abracadabra","abrade","abraded","abrades","abrading","abrasion","abrasions","abrasive","abrasively","abrasiveness","abrasives","abreast","abridge","abridged","abridgement","abridgements","abridges","abridging","abridgment","abridgments","abroad","abrogate","abrogated","abrogates","abrogating","abrogation","abrogations","abrupt","abrupter","abruptest","abruptly","abruptness","abscess","abscessed","abscesses","abscessing","abscissa","abscissae","abscissas","abscond","absconded","absconding","absconds","absence","absences","absent","absented","absentee","absenteeism","absentees","absenting","absently","absents","absinth","absinthe","absolute","absolutely","absoluter","absolutes","absolutest","absolution","absolutism","absolve","absolved","absolves","absolving","absorb","absorbed","absorbency","absorbent","absorbents","absorbing","absorbs","absorption","abstain","abstained"];
+  print(s.length);
   int start = DateTime.now().millisecondsSinceEpoch;
   for (int i = 0; i < s.length; i++)
     A.add(new BKTreeNode(s[i], ""));
@@ -123,4 +125,5 @@ void main() {
   var x = A.searchSuggestions("abac");
   print((DateTime.now().millisecondsSinceEpoch - start) / 1000);
   print(x);
+  */
 }

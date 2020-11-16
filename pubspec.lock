@@ -469,6 +469,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.1"
+  string_similarity:
+    dependency: "direct main"
+    description:
+      name: string_similarity
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   swipe_to:
     dependency: "direct main"
     description:
@@ -559,7 +566,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.3"
+    version: "1.7.4"
   xdg_directories:
     dependency: transitive
     description:

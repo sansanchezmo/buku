@@ -8,6 +8,9 @@ import 'package:buku/main_objects/tag.dart';
 import 'package:buku/utilities/sort.dart';
 import  'package:string_similarity/string_similarity.dart';
 import 'package:buku/main_objects/structs/set.dart';
+import 'package:buku/main_objects/structs/trie.dart';
+import 'package:buku/main_objects/structs/heap.dart';
+import 'package:buku/main_objects/structs/bk_tree.dart';
 import 'package:flutter/services.dart';
 
 class Search{
@@ -16,6 +19,8 @@ class Search{
   static UnorderedSet<String> titleSet = UnorderedSet<String>();
 
   static Map<String,String> bookMap = {};
+  static Trie bookTrie;
+  static BKTree bookBKTree;
 
   static List<String> isbnList = [];
   static List<String> titleList = [];
@@ -25,8 +30,24 @@ class Search{
     await _loadISBN();
     await _loadTitle();
     _createBookSet();
+    _createBookTrie(); // 7-10 seconds
+    //_createBookBKTree(); // JUST TOO SLOW
     print('---------------COMPLETE SEARCH INIT----------------------');
 
+  }
+
+  static _createBookBKTree() {
+    bookBKTree = new BKTree();
+    bookMap.forEach((isbn, title) {
+      bookBKTree.add(new BKTreeNode(title, isbn));
+    });
+  }
+
+  static _createBookTrie() {
+    bookTrie = new Trie();
+    bookMap.forEach((isbn, title) {
+      bookTrie.add(title, isbn);
+    });
   }
 
   static _createBookSet(){
@@ -182,6 +203,8 @@ class Search{
     return isbnSet.contains(isbn);
 
   }
+
+  static _searchPrefixTitle(String title) => bookTrie.prefixSearch(title);
 
   static _searchTitle(String title){
 
