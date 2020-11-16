@@ -180,7 +180,7 @@ class LinkedList<T> {
     return -1;
   }
 
-  Node foundNode(T val) {
+  Node foundNode(val) {
     Node itr = _head;
 
     while (itr != null) {
