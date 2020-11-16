@@ -3,7 +3,8 @@ import 'package:buku/main_objects/book.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Database { //TODO: this class is deprecated. Pls do not use under any circumstances (._.)
+@deprecated
+class Database {
 
   static Future<void> createDatabase() async{
 

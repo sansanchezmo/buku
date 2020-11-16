@@ -280,8 +280,9 @@ class Firestore {
         .then((value) {
       value.docs.forEach((element) {
         var data = element.data();
-        BookComment(data['user_uid'], data['user_name'], data['user_nickname'],
-            data['user_image'], data['comment'], data['date']);
+        comments.add(BookComment(data['user_uid'], data['user_name'], data['user_nickname'],
+            data['user_image'], data['comment'], data['date']));
+
       });
     });
 

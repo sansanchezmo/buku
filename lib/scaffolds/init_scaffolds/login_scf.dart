@@ -121,7 +121,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                       });
                     }
                     else{
-                      await MainUser.init(loadUserInfo: false);
+                      //await MainUser.init(loadUserInfo: false);
                       await MainUser.login(emailController.text, passController.text, context);
                     }
                   }),

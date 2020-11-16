@@ -4,10 +4,11 @@ import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_book.dart';
+import 'package:buku/main_objects/read_list.dart';
 import 'package:buku/main_objects/structs/linked_list.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/book_horizontal_slider.dart';
-import 'package:buku/widgets/gradient_button.dart';
+import 'package:buku/widgets/recommended_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -270,7 +271,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                 Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Text(
-                    "Thirth Widget",
+                    "Maybe it interest you",
                     style: TextStyle(
                       color: CurrentTheme.textColor3,
                       fontWeight: FontWeight.bold,
@@ -289,17 +290,14 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                 ),
               ]),
               // --- Add your widget HERE --
-              GradientButton(
-                text: 'ML kit test',
-                tap: () {
-                  print(ML.getRecommendedReadList(4));
-                },
+              RecommendedListWidget(
+                getReadlistStack()
               ),
               SizedBox(height: 30.0),
 
 //-----------------------------Fourth_Widget------------------------------------
               // Divider (- Tag cloud -)
-              Row(children: <Widget>[
+              /*Row(children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Text(
@@ -320,7 +318,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                         height: 36,
                       )),
                 ),
-              ]),
+              ]),*/
               TagCloud(), // --- Add your widget HERE --
               /*
               Image(
@@ -337,11 +335,21 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
     );
   }
 
-  void addInfo() async {
-    ArrayQueue<MiniBook> arrayQueue = await _store.getRecommendsQueue(20);
+  void addInfo(){
+    ArrayQueue<MiniBook> arrayQueue = ML.getRecommendedBookQueue(20);
     setState(() {
       recommendsQueue = arrayQueue;
       print('Queue succesfully created');
     });
+  }
+
+  ListStack<ReadList> getReadlistStack(){
+    ListStack<ReadList> stack = ListStack<ReadList>();
+    var list = ML.getRecommendedReadList(4);
+    for(var item in list){
+      stack.push(item);
+    }
+    return stack;
+
   }
 }

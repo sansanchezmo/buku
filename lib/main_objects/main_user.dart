@@ -2,6 +2,7 @@
 import 'package:buku/firebase/ML_kit.dart';
 import 'package:buku/firebase/auth.dart';
 import 'package:buku/firebase/firestore.dart';
+import 'package:buku/search_engine/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:buku/main_objects/user.dart' as Usr;
@@ -29,7 +30,7 @@ class MainUser{
 
   //initialize user attributes
 
-  static init({loadUserInfo:true}) async{
+  static init({loadUserInfo:true, loadML:true}) async{
 
     _auth = Auth();
     _store = Firestore();
@@ -38,7 +39,11 @@ class MainUser{
     if(loadUserInfo) {
       await _setUser();
       await _loadCache();
-      //await ML.init();
+    }
+
+    if(loadML){
+      await ML.init();
+      await Search.init();
     }
 
   }
@@ -56,7 +61,7 @@ class MainUser{
 
   static void login(String email, String password, BuildContext context) async{
     await _auth.loginUser(email, password, context);
-    await init();
+    await init(loadML: false);
   }
 
   static void register(String email, String password, String nickName,
@@ -81,7 +86,7 @@ class MainUser{
   static void storeMainData(String theme, String name, String desc, String userImg, List<String> tags) async{
 
     await _store.storeMainData(_currUser.uid, theme, name, desc, userImg, tags);
-    await MainUser.init();
+    await MainUser.init(loadML: false);
 
   }
 
@@ -123,22 +128,22 @@ class MainUser{
 
   static Future<void> addBookToFavorites(MiniBook mini) async{
     await _store.addToMiniBookCollection(uid, Firestore.favoriteBooks, mini);
-    await init();
+    await init(loadML: false);
   }
 
   static Future<void> addToOpenHistory(MiniBook mini) async{
     await _store.addToMiniBookCollection(uid, Firestore.openHistory, mini);
-    await init();
+    await init(loadML: false);
   }
 
   static Future<void> removeBookFromFavorites(String isbn) async{
     await _store.removeFromMiniBookCollection(uid, Firestore.favoriteBooks, isbn);
-    await init();
+    await init(loadML: false);
   }
 
   static Future<void> updateProfile(Map<String, dynamic> cache) async {
     await _store.updateUserInfo(uid, cache);
-    await init();
+    await init(loadML: false);
   }
 
   static Future<void> setTheme(String option) async{

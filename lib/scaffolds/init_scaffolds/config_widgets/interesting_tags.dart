@@ -129,19 +129,19 @@ class _InterestingTagsState extends State<InterestingTags>{
       ),
     );
   }
-  _favTagsList() { //TODO: change tags
+  _favTagsList() {
     var userFavTagsList = new List<Widget>();
     var testTags = [
-      "Fantasy",
-      "Adventure",
+      "Fiction",
       "Romance",
+      "Juvenile Fiction",
       "Mystery",
-      "Horror",
-      "Art",
-      "History",
-      "Development",
-      "Academic",
-      "Motivational",
+      "Detective",
+      "Historical",
+      "Suspense",
+      "Thrillers",
+      "Contemporary",
+      "Fantasy",
     ];
     for (int i = 0; i < testTags.length; i++) {
       userFavTagsList.add(Tag(testTags[i]));

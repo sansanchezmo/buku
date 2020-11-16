@@ -28,4 +28,11 @@ class Sort{
 
     return list;
   }
+
+  static List<Map<String, dynamic>> sortResultMapBySimilarity(List<Map<String, dynamic>> list){
+
+    list.sort((a,b) => a['similarity'].compareTo(b['similarity']));
+    return list.reversed.toList();
+
+  }
 }

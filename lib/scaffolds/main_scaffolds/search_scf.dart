@@ -1,6 +1,10 @@
+import 'package:buku/firebase/firestore.dart';
+import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/tag.dart';
+import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
+import 'package:buku/search_engine/search.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -26,10 +30,14 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
   List<Widget> _authorResults;
   List<Widget> _tagResults;
 
+  String _cache, _toSearch;
+
   @override
   void initState(){
     _searchTabController = new TabController(length: 4, vsync: this,initialIndex: 0);
     _searchTextController = TextEditingController(text: "");
+    _cache = _toSearch = '';
+
     super.initState();
   }
 
@@ -40,7 +48,7 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
         height: double.infinity, width: double.infinity,
         child: Column(
           children: [
-            _searchHeader(),
+            _searchHeader(this),
             SizedBox(height: 15),
             Expanded(
               child: TabBarView(
@@ -59,7 +67,7 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
     );
   }
 
-  Widget _searchHeader(){
+  Widget _searchHeader(_SearchScaffoldState parent){
     return Container(
       height: 165,
       width: double.infinity,
@@ -71,7 +79,7 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _searchBar(),
+          _searchBar(parent),
           SizedBox(height: 10),
           _navTabs()
         ],
@@ -79,7 +87,7 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
     );
   }
 
-  Widget _searchBar(){
+  Widget _searchBar(_SearchScaffoldState parent){
     return Row(
       children: [
         Container(
@@ -92,7 +100,14 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
             borderRadius: BorderRadius.all(Radius.circular(20))
           ),
           child: TextField(
-            onSubmitted: (string) {}, // TODO: change method.
+            onSubmitted: (string) {
+              print('---------------------------------------olEEEEEE-------------------------');
+              if(string.trim().toLowerCase() != _cache){
+                parent.setState(() {
+                  _toSearch = string.trim().toLowerCase();
+                });
+              }
+            },
             controller: _searchTextController,
             autofocus: false,
             decoration: InputDecoration(
@@ -147,18 +162,36 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
       future = _tagSearchResults;
     }
     return SingleChildScrollView(
-      /*child: FutureBuilder(
-        future: future(),
-        builder: (snapshot) {
-
+      child: FutureBuilder(
+        future: future(_toSearch),
+        builder: (cont,snap) {
+          if(snap.connectionState != ConnectionState.done){
+            return Center(
+              child: Text(
+                  'We are processing your consult'
+              ),
+            );
+          }
+          if(snap.hasData){
+            return Column(
+              children: snap.data,
+            );
+          }
+          return Center(
+            child: Text(
+              'We are processing your consult'
+            ),
+          );
         },
-      )*/
+      )
     );
   }
 
-  Future<List<Widget>> _allSearchResults() async {
-    if(_allResults == null || _allResults.length == 0) {
-      List<dynamic> results = await List<dynamic>();//TODO: Method that returns a list of any type
+  Future<List<Widget>> _allSearchResults(String toSearch) async {
+    return [];
+    if(toSearch == '') return [];
+    if(_allResults == null || _allResults.length == 0 || _toSearch!=_cache) {
+      List<dynamic> results = await Search.search(toSearch);
       List<Widget> resultsWidgets = List<Widget>();
       for (dynamic result in results) {
         resultsWidgets.add(_dynamicResultToWidget(result));
@@ -169,12 +202,23 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
     return _allResults;
   }
 
-  Future<List<Widget>> _bookSearchResults() async {
-    if(_bookResults == null || _bookResults.length == 0) {
-      List<MiniBook> results = await List<MiniBook>(); //TODO: List of ONLY MiniTags.
+  Future<List<Widget>> _bookSearchResults(String toSearch) async {
+    return [];
+    if(toSearch == '') return [];
+    if(_bookResults == null || _bookResults.length == 0|| _toSearch!=_cache) {
+      List<MiniBook> results = await Search.searchBook(toSearch);
       List<Widget> resultsWidgets = List<Widget>();
       for (MiniBook result in results) {
-        resultsWidgets.add(result.toResultWidget());
+        resultsWidgets.add(GestureDetector(
+          onTap: () async{
+            Book book = await Firestore().getBook(result.isbn10);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BookInfoScaffold(book: book)),
+            );
+          },
+          child: result.toResultWidget(),
+        ));
       }
       _bookResults = resultsWidgets;
       return resultsWidgets;
@@ -182,9 +226,11 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
     return _bookResults;
   }
 
-  Future<List<Widget>> _authorSearchResults() async{
-    if(_authorResults == null || _authorResults.length == 0) {
-      List<MiniAuthor> results = await List<MiniAuthor>(); //TODO: List of ONLY MiniAuthors.
+  Future<List<Widget>> _authorSearchResults(String toSearch) async{
+    return [];
+    if(toSearch == '') return [];
+    if(_authorResults == null || _authorResults.length == 0 || _toSearch!=_cache) {
+      List<MiniAuthor> results = Search.searchAuthor(toSearch);
       List<Widget> resultsWidgets = List<Widget>();
       for (MiniAuthor result in results) {
         resultsWidgets.add(result.toResultWidget());
@@ -195,9 +241,12 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
     return _authorResults;
   }
 
-  Future<List<Widget>> _tagSearchResults() async{
-    if(_tagResults == null || _tagResults.length == 0) {
-      List<Tag> results = await List<Tag>(); //TODO: List of ONLY tags.
+  Future<List<Widget>> _tagSearchResults(String toSearch) async{
+    return [];
+    if(toSearch == '') return [];
+    if(_tagResults == null || _tagResults.length == 0 || _toSearch!=_cache) {
+      _cache = _toSearch;
+      List<Tag> results = Search.searchTag(toSearch);
       List<Widget> resultsWidgets = List<Widget>();
       for (Tag result in results) {
         resultsWidgets.add(result.toWidget());
@@ -213,6 +262,18 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
       return result.toWidget();
     }
     else if (result.runtimeType == MiniBook || result.runtimeType == MiniAuthor){
+      if(result.runtimeType == MiniBook){
+        return GestureDetector(
+          onTap: () async{
+            Book book = await Firestore().getBook(result.isbn10);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BookInfoScaffold(book: book)),
+            );
+          },
+          child: result.toResultWidget(),
+        );
+      }
       return result.toResultWidget();
     }
     else {

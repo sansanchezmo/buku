@@ -16,12 +16,13 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase/ML_kit.dart';
 import 'firebase/firestore.dart';
+import 'main_objects/book.dart';
 import 'main_objects/main_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // bind app with FireBase
-  await MainUser.init(loadUserInfo: false);// initialize main user
+  await MainUser.init(loadUserInfo: false, loadML: false);// initialize main user
   await setTheme();
   runApp(MyApp());
 }
