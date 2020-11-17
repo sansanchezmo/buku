@@ -188,7 +188,6 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
   }
 
   Future<List<Widget>> _allSearchResults(String toSearch) async {
-    return [];
     if(toSearch == '') return [];
     if(_allResults == null || _allResults.length == 0 || _toSearch!=_cache) {
       List<dynamic> results = await Search.search(toSearch);
@@ -203,7 +202,6 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
   }
 
   Future<List<Widget>> _bookSearchResults(String toSearch) async {
-    return [];
     if(toSearch == '') return [];
     if(_bookResults == null || _bookResults.length == 0|| _toSearch!=_cache) {
       List<MiniBook> results = await Search.searchBook(toSearch);
@@ -227,7 +225,6 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
   }
 
   Future<List<Widget>> _authorSearchResults(String toSearch) async{
-    return [];
     if(toSearch == '') return [];
     if(_authorResults == null || _authorResults.length == 0 || _toSearch!=_cache) {
       List<MiniAuthor> results = Search.searchAuthor(toSearch);
@@ -242,7 +239,6 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
   }
 
   Future<List<Widget>> _tagSearchResults(String toSearch) async{
-    return [];
     if(toSearch == '') return [];
     if(_tagResults == null || _tagResults.length == 0 || _toSearch!=_cache) {
       _cache = _toSearch;

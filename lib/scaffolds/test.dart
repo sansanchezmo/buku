@@ -56,17 +56,18 @@ class _TestState extends State<Test> {
                 print('author');
                 print(Search.searchTitle(con.text));*/
                 print('author');
+                //var list = await Search.search(con.text);
                 var list = await Search.search(con.text);
                 print(list.length.toString());
-                print(list);
+                //print(list);
                 /*for (var i in list){
                   print(i.text);
                 }*/
-                /*for(var e in list){
+                for(var e in list){
                   if(e is MiniBook) print(e.title);
                   if(e is MiniAuthor) print(e.name);
                   if(e is Tag) print(e.text);
-                }*/
+                }
 
               },
             ),

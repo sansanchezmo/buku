@@ -2,6 +2,7 @@ import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as FS;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -270,4 +271,18 @@ class MiniBook {
     }
     return names;
   }
+}
+
+class TimeMiniBook extends MiniBook implements Comparable<TimeMiniBook>{
+  FS.Timestamp _time;
+
+  FS.Timestamp get time => _time;
+
+  TimeMiniBook(String isbn10, String title, List authors, String imageURL, this._time) : super(isbn10, title, authors, imageURL);
+
+  @override
+  int compareTo(TimeMiniBook other) {
+    return time.compareTo(other.time);
+  }
+
 }

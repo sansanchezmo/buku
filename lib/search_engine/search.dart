@@ -87,8 +87,12 @@ class Search{
       list.add(book.toMiniBook());
       return list;
     }else{
-      List<Map<String,dynamic>> books = _searchTitle(key);
-      result.addAll(books);
+      List<dynamic> books = _searchPrefixTitle(key);
+      List<Map<String, dynamic>> map = [];
+      for(var book in books){
+        map.add({'isbn': book[1], 'similarity':0.9,'type':'book'});
+      }
+      result.addAll(map);
     }
     List<Map<String,dynamic>> authors = _searchAuthor(key);
     result.addAll(authors);
@@ -101,7 +105,7 @@ class Search{
     for(var map in result){
 
       if(map['type'] == 'book'){
-        String isbn = bookMap[map['title']];
+        String isbn = map['isbn'];
         try {
           Book book = await store.getBook(isbn.toUpperCase(), userInitialize: false);
           list.add(book.toMiniBook());
@@ -145,9 +149,9 @@ class Search{
       list.add(book.toMiniBook());
     }else{
 
-      List<Map<String,dynamic>> books = _searchTitle(key);
-      for(var map in books){
-        String isbn = bookMap[map['title']];
+      List<dynamic> books = _searchPrefixTitle(key);
+      for(var find in books){
+        String isbn = find[1];
         try {
           Book book = await store.getBook(isbn.toUpperCase(), userInitialize: false);
           list.add(book.toMiniBook());

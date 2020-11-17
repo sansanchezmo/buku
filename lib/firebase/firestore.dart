@@ -6,6 +6,7 @@ import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/main_objects/structs/queue.dart';
+import 'package:buku/main_objects/structs/heap.dart';
 import 'package:buku/main_objects/user.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
@@ -120,7 +121,7 @@ class Firestore {
     return fav;
   }
 
-  Future<List<MiniBook>> getHistoryCollection(
+  /*Future<List<MiniBook>> getHistoryCollection(
       String uid, String collectionName) async {
     List<Map<String, dynamic>> dataList = [];
 
@@ -143,6 +144,38 @@ class Firestore {
     });
 
     List<MiniBook> list = Sort.sortMiniBookByTimeStamp(dataList);
+
+    return list;
+  }*/
+
+  Future<List<MiniBook>> getHistoryCollection(
+      String uid, String collectionName) async {
+    int count = 0;
+    MaxHeap heap = MaxHeap();
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .collection(collectionName)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        count++;
+        var data = element.data();
+        heap.add(TimeMiniBook(
+          element.id,
+          data['title'],
+          data['authors'],
+          data['image_url'],
+          data['date']
+        ));
+      });
+    });
+
+    List<MiniBook> list = [];
+    for(int i = 0; i<count; i++){
+      list.add(heap.extractMax());
+    }
 
     return list;
   }

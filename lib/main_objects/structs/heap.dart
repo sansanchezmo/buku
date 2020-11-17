@@ -90,8 +90,8 @@ abstract class _Heap {
 }
 
 class MaxHeap extends _Heap {
-  _compare(a, b) => (a <= b);
-
+  //_compare(a, b) => (a <= b);
+  _compare(a,b) => a.compareTo(b) == 0 ||a.compareTo(b) < 0;
   max() => _data[0];
   extractMax() {
     if (_data.length == 0)
