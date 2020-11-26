@@ -85,7 +85,7 @@ class BKTree {
     }
   }
 
-  void _suggestionsHelper(String query, List suggestions, BKTreeNode theRoot) {
+  void _searchSuggestionsHelper(String query, List suggestions, BKTreeNode theRoot) {
     if (theRoot == null) return;
 
     int d = editDistance(query, theRoot.key);
@@ -99,14 +99,14 @@ class BKTree {
     int end = [theRoot.children.length, d + tolerance].reduce(min);
 
     while (start < end) {
-      _suggestionsHelper(query, suggestions, theRoot.children[start]);
+      _searchSuggestionsHelper(query, suggestions, theRoot.children[start]);
       start++;
     }
   }
 
   List searchSuggestions(String query) {
     List suggestions = new List();
-    _suggestionsHelper(query, suggestions, _root);
+    _searchSuggestionsHelper(query, suggestions, _root);
     return suggestions;
   }
 }

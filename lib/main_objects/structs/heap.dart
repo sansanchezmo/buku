@@ -1,3 +1,5 @@
+import 'dart:math';
+
 void siftDown(List arr, int length, int i) {
   int maxIndex = i;
   int left = 2 * i + 1;
@@ -114,4 +116,80 @@ class MinHeap extends _Heap {
   }
 }
 
-void main() {}
+void insertionTest(int limit, bool unique) {
+  var a = new List();
+  Random rnd = Random();
+  int jump = limit ~/ 100;
+  if (!unique) {
+    for (int i = jump; i <= limit; i += jump) {
+      var x = new MaxHeap();
+      int start = DateTime
+          .now()
+          .microsecondsSinceEpoch;
+      for (int j = 0; j < i; j++)
+        x.add(rnd.nextInt(100000000));
+      int end = DateTime
+          .now()
+          .microsecondsSinceEpoch;
+      print((i * 100) ~/ limit);
+      a.add([i, end - start]);
+    }
+  }
+  else {
+    var x = new MaxHeap();
+    int start = DateTime
+        .now()
+        .microsecondsSinceEpoch;
+    for (int j = 0; j < limit; j++)
+      x.add(rnd.nextInt(100000000));
+    int end = DateTime
+        .now()
+        .microsecondsSinceEpoch;
+    a.add([limit, end - start]);
+  }
+
+  print(a);
+}
+
+void deletionTest(int limit, bool unique) {
+  var a = new List();
+  Random rnd = Random();
+  int jump = limit ~/ 100;
+  if (!unique) {
+    for (int i = jump; i <= limit; i += jump) {
+      var x = new MaxHeap();
+      for (int j = 0; j < i; j++)
+        x.add(rnd.nextInt(100000000));
+      int start = DateTime
+          .now()
+          .microsecondsSinceEpoch;
+      for (int j = 0; j < i; j++)
+        x.extractMax();
+      int end = DateTime
+          .now()
+          .microsecondsSinceEpoch;
+      print((i * 100) ~/ limit);
+      a.add([i, end - start]);
+    }
+  }
+  else {
+    var x = new MaxHeap();
+    for (int j = 0; j < limit; j++)
+      x.add(rnd.nextInt(100000000));
+    int start = DateTime
+        .now()
+        .microsecondsSinceEpoch;
+    for (int j = 0; j < limit; j++)
+      x.extractMax();
+    int end = DateTime
+        .now()
+        .microsecondsSinceEpoch;
+    a.add([limit, end - start]);
+  }
+
+  print(a);
+}
+
+void main() {
+  insertionTest(10000000, false);
+}

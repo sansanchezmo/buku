@@ -6,8 +6,9 @@ import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/tag.dart';
 import 'package:buku/utilities/sort.dart';
-import  'package:string_similarity/string_similarity.dart';
+import 'package:string_similarity/string_similarity.dart';
 import 'package:buku/main_objects/structs/set.dart';
+import 'package:buku/main_objects/structs/map.dart';
 import 'package:buku/main_objects/structs/trie.dart';
 import 'package:buku/main_objects/structs/heap.dart';
 import 'package:buku/main_objects/structs/bk_tree.dart';
@@ -18,6 +19,7 @@ class Search{
   static UnorderedSet<String> isbnSet = UnorderedSet<String>();
   static UnorderedSet<String> titleSet = UnorderedSet<String>();
 
+  //static UnorderedMap<String,String> bookMap;
   static Map<String,String> bookMap = {};
   static Trie bookTrie;
   static BKTree bookBKTree;
@@ -37,20 +39,28 @@ class Search{
   }
 
   static _createBookBKTree() {
+
     bookBKTree = new BKTree();
+
     bookMap.forEach((isbn, title) {
       bookBKTree.add(new BKTreeNode(title, isbn));
     });
+
   }
 
   static _createBookTrie() {
+
     bookTrie = new Trie();
+
     bookMap.forEach((isbn, title) {
       bookTrie.add(title, isbn);
     });
+
   }
 
   static _createBookSet(){
+
+    //bookMap = new UnorderedMap<String,String>();
 
     for(int i=0; i<isbnList.length;i++){
 

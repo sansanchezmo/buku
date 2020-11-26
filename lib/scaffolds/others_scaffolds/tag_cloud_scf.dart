@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:buku/firebase/ML_kit.dart';
 
-String newTag() => "just a test"; //ML.getRecommendedTags(1)[0];
+String newTag() => ML.getRecommendedTags(1)[0];
 
 class Tag extends StatefulWidget{
   String name;
@@ -70,10 +70,10 @@ class _TagCloudState extends State<TagCloud> with SingleTickerProviderStateMixin
   }
 
   _tagList() {
-    //var newTags = ML.getRecommendedTags(10);
+    var newTags = ML.getRecommendedTags(10);
     var tagsList = new List<Widget>();
     for (int i = 0; i < 10; i++) {
-      tagsList.add(Tag("just a test"));//newTags[i]));
+      tagsList.add(Tag(newTags[i]));
       tagsList.add(SizedBox(width: 10, height: 40));
     }
     return tagsList;

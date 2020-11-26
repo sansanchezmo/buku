@@ -21,10 +21,10 @@ class UnorderedMap<K, V> {
   UnorderedMap() {
     _size = 0;
     _tableSize = 4;
-    _table = new List();
+    _table = new List(_tableSize);
 
     for (int i = 0; i < _tableSize; i++)
-      _table.add(new LinkedList<Pair<K, V>>());
+      _table[i] = new LinkedList<Pair<K, V>>();
   }
 
   int get length => _size;
@@ -70,9 +70,9 @@ class UnorderedMap<K, V> {
 
   // private methods
   void _reHash() {
-    List newTable = new List();
+    List newTable = new List(_tableSize * _load_factor);
     for (int i = 0; i < _tableSize * _load_factor; i++)
-      newTable.add(new LinkedList<Pair<K, V>>());
+      newTable[i] = new LinkedList<Pair<K, V>>();
 
     for (int i = 0; i < _tableSize; i++)
       for (Node itr = _table[i].front(); itr != null; itr = itr.next())
