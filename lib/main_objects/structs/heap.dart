@@ -115,7 +115,7 @@ class MinHeap extends _Heap {
     return _extract();
   }
 }
-
+/*
 void insertionTest(int limit, bool unique) {
   var a = new List();
   Random rnd = Random();
@@ -189,7 +189,5 @@ void deletionTest(int limit, bool unique) {
 
   print(a);
 }
-
-void main() {
-  insertionTest(10000000, false);
-}
+*/
+void main() {}
