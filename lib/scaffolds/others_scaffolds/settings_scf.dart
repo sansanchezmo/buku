@@ -146,59 +146,109 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
   Widget _themeOptions(){
     return SizedBox(
       height: 110,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Radio(
-                value: 'orange',
-                groupValue: selectedRadio,
-                activeColor: CurrentTheme.primaryColor,
-                onChanged: (val){
-                  setSelectedRadio(val);
-                },
-              ),
-              GestureDetector(
-                  onTap: (){
-                    setSelectedRadio('orange');
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Radio(
+                  value: 'orange',
+                  groupValue: selectedRadio,
+                  activeColor: CurrentTheme.primaryColor,
+                  onChanged: (val){
+                    setSelectedRadio(val);
                   },
-                  child: Text(
-                    'Orange',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: CurrentTheme.textColor2
-                    ),
-                  )
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Radio(
-                value: 'dark',
-                groupValue: selectedRadio,
-                activeColor: CurrentTheme.primaryColor,
-                onChanged: (val){
-                  setSelectedRadio(val);
-                },
-              ),
-              GestureDetector(
-                  onTap: (){
-                    setSelectedRadio('dark');
+                ),
+                GestureDetector(
+                    onTap: (){
+                      setSelectedRadio('orange');
+                    },
+                    child: Text(
+                      'Orange',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: CurrentTheme.textColor2
+                      ),
+                    )
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                  value: 'dark',
+                  groupValue: selectedRadio,
+                  activeColor: CurrentTheme.primaryColor,
+                  onChanged: (val){
+                    setSelectedRadio(val);
                   },
-                  child: Text(
-                    'Dark',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: CurrentTheme.textColor2
-                    ),
-                  )
-              )
-            ],
-          )
-        ],
+                ),
+                GestureDetector(
+                    onTap: (){
+                      setSelectedRadio('dark');
+                    },
+                    child: Text(
+                      'Dark',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: CurrentTheme.textColor2
+                      ),
+                    )
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                  value: 'blue_light',
+                  groupValue: selectedRadio,
+                  activeColor: CurrentTheme.primaryColor,
+                  onChanged: (val){
+                    setSelectedRadio(val);
+                  },
+                ),
+                GestureDetector(
+                    onTap: (){
+                      setSelectedRadio('blue_light');
+                    },
+                    child: Text(
+                      'Blue light',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: CurrentTheme.textColor2
+                      ),
+                    )
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                  value: 'blue_dark',
+                  groupValue: selectedRadio,
+                  activeColor: CurrentTheme.primaryColor,
+                  onChanged: (val){
+                    setSelectedRadio(val);
+                  },
+                ),
+                GestureDetector(
+                    onTap: (){
+                      setSelectedRadio('blue_dark');
+                    },
+                    child: Text(
+                      'Blue Dark',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: CurrentTheme.textColor2
+                      ),
+                    )
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
 

@@ -50,6 +50,10 @@ class User {
   List<dynamic> get tags => _tags;
   Map<String, String> get statistics => _statistics;
 
+  MiniUser toMiniUser(){
+    return MiniUser(_uid,_name,_nickname,_imageUrl);
+  }
+
   ///------------------------Public Method----------------------------///
   List<Widget> tagsToWidget() {
     /**

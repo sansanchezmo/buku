@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:buku/main_objects/author.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
@@ -326,6 +327,40 @@ class Firestore {
     return book;
   }
 
+  // author method
+
+  Future<Author> getAuthor(String name) async{
+
+    Author author;
+    String bio, birthDate,imageUrl;
+    int bookCount,followers;
+    List<dynamic> booksNames;
+
+    try{
+
+      store.collection('authors').doc(name).get().then((value) {
+        var data = value.data();
+        bio = data['bio'];
+        birthDate = data['birth_date'];
+        booksNames = data['books'];
+        bookCount = data['books_count'];
+        followers = data['followers'];
+        imageUrl = data['image_url'];
+      });
+
+    }catch(e){
+
+      throw Exception("there is not a valid author");
+
+    }
+
+    author = Author(name,imageUrl,bio,birthDate,followers,bookCount,null);
+
+
+    return author;
+
+  }
+
   //SETTERS///////////////////////////////////////////////////////////////////////////////////////
 
   //user methods-------------------------------------------------------------------
@@ -355,12 +390,37 @@ class Firestore {
         .delete();
   }
 
+  Future<void> addFollow(String uid, String collectionName, MiniUser mini) async{
+
+    await store.collection('users')
+        .doc(uid)
+        .collection(collectionName)
+        .doc(mini.uid)
+        .set({
+      'name' : mini.name,
+      'nickname' : mini.nickname,
+      'image_path' : mini.imagePath
+        });
+  }
+
+  Future<void> removeFollow(String uid, String collectionName, MiniUser mini) async{
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .collection(collectionName)
+        .doc(mini.uid)
+        .delete();
+
+
+  }
+
   Future<void> updateUserInfo(String uid, Map<String, dynamic> cache) async {
     await store.collection('users').doc(uid).update(cache);
   }
 
   Future<void> setUserTheme(String uid, String option) async {
-    if (option != CurrentTheme.orangeTheme && option != CurrentTheme.darkTheme)
+    if (option != CurrentTheme.orangeTheme && option != CurrentTheme.darkTheme && option != CurrentTheme.blueLight &&option != CurrentTheme.blueDark)
       throw Exception('Invalid theme');
 
     await store.collection('users').doc(uid).update({'theme': option});
@@ -413,6 +473,24 @@ class Firestore {
       views += 1;
 
     await bookRef.update({'views': views});
+  }
+
+  Future<void> addReadLink(String isbn, String link) async{
+
+    var bookRef = store.collection('books').doc(isbn);
+
+    List<dynamic> links;
+
+    await bookRef.get().then((value) {
+      links = value.data()['links'];
+    });
+
+    if(links == null) links = List<Map<String,String>>();
+
+    links.add({'isbn':isbn,'link':link,'likes':0});
+
+    await bookRef.update({'links':links});
+
   }
 
   Future<void> addComment(String isbn, BookComment bc) async {

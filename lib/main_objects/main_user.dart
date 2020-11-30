@@ -9,6 +9,7 @@ import 'package:buku/main_objects/user.dart' as Usr;
 
 import 'mini_author.dart';
 import 'mini_book.dart';
+import 'mini_user.dart';
 
 class MainUser{
 
@@ -27,6 +28,8 @@ class MainUser{
   static List<dynamic> get tags => _user==null? null: _user.tags;
   static Usr.User get user => _user;
   static Map<String, dynamic> get cache => _cache;
+  static List<MiniUser> get followers => _user==null?null:_user.followers;
+  static List<MiniUser> get following => _user==null?null:_user.following;
 
   //initialize user attributes
 
@@ -115,6 +118,20 @@ class MainUser{
 
   }
 
+  static Future<void> setReadLink(String isbn, String link) async{
+
+    //Map<String, dynamic> bookCache = _cache[isbn];
+
+    if(_cache[isbn] == null){
+      _cache[isbn] = {};
+    }
+
+    _cache[isbn]['link'] = link;
+
+    await _store.saveUserCache(uid,_cache);
+
+  }
+
   static bool haveFavoriteBook(String isbn){
 
     if(_user == null) throw Exception('user not loaded yet');
@@ -126,6 +143,18 @@ class MainUser{
     return false;
   }
 
+  static bool haveFollower(String uid){
+
+    if(_user == null) throw Exception('user not loaded yet');
+
+    for(MiniUser follower in followers){
+      if(follower.uid == uid) return true;
+    }
+
+    return false;
+
+  }
+
   static Future<void> addBookToFavorites(MiniBook mini) async{
     await _store.addToMiniBookCollection(uid, Firestore.favoriteBooks, mini);
     await init(loadML: false);
@@ -134,6 +163,18 @@ class MainUser{
   static Future<void> addToOpenHistory(MiniBook mini) async{
     await _store.addToMiniBookCollection(uid, Firestore.openHistory, mini);
     await init(loadML: false);
+  }
+
+  static Future<void> follow(MiniUser miniUser) async{
+    await _store.addFollow(uid, Firestore.following, miniUser);
+    await _store.addFollow(miniUser.uid, Firestore.followers, _user.toMiniUser());
+    followers.add(miniUser);
+  }
+
+  static Future<void> unfollow(MiniUser miniUser) async{
+    await _store.removeFollow(uid, Firestore.following, miniUser);
+    await _store.removeFollow(miniUser.uid, Firestore.followers, _user.toMiniUser());
+    followers.remove(miniUser);
   }
 
   static Future<void> removeBookFromFavorites(String isbn) async{
