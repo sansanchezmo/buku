@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:buku/firebase/ML_kit.dart';
 import 'package:buku/firebase/firestore.dart';
+import 'package:buku/main_objects/author.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
@@ -125,7 +126,9 @@ class Search{
       }
       else if(map['type'] == 'author'){
         String name = map['name'];
-        list.add(MiniAuthor(name,'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'));
+        Author author = await store.getAuthor(name);
+
+        list.add(author.toMiniAuthor());
       }
       else if(map['type'] == 'tag'){
         list.add(Tag(map['title']));
@@ -136,7 +139,8 @@ class Search{
 
   }
 
-  static List<MiniAuthor> searchAuthor(String key){
+  static Future<List<MiniAuthor>> searchAuthor(String key) async{
+    var store = Firestore();
 
     List<MiniAuthor> list = [];
     List<Map<String,dynamic>> authors = _searchAuthor(key);
@@ -144,7 +148,8 @@ class Search{
     for(var map in authors){
 
       String name = map['name'];
-      list.add(MiniAuthor(name,'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'));
+      Author author = await store.getAuthor(name);
+      list.add(author.toMiniAuthor());
     }
 
     return list;

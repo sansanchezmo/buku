@@ -115,7 +115,7 @@ class Firestore {
         .then((value) {
       value.docs.forEach((element) {
         var data = element.data();
-        fav.add(MiniAuthor(data['name'], data['image_url']));
+        fav.add(MiniAuthor(data['name'], data['image_url'], data['books_count'],data['followers']));
       });
     });
 
@@ -299,9 +299,9 @@ class Firestore {
 
     List<MiniAuthor> authorList = [];
     for (dynamic author in authors) {
-      //TODO: add real author images
-      authorList.add(MiniAuthor(author.toString(),
-          'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'));
+      Author _author = await this.getAuthor(author);
+      MiniAuthor mini = _author.toMiniAuthor();
+      authorList.add(mini);
     }
 
     List<BookComment> comments = []; //TODO: sort comments by date

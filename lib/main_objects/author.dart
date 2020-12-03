@@ -1,3 +1,4 @@
+import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 
 class Author{
@@ -22,6 +23,10 @@ class Author{
 
   List<MiniBook> get books => _books;
 
-//Author.name(this._name, this._imageUrl);
+  MiniAuthor toMiniAuthor(){
+
+    return MiniAuthor(_name, _imageUrl, _bookCount, _followers);
+
+  }
 
 }

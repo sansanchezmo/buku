@@ -8,14 +8,17 @@ import 'package:flutter/material.dart';
 class MiniAuthor {
   ///Attributes
   String _name, _imageURL;
-  Map<String,dynamic> _statistics = {"books":20,"followers":140};
+  int _books, _followers;
+  //Map<String,dynamic> _statistics = {"books":20,"followers":140};
 
   ///Getters
   String get name => _name;
   String get imageURL => _imageURL;
+  int get booksCount => _books;
+  int get followers => _followers;
 
   ///Constructor
-  MiniAuthor(this._name, this._imageURL);
+  MiniAuthor(this._name, this._imageURL, this._books, this._followers);
 
 
   Widget toWidget(BuildContext context){
@@ -104,7 +107,7 @@ class MiniAuthor {
               ),
               Container(
                 width: 230,
-                child: Text(_statistics["books"].toString() + " Books - " + FormatString.formatStatistic(_statistics["followers"]) +" Followers",
+                child: Text(booksCount.toString() + " Books - " + FormatString.formatStatistic(followers) +" Followers",
                     style: TextStyle(color: CurrentTheme.textColor3,fontSize: 14.5)),
               ),
             ],

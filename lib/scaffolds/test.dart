@@ -1,5 +1,4 @@
 import 'package:buku/firebase/ML_kit.dart';
-import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/tag.dart';
@@ -10,6 +9,7 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/gradient_button.dart';
 import 'package:buku/widgets/recommended_list.dart';
 import 'package:buku/widgets/recommended_list_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -24,30 +24,56 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextField(
-              controller: con,
-              decoration: InputDecoration(
-                  labelText: 'EMAIL',
-                  labelStyle: TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: 'ProductSans',
-                    color: CurrentTheme.textFieldHint,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide:
-                      BorderSide(color: CurrentTheme.textColor1)),
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: CurrentTheme.primaryColor))),
+            SizedBox(height: 70,),
+            Text(
+              'Stream builder test',
+              style: TextStyle(
+                fontSize: 30
+              ),
             ),
             SizedBox(height: 50,),
-            GradientButton(
+            StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('test').snapshots(),
+                builder: (context, snap) {
+                return !snap.hasData
+                    ? Text("pls wait")
+                    :/*ListView.builder(
+                    shrinkWrap: true,
+                    reverse: true,
+                    itemCount: snap.data.documents.length,
+                    itemBuilder: (context, index){
+                      DocumentSnapshot doc = snap.data.documents[index];
+                      return Column(
+                        children: [
+                          GradientButton(text: doc['name']),
+                          SizedBox(height: 10,)
+                      ]
+                      );
+                    }
+                );*/
+                  AnimatedList(
+                    reverse: true,
+                    shrinkWrap: true,
+                    initialItemCount: snap.data.documents.length,
+                    itemBuilder: (context, index, animation){
+                      DocumentSnapshot doc = snap.data.documents[index];
+                      return Column(
+                          children: [
+                            GradientButton(text: doc['name']),
+                            SizedBox(height: 10,)
+                          ]
+                      );
+                    }
+
+                  );
+                }
+            )
+            /*GradientButton(
               text: 'search',
               tap: () async {
                 //print(ML.searchISBN(con.text));
@@ -79,7 +105,7 @@ class _TestState extends State<Test> {
                 await ML.init();
 
               },
-            ),
+            ),*/
           ],
         ),
       ),

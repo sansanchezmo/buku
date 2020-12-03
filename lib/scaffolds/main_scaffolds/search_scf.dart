@@ -1,4 +1,5 @@
 import 'package:buku/firebase/firestore.dart';
+import 'package:buku/main_objects/author.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
@@ -227,7 +228,7 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
   Future<List<Widget>> _authorSearchResults(String toSearch) async{
     if(toSearch == '') return [];
     if(_authorResults == null || _authorResults.length == 0 || _toSearch!=_cache) {
-      List<MiniAuthor> results = Search.searchAuthor(toSearch);
+      List<MiniAuthor> results = await Search.searchAuthor(toSearch);
       List<Widget> resultsWidgets = List<Widget>();
       for (MiniAuthor result in results) {
         resultsWidgets.add(result.toResultWidget());
@@ -270,7 +271,17 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
           child: result.toResultWidget(),
         );
       }
-      return result.toResultWidget();
+      //return result.toResultWidget();
+      return GestureDetector(
+        onTap: () async{
+          Author book = await Firestore().getAuthor(result.name);
+          /*Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BookInfoScaffold(book: book)),
+          );*/ //TODO: add navigator to author page .-.
+        },
+        child: result.toResultWidget(),
+      );
     }
     else {
       return Container(height: 20,width: 20,color: Colors.deepPurple);
