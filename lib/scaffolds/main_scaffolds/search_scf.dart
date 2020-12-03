@@ -5,6 +5,7 @@ import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/tag.dart';
 import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/author_info_scf.dart';
 import 'package:buku/search_engine/search.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -274,11 +275,13 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
       //return result.toResultWidget();
       return GestureDetector(
         onTap: () async{
-          Author book = await Firestore().getAuthor(result.name);
-          /*Navigator.push(
+          print("hola");
+          Author author = await Firestore().getAuthor(result.name);
+          print("chao");
+          Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BookInfoScaffold(book: book)),
-          );*/ //TODO: add navigator to author page .-.
+            MaterialPageRoute(builder: (context) => AuthorInfoScaffold(author)),
+          );
         },
         child: result.toResultWidget(),
       );

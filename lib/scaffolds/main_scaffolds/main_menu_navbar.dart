@@ -1,6 +1,7 @@
 import 'package:buku/main_objects/structs/tree.dart';
 import 'package:buku/scaffolds/others_scaffolds/list_info_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/comming_soon_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/test_daniel_scaffold.dart';
 import 'package:buku/scaffolds/others_scaffolds/testdata_primitive_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/material.dart';

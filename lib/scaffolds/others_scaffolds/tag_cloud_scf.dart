@@ -80,56 +80,58 @@ class _TagCloudState extends State<TagCloud> with SingleTickerProviderStateMixin
   }
 
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          width: 300,
-          padding: EdgeInsets.all(25),
-          decoration: BoxDecoration(
-              color: CurrentTheme.backgroundContrast,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 10, blurRadius: 10)
-              ]),
-          child: Wrap(
-            children: _theTags,
+    return Container(
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 5, blurRadius: 10)
+          ]
+      ),
+      child: Stack(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            width: 300,
+            padding: EdgeInsets.all(25),
+            decoration: BoxDecoration(
+                color: CurrentTheme.backgroundContrast,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+            child: Wrap(
+              children: _theTags,
+            ),
           ),
-        ),
-        Positioned(
-            top: -15.0,
-            right: -15.0,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new IconButton(
-                  icon: Icon(Icons.add, color: CurrentTheme.primaryColor),
-                  onPressed: () {
-                    setState(() {
-                      _transition = true;
-                      _theTags = _tagList();
-                      _transition = false;
-                    });
-                  }),
+          Positioned(
+              top: -15.0,
+              right: -15.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new IconButton(
+                    icon: Icon(Icons.refresh, color: CurrentTheme.primaryColor),
+                    onPressed: () {
+                      setState(() {
+                        _transition = true;
+                        _theTags = _tagList();
+                        _transition = false;
+                      });
+                    }),
+              )
+          ),
+          AnimatedSize(
+              vsync: this,
+              duration: Duration(seconds: 2),
+              child: Container(
+                //duration: Duration(seconds: 2),
+                //curve: Curves.elasticInOut,
+                alignment: Alignment.centerLeft,
+                width: _transition? 300 : 0,
+                padding: EdgeInsets.all(25),
+                decoration: BoxDecoration(
+                    color: _transition? CurrentTheme.separatorColor : Color.fromARGB(0, 0, 0, 0),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
             )
-        ),
-        AnimatedSize(
-            vsync: this,
-            duration: Duration(seconds: 2),
-            child: Container(
-              //duration: Duration(seconds: 2),
-              //curve: Curves.elasticInOut,
-              alignment: Alignment.centerLeft,
-              width: _transition? 300 : 0,
-              padding: EdgeInsets.all(25),
-              decoration: BoxDecoration(
-                  color: _transition? CurrentTheme.separatorColor : Color.fromARGB(0, 0, 0, 0),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(color: CurrentTheme.shadow2, spreadRadius: 10, blurRadius: 10)
-                  ]),
-          )
-        )
-      ]
+          ))
+        ]
+      ),
     );
   }
 }

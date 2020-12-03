@@ -8,6 +8,7 @@ import 'package:buku/main_objects/read_list.dart';
 import 'package:buku/main_objects/structs/linked_list.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/book_horizontal_slider.dart';
+import 'package:buku/widgets/main_page_header_widget.dart';
 import 'package:buku/widgets/recommended_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,8 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
+              MainPageHeader(),
+              /*Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -79,7 +81,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                     ),
                   ),
                 ],
-              ),
+              ),*/
               SizedBox(height: 15.0),
 
 //-----------------------------First_Widget-------------------------------------
@@ -139,63 +141,52 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                  /*boxShadow: [
-                    BoxShadow(
-                      color: CurrentTheme.shadow1,
-                      spreadRadius: 6, //(x,y)
-                      blurRadius: 20.0,
-                    ),
-                  ],*/
-                  gradient: CurrentTheme.primaryGradientColor,
-                ),
-                child: SwipeTo(
-                  offsetDx: 2.0,
-                  onLeftSwipe: () {
-                    setState(() {
-                      recommendsQueue.dequeue();
-                      print('Left swipe');
-                    });
-                  },
-                  onRightSwipe: () {
-                    setState(() {
-                      recommendsQueue.dequeue();
-                      print('Right swipe');
-                    });
-                  },
-                  leftSwipeWidget: Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.greenAccent[400],
-                      size: 50.0,
-                    ),
+              SizedBox(height: 20), 
+              SwipeTo(
+                offsetDx: 2.0,
+                onLeftSwipe: () {
+                  setState(() {
+                    recommendsQueue.dequeue();
+                    print('Left swipe');
+                  });
+                },
+                onRightSwipe: () {
+                  setState(() {
+                    recommendsQueue.dequeue();
+                    print('Right swipe');
+                  });
+                },
+                rightSwipeWidget: Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.greenAccent[400],
+                    size: 45.0,
                   ),
-                  rightSwipeWidget: Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Icon(
-                      Icons.cancel_outlined,
-                      color: Colors.red[700],
-                      size: 50.0,
-                    ),
-                  ),
-                  child: recommendsQueue.empty() == true
-                      ? Container(
-                          child: Image(
-                            image: NetworkImage(
-                                'https://image.flaticon.com/icons/png/512/152/152565.png'),
-                            width: 150.0,
-                            height: 345.0,
-                          ),
-                        )
-                      : recommendsQueue.front().toBigWidget(context),
                 ),
+                leftSwipeWidget: Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.red[700],
+                    size: 45.0,
+                  ),
+                ),
+                animationDuration: Duration(milliseconds: 750),
+
+                child: recommendsQueue.empty() == true
+                    ? Container(
+                        child: Image(
+                          image: NetworkImage(
+                              'https://image.flaticon.com/icons/png/512/152/152565.png'),
+                          width: 150.0,
+                          height: 345.0,
+                        ),
+                      )
+                    : recommendsQueue.front().toBigWidget(context),
               ),
               SizedBox(height: 10.0),
-              Padding(
+              /*Padding(
                 padding: EdgeInsets.all(5),
                 child: Text.rich(
                   TextSpan(
@@ -252,7 +243,7 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                     ],
                   ),
                 ),
-              ),
+              ),*/
 
 //-----------------------------Second_Widget------------------------------------
               BookHorizontalSlider(
@@ -265,69 +256,58 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
                   )
               ),
 
+              Row(
+                children: [
+                  Container(
+                    height: 30, width: 40,
+                    decoration: BoxDecoration(
+                        color: CurrentTheme.primaryColorVariant,
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20),
+                            topRight: Radius.circular(20))),
+                  ),
+                  SizedBox(width: 15),
+                  Text(
+                    "Tags may interest you",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: CurrentTheme.textColor3),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15,),
+              TagCloud(),
+              SizedBox(height: 30,),
 //-----------------------------Third_Widget-------------------------------------
               // Divider (- Write Here the Third Widget's name -)
-              Row(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    "Maybe it interest you",
-                    style: TextStyle(
-                      color: CurrentTheme.textColor3,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'ProductSans',
-                      fontSize: 25.0,
-                    ),
+              Row(
+                children: [
+                  Container(
+                    height: 30, width: 40,
+                    decoration: BoxDecoration(
+                        color: CurrentTheme.primaryColorVariant,
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20),
+                            topRight: Radius.circular(20))),
                   ),
-                ),
-                Expanded(
-                  child: new Container(
-                      margin: EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 36,
-                      )),
-                ),
-              ]),
+                  SizedBox(width: 15),
+                  Text(
+                    "Lists for you",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: CurrentTheme.textColor3),
+                  ),
+                ],
+              ),
               // --- Add your widget HERE --
               RecommendedListWidget(
                 getReadlistStack()
               ),
               SizedBox(height: 30.0),
 
-//-----------------------------Fourth_Widget------------------------------------
-              // Divider (- Tag cloud -)
-              /*Row(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    "Fourth Widget",
-                    style: TextStyle(
-                      color: CurrentTheme.textColor3,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'ProductSans',
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: new Container(
-                      margin: EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 36,
-                      )),
-                ),
-              ]),*/
-              TagCloud(), // --- Add your widget HERE --
-              /*
-              Image(
-                image: AssetImage(
-                  'assets/images/open-book.png',
-                ),
-                width: 150.0,
-                height: 150.0,
-              ),*/
+
             ],
           ),
         ),

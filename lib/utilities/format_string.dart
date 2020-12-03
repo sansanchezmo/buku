@@ -1,6 +1,9 @@
 class FormatString{
 
   static String formatStatistic(int i){
+    if( i == null){
+      i = 0;
+    }
     int len = i.toString().length;
     String text;
     if (len<=3){

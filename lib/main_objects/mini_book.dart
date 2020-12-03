@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
+import 'package:buku/theme/colors_list.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as FS;
 import 'package:flutter/cupertino.dart';
@@ -13,9 +16,13 @@ class MiniBook {
   List<dynamic> _authors;
   String _imageURL;
   double _rate = 4.5;
+  Color _color;
 
   //Constructor
-  MiniBook(this._isbn10, this._title, this._authors, this._imageURL);
+  MiniBook(this._isbn10, this._title, this._authors, this._imageURL){
+    Random rdm = new Random();
+    this._color = ColorsList.colors[rdm.nextInt(5)];
+  }
 
   //Getters
   String get isbn10 => _isbn10;
@@ -24,7 +31,13 @@ class MiniBook {
   String get imageURL => _imageURL;
 
   Widget toWidget(BuildContext context) {
-    String authorsStr = _authorNames();
+    String authorsStr;
+    if (_authors == [] || _authors == null) {
+      authorsStr = "";
+    } else {
+      authorsStr = _authorNames();
+    }
+
     return GestureDetector(
       onTap: () async {
         Book book = await Firestore().getBook(this._isbn10);
@@ -95,7 +108,7 @@ class MiniBook {
             SizedBox(height: 20),
             //Book's image container
             miniBookBigImage(),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.only(left: 30, right: 30),
               child: Column(
@@ -109,7 +122,7 @@ class MiniBook {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: CurrentTheme.textColor3,
+                        color: CurrentTheme.textColor1,
                       )),
                   SizedBox(height: 5),
                   //Book's author
@@ -119,8 +132,8 @@ class MiniBook {
                       maxLines: 1,
                       softWrap: false,
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[200],
+                        fontSize: 15.5,
+                        color: CurrentTheme.textColor3,
                       ))
                 ],
               ),
@@ -139,6 +152,10 @@ class MiniBook {
         height: width * 1.6,
         width: width,
         alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: _color,
+          borderRadius: BorderRadius.all(Radius.circular(10))
+        ),
         child: Text(
           this.title,
           maxLines: 2,
@@ -159,27 +176,42 @@ class MiniBook {
     ]);
   }
 
-  Widget miniBookBigImage({double width: 160}) {
+  Widget miniBookBigImage({double width: 180}) {
     return Stack(alignment: Alignment.center, children: [
       Container(
         height: width * 1.6,
         width: width,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: CurrentTheme.shadow2,
-              spreadRadius: 10, //(x,y)
-              blurRadius: 10.0,
-            ),
-          ],
-        ),
         alignment: Alignment.center,
-        child: Text(
-          this.title,
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: CurrentTheme.background),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: _color,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            /*boxShadow: [
+              BoxShadow(
+                  color: CurrentTheme.shadow2, spreadRadius: 5, blurRadius: 15)
+            ]*/),
+        child: Column(
+          children: [
+            SizedBox(height: 50),
+            Text(
+              this._title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                  fontSize: 20, color: CurrentTheme.textColor3),
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Expanded(child: SizedBox()),
+            Text(
+              _authorNames(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15, color: CurrentTheme.textColor3),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 30)
+          ],
         ),
       ),
       Container(
@@ -273,16 +305,17 @@ class MiniBook {
   }
 }
 
-class TimeMiniBook extends MiniBook implements Comparable<TimeMiniBook>{
+class TimeMiniBook extends MiniBook implements Comparable<TimeMiniBook> {
   FS.Timestamp _time;
 
   FS.Timestamp get time => _time;
 
-  TimeMiniBook(String isbn10, String title, List authors, String imageURL, this._time) : super(isbn10, title, authors, imageURL);
+  TimeMiniBook(
+      String isbn10, String title, List authors, String imageURL, this._time)
+      : super(isbn10, title, authors, imageURL);
 
   @override
   int compareTo(TimeMiniBook other) {
     return time.compareTo(other.time);
   }
-
 }

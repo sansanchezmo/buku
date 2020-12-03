@@ -334,7 +334,8 @@ class Firestore {
     Author author;
     String bio, birthDate,imageUrl;
     int bookCount,followers;
-    List<dynamic> booksNames;
+    List<dynamic> booksNames = [];
+    List<MiniBook> miniBooksList = [];
 
     try{
 
@@ -354,7 +355,11 @@ class Firestore {
 
     }
 
-    author = Author(name,imageUrl,bio,birthDate,followers,bookCount,null);
+    for(var map in booksNames){
+      miniBooksList.add(new MiniBook(map["isbn_10"], map["title"], null, map["image_url"]));
+    }
+
+    author = Author(name,imageUrl,bio,birthDate,followers,bookCount,miniBooksList);
 
 
     return author;
