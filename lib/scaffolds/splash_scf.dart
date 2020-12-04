@@ -21,11 +21,11 @@ class _SplashScaffoldState extends State<SplashScaffold> {
     if (user != null) {
       if(user.emailVerified){
         await MainUser.init();
-        Navigator.of(context).pushNamed('/menu');
+        Navigator.of(context).pushReplacementNamed('/menu');
       }else
-        Navigator.of(context).pushNamed('/login');
+        Navigator.of(context).pushReplacementNamed('/login');
     } else {
-      Navigator.of(context).pushNamed('/login');
+      Navigator.of(context).pushReplacementNamed('/login');
     }
   }
 

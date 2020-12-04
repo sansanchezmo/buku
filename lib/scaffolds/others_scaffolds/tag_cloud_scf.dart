@@ -1,3 +1,4 @@
+import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,8 @@ class _TagState extends State<Tag>{
           show = false;
         });
 
-        // ConfigCache.tags.add(widget.name);
+        MainUser.addTag(widget.name);
+
         widget.name = newTag();
 
         setState(() {

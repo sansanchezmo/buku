@@ -3,6 +3,7 @@ import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/scaffolds/book_info_scaffolds/book_info_scf.dart';
+import 'package:buku/scaffolds/others_scaffolds/users_list_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/book_horizontal_slider.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
@@ -62,12 +63,12 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
                   borderRadius: BorderRadius.only(
                       //bottomLeft: Radius.circular(40),
                       bottomRight: Radius.circular(40)),
-                  boxShadow: [
+                  /*boxShadow: [
                     BoxShadow(
                         color: CurrentTheme.shadow1,
                         spreadRadius: 5,
                         blurRadius: 30)
-                  ]),
+                  ]*/),
             ),
             SizedBox(
               height: 75,
@@ -85,19 +86,8 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
           child: RaisedButton(
             elevation: 0,
             color: Colors.transparent,
-            onPressed: () async {
-              Navigator.pushReplacementNamed(context, '/settings');
-              /*Book book = await Firestore().getBook("0001046438");
-              //G
-              Book book = await Firestore().getBook("0001046438");
-              print(book.imageURL);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BookInfoScaffold(book: book)),
-              );
-
-               */
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
             },
             child: Icon(Icons.settings,
                 color: Colors.white70, size: 24.0),
@@ -165,26 +155,35 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                MainUser.user.statistics["followers"].toString() == null
-                    ? "null"
-                    : MainUser.user.statistics["followers"].toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: CurrentTheme.textColor1),
-              ),
-              Text(
-                "Followers",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                    color: CurrentTheme.textColor2),
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UsersListScaffold(MainUser.followers,"Followers")),
+              );
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  MainUser.user.statistics["followers"].toString() == null
+                      ? "null"
+                      : MainUser.user.statistics["followers"].toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: CurrentTheme.textColor1),
+                ),
+                Text(
+                  "Followers",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      color: CurrentTheme.textColor2),
+                )
+              ],
+            ),
           ),
           SizedBox(width: 25),
           Container(
@@ -195,26 +194,35 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
                 color: CurrentTheme.separatorColor),
           ),
           SizedBox(width: 25),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                MainUser.user.statistics["following"].toString() == null
-                    ? "null"
-                    : MainUser.user.statistics["following"].toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: CurrentTheme.textColor1),
-              ),
-              Text(
-                "Following",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                    color: CurrentTheme.textColor2),
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UsersListScaffold(MainUser.following,"Following")),
+              );
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  MainUser.user.statistics["following"].toString() == null
+                      ? "null"
+                      : MainUser.user.statistics["following"].toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: CurrentTheme.textColor1),
+                ),
+                Text(
+                  "Following",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      color: CurrentTheme.textColor2),
+                )
+              ],
+            ),
           ),
           SizedBox(width: 25),
           Container(
@@ -281,7 +289,7 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
         SizedBox(
           height: 10,
         ),
-        MainUser.user.favAuthors.length != 0
+        MainUser.favAuthors.length != 0
             ? Container(
                 height: 130,
                 alignment: Alignment.centerLeft,
@@ -427,7 +435,7 @@ class MainUserProfileScaffoldState extends State<UserProfileScaffold> {
 
   List<Widget> _favAuthorsList() {
     List<Widget> userFavAuthors = new List<Widget>();
-    for (MiniAuthor auth in MainUser.user.favAuthors) {
+    for (MiniAuthor auth in MainUser.favAuthors) {
       userFavAuthors.add(Padding(
         padding: const EdgeInsets.only(left: 12.5, right: 12.5),
         child: auth.toWidget(context),

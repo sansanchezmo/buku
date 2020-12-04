@@ -298,7 +298,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Column(
-          children: book.authorWidgetList(),
+          children: book.authorWidgetList(context),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15, right: 25),

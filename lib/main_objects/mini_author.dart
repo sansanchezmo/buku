@@ -1,5 +1,7 @@
 
+import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/author.dart';
+import 'package:buku/scaffolds/others_scaffolds/author_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,12 +28,12 @@ class MiniAuthor {
      * Returns the widget used in the horizontal scroll.
      */
     return GestureDetector(
-      onTap: ()  async {
-        /*Author author = await Firestore().getAuthor(this._name);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AuthorInfoScaffold(Author: author)),
-        );*/
+      onTap: ()  async{
+      Author bigAuthor = await Firestore().getAuthor(_name);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AuthorInfoScaffold(bigAuthor)),
+      );
       },
       child: Container(
         height: 115, width: 105,
@@ -59,7 +61,7 @@ class MiniAuthor {
             Container(
               height: 30,
               alignment: Alignment.center,
-              child: Text(this._name,
+              child: Text(this._name == null? "null": this._name,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -85,7 +87,31 @@ class MiniAuthor {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
+          Stack(alignment: Alignment.center, children: [
+            Container(
+                height: 55,
+                width: 55,
+                decoration: BoxDecoration(
+                    color: Colors.white70,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      //fit: BoxFit.fill,
+                      image: AssetImage(
+                          "assets/images/user.png"),
+                    ))),
+            this._imageURL != "null"? Container(
+                height: 55,
+                width: 55,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white70),
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image:
+                      NetworkImage(this._imageURL),
+                    ))) : Container()
+          ]),
+          /*Container(
             height: 55, width: 55,
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -94,13 +120,13 @@ class MiniAuthor {
               ),
               shape: BoxShape.circle
             ),
-          ),
+          ),*/
           SizedBox(width: 25),
           Column(
             children: [
               Container(
                 width: 230,
-                child: Text(this.name,
+                child: Text(this._name == null? "null": this._name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: CurrentTheme.textColor1,fontSize: 16)),

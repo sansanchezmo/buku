@@ -275,9 +275,7 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
       //return result.toResultWidget();
       return GestureDetector(
         onTap: () async{
-          print("hola");
           Author author = await Firestore().getAuthor(result.name);
-          print("chao");
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AuthorInfoScaffold(author)),

@@ -57,13 +57,13 @@ class Auth {
           bool isNew = await Firestore().isNew(userCredential.user.uid);
 
           if(isNew){
-            Navigator.of(context).pushNamed('/newUser');
+            Navigator.of(context).pushReplacementNamed('/newUser');
 
           }else{
             await MainUser.init();
             String theme = await MainUser.getProfileTheme();
             CurrentTheme.setTheme(theme, context: context);
-            Navigator.of(context).pushNamed('/menu');
+            Navigator.of(context).pushReplacementNamed('/menu');
           }
         }else{
 

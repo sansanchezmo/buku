@@ -116,7 +116,7 @@ class Firestore {
         .then((value) {
       value.docs.forEach((element) {
         var data = element.data();
-        fav.add(MiniAuthor(data['name'], data['image_url'], data['books_count'],data['followers']));
+        fav.add(MiniAuthor(element.id, data['image_url'], data['books_count'],data['followers']));
       });
     });
 

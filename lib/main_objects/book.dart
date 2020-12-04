@@ -1,11 +1,13 @@
 import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
+import 'package:buku/scaffolds/others_scaffolds/author_info_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'author.dart';
 import 'main_user.dart';
 import 'mini_book.dart';
 
@@ -140,40 +142,49 @@ class Book {
   /// ----------------------- widget methods ---------------------------
 
   // ignore: missing_return
-  List<Widget> authorWidgetList() {
+  List<Widget> authorWidgetList(BuildContext context) {
     /**
      * Returns the author list as a widget to display at the book info scaffold.
      */
     List<Widget> authorList = new List<Widget>();
     for (MiniAuthor author in this.authors) {
-      authorList.add(Padding(
-        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-                height: 25,
-                width: 25,
-                decoration: BoxDecoration(
-                    color: CurrentTheme.backgroundContrast,
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: author.imageURL == null
-                            ? AssetImage('assets/images/user_notFound.png')
-                            : NetworkImage(author.imageURL),
-                        fit: BoxFit.fill))),
-            SizedBox(width: 15),
-            Container(
-              width: 130,
-              child: Text(
-                author.name,
-                style: TextStyle(
-                    color: CurrentTheme.textColor1,
-                    fontWeight: FontWeight.w200,
-                    fontSize: 14.5),
-              ),
-            )
-          ],
+      authorList.add(GestureDetector(
+        onTap: () async{
+          Author bigAuthor = await Firestore().getAuthor(author.name);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AuthorInfoScaffold(bigAuthor)),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                      color: CurrentTheme.backgroundContrast,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: author.imageURL == null
+                              ? AssetImage('assets/images/user_notFound.png')
+                              : NetworkImage(author.imageURL),
+                          fit: BoxFit.fill))),
+              SizedBox(width: 15),
+              Container(
+                width: 130,
+                child: Text(
+                  author.name,
+                  style: TextStyle(
+                      color: CurrentTheme.textColor1,
+                      fontWeight: FontWeight.w200,
+                      fontSize: 14.5),
+                ),
+              )
+            ],
+          ),
         ),
       ));
       return authorList;

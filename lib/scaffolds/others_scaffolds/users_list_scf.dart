@@ -28,7 +28,9 @@ class _UsersListScaffoldState extends State<UsersListScaffold> {
           style: TextStyle(color: Colors.white70),
         ),
         leading: IconButton(
-          onPressed: () {print("Hello");},
+          onPressed: () {
+            Navigator.pop(context);
+            },
           icon: Icon(Icons.arrow_back),
           color: Colors.white70
         ),

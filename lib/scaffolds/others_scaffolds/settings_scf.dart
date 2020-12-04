@@ -48,15 +48,15 @@ class _SettingsScaffoldState extends State<SettingsScaffold>{
                     onTap: () {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Menu(4)));
                     },
-                    child: Icon( Icons.arrow_back_ios,
-                      color: CurrentTheme.background,
+                    child: Icon( Icons.arrow_back,
+                      color: Colors.white70,
                       size: 25.0,
                     ),
                   ),
                   SizedBox(width: 20),
                   Text("Settings",
                   style: TextStyle(
-                    color: CurrentTheme.background,
+                    color: Colors.white70,
                     fontSize: 20.0,
                   ),)
                 ],
