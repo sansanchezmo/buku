@@ -155,6 +155,24 @@ class MainUser{
 
   }
 
+  static bool haveFavoriteAuthor(String name){
+
+    if(_user == null) throw Exception('user not loaded yet');
+
+    for(MiniAuthor miniAuthor in favAuthors){
+      if(miniAuthor.name == name) return true;
+    }
+    return false;
+
+  }
+
+  static bool haveTag(String tag){
+
+    if(_user == null) throw Exception('user not loaded yet');
+    return tags.contains(tag);
+
+  }
+
   static Future<void> addBookToFavorites(MiniBook mini) async{
     await _store.addToMiniBookCollection(uid, Firestore.favoriteBooks, mini);
     await init(loadML: false);
@@ -163,6 +181,20 @@ class MainUser{
   static Future<void> addToOpenHistory(MiniBook mini) async{
     await _store.addToMiniBookCollection(uid, Firestore.openHistory, mini);
     await init(loadML: false);
+  }
+
+  static Future<void> addAuthorToFavorites(MiniAuthor mini) async{
+    favAuthors.add(mini);
+    await _store.addToMiniAuthorCollection(uid, Firestore.favoriteAuthors, mini);
+
+  }
+
+  static Future<void> addTag(String tag) async{
+
+    tags.add(tag);
+    await _store.addMainUserTag(uid, tag);
+
+
   }
 
   static Future<void> follow(MiniUser miniUser) async{
@@ -180,6 +212,16 @@ class MainUser{
   static Future<void> removeBookFromFavorites(String isbn) async{
     await _store.removeFromMiniBookCollection(uid, Firestore.favoriteBooks, isbn);
     await init(loadML: false);
+  }
+
+  static Future<void> removeAuthorToFavorites(MiniAuthor mini) async{
+    favAuthors.remove(mini);
+    await _store.removeFromMiniAuthorCollection(uid, Firestore.favoriteAuthors, mini.name);
+  }
+
+  static Future<void> removeTag(String tag) async{
+    tags.remove(tag);
+    await _store.removeMainUserTag(uid, tag);
   }
 
   static Future<void> updateProfile(Map<String, dynamic> cache) async {

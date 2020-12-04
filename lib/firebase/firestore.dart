@@ -26,6 +26,7 @@ class Firestore {
   static final String openHistory = 'open_history';
   static final String followers = 'followers';
   static final String following = 'following';
+  static final String favoriteAuthors = 'favorite_authors';
 
   FirebaseFirestore store;
 
@@ -409,6 +410,78 @@ class Firestore {
         .doc(mini.uid)
         .delete();
 
+
+  }
+
+  Future<void> addToMiniAuthorCollection(String uid, String collectionName, MiniAuthor mini) async{
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .collection(collectionName)
+        .doc(mini.name)
+        .set({
+      'books_count': mini.booksCount,
+      'followers' : mini.followers,
+      'image_url' : mini.imageURL
+    });
+
+  }
+
+  Future<void> removeFromMiniAuthorCollection(String uid, String collectionName, String name) async{
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .collection(collectionName)
+        .doc(name)
+        .delete();
+
+  }
+
+  Future<void> addMainUserTag(String uid, String tag) async{
+
+    List<dynamic> tags;
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((value) {
+
+          tags = value.data()['tags'];
+
+    });
+
+    tags.add(tag);
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .update({
+      'tags' : tags
+
+    });
+  }
+
+  Future<void> removeMainUserTag(String uid, String tag) async{
+
+    List<dynamic> tags;
+
+    await store.collection('users').doc(uid).get()
+      .then((value) {
+        tags = value.data()['tags'];
+
+    });
+
+    tags.remove(tag);
+
+    await store
+        .collection('users')
+        .doc(uid)
+        .update({
+      'tags' : tags
+        });
 
   }
 
