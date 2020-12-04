@@ -107,7 +107,7 @@ class MiniAuthor {
               ),
               Container(
                 width: 230,
-                child: Text(booksCount.toString() + " Books - " + FormatString.formatStatistic(followers) +" Followers",
+                child: Text(_books.toString() + " Books - " + FormatString.formatStatistic(_followers) +" Followers",
                     style: TextStyle(color: CurrentTheme.textColor3,fontSize: 14.5)),
               ),
             ],

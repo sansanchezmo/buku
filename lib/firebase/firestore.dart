@@ -337,23 +337,15 @@ class Firestore {
     List<dynamic> booksNames = [];
     List<MiniBook> miniBooksList = [];
 
-    try{
-
-      store.collection('authors').doc(name).get().then((value) {
-        var data = value.data();
-        bio = data['bio'];
-        birthDate = data['birth_date'];
-        booksNames = data['books'];
-        bookCount = data['books_count'];
-        followers = data['followers'];
-        imageUrl = data['image_url'];
-      });
-
-    }catch(e){
-
-      throw Exception("there is not a valid author");
-
-    }
+    await store.collection('authors').doc(name).get().then((value) {
+      var data = value.data();
+      bio = data['bio'];
+      birthDate = data['birth_date'];
+      booksNames = data['books'];
+      bookCount = data['books_count'];
+      followers = data['followers'];
+      imageUrl = data['image_url'];
+    });
 
     for(var map in booksNames){
       miniBooksList.add(new MiniBook(map["isbn_10"], map["title"], null, map["image_url"]));
