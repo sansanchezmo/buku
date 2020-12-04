@@ -68,8 +68,9 @@ class ML{
 
       list.add(bookRecommendationQueue.dequeue());
       if(bookRecommendationQueue.length < 30){
-        spanRecommendedBooks();
-        randomRecommendedBooks(100);
+        /*spanRecommendedBooks();
+        randomRecommendedBooks(100);*/
+        loadInitialBooks();
       }
     }
     return list;
@@ -82,8 +83,9 @@ class ML{
 
       queue.enqueue(bookRecommendationQueue.dequeue());
       if(bookRecommendationQueue.length < 30){
-        spanRecommendedBooks();
-        randomRecommendedBooks(100);
+        /*spanRecommendedBooks();
+        randomRecommendedBooks(100);*/
+        loadInitialBooks();
       }
     }
     return queue;
@@ -107,7 +109,8 @@ class ML{
 
       list.add(readListRecommendationQueue.dequeue());
       if(readListRecommendationQueue.length < 30){
-        spanRecommendedReadList(listsCount: 24);
+        //spanRecommendedReadList(listsCount: 24);
+        loadInitialReadList();
       }
     }
 
@@ -131,7 +134,7 @@ class ML{
     while(list.length < i){
       list.add(tagRecommendationQueue.dequeue());
       if(tagRecommendationQueue.length < 30){
-        spanRecommendedTags();
+        //spanRecommendedTags();
         randomRecommendedTags(100);
       }
     }
@@ -184,7 +187,7 @@ class ML{
     }
   }
 
-  static recommendedBooksByAuthor() async{
+  /*static recommendedBooksByAuthor() async{
 
     List<MiniAuthor> userAuthors = MainUser.favAuthors;
 
@@ -199,9 +202,9 @@ class ML{
         }
       }
     }
-  }
+  }*/
 
-  static recommendedBooksByBook()async{
+  /*static recommendedBooksByBook()async{
 
     for(MiniBook mini in MainUser.favBooks){
       Book book = await Firestore().getBook(mini.isbn10, userInitialize: false);
@@ -229,8 +232,8 @@ class ML{
       }
 
     }
-  }
-  static recommendedBooksByTag() async{
+  }*/
+  /*static recommendedBooksByTag() async{
     
     List<dynamic> tags = MainUser.tags;
     
@@ -249,9 +252,9 @@ class ML{
         }
       }
     }
-  }
+  }*/
 
-  static randomRecommendedBooks(int i) async{
+  /*static randomRecommendedBooks(int i) async{
 
     int count = 0;
     var random = Random();
@@ -262,7 +265,7 @@ class ML{
       bookRecommendationQueue.enqueue(book.toMiniBook());
       count++;
     }
-  }
+  }*/
 
   static randomRecommendedTags(int i){
 
@@ -278,7 +281,7 @@ class ML{
     }
   }
 
-  static spanRecommendedBooks() async{
+  /*static spanRecommendedBooks() async{
 
     for(MiniBook mini in MainUser.favBooks){
       userBooks.add(mini.isbn10);
@@ -288,9 +291,9 @@ class ML{
     await recommendedBooksByTag();
     await recommendedBooksByBook();
 
-  }
+  }*/
 
-  static spanRecommendedReadList({listsCount:4}) async{
+  /*static spanRecommendedReadList({listsCount:4}) async{
     var random = Random();
 
     for(int i = 0; i<listsCount; i++){
@@ -306,9 +309,9 @@ class ML{
         readListRecommendationQueue.enqueue(ReadList(tag,list));
       }
     }
-  }
+  }*/
 
-  static spanRecommendedTags() async{
+  /*static spanRecommendedTags() async{
 
     List<MiniBook> userBooks = MainUser.favBooks;
     for(dynamic tag in MainUser.tags){
@@ -327,7 +330,7 @@ class ML{
         }
       }
     }
-  }
+  }*/
 }
 
 
