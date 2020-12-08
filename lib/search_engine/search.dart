@@ -289,7 +289,7 @@ class Search{
     return results;
   }
 
-  static _searchUser(String query) => userBKTree.searchSuggestions(query);
+  static _searchUser(String query, {int tolerance = 1}) => userBKTree.searchSuggestions(query, tolerance);
 
   /*static searchTagDict(String tag){
 

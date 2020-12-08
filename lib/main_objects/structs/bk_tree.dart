@@ -109,7 +109,7 @@ class BKTree {
     }
   }
 
-  List searchSuggestions(String query, {int tolerance = 1}) {
+  List searchSuggestions(String query, [int tolerance = 1]) {
     if (tolerance <= 0)
       throw Exception('BKTree search tolerance must be positive');
 
