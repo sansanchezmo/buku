@@ -210,7 +210,9 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
         Container(
             height: 400.0,
             width: screenWidth,
-            color: CurrentTheme.primaryColor),
+            decoration: BoxDecoration(
+              gradient: CurrentTheme.primaryGradientColorVariant2
+            ),),
         Positioned(
           top: 230,
           left: 0,

@@ -1,4 +1,5 @@
 import 'package:buku/main_objects/structs/tree.dart';
+import 'package:buku/scaffolds/main_scaffolds/forum_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/list_info_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/comming_soon_scf.dart';
 import 'package:buku/scaffolds/others_scaffolds/test_daniel_scaffold.dart';
@@ -46,7 +47,7 @@ class _MenuState extends State<Menu> {
     return Scaffold(
       body: PageView(
         children: <Widget>[
-          ComingSoonScaffold(),
+          ForumScaffold(), //ComingSoonScaffold(),
           SearchScaffold(),
           MainPageScaffold(),
           ListInfoScaffold(listComponent),

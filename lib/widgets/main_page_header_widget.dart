@@ -11,7 +11,7 @@ class MainPageHeader extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: 130,
           decoration: BoxDecoration(
-            gradient: CurrentTheme.primaryGradientColorVariant
+            gradient: CurrentTheme.primaryGradientColorVariant2
           )
         ),
         Container(

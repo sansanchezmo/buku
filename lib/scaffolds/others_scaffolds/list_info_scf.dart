@@ -42,12 +42,6 @@ class _ListInfoScaffoldState extends State<ListInfoScaffold> {
                     bottomLeft: Radius.circular(40),
                     //bottomRight: Radius.circular(40)
                   ),
-                boxShadow: [
-                  BoxShadow(
-                      color: CurrentTheme.shadow1,
-                      spreadRadius: 5,
-                      blurRadius: 10)
-                ],
                 gradient: CurrentTheme.primaryGradientColorInverted,
               ),
               child: Padding(
@@ -171,12 +165,12 @@ class _ListInfoScaffoldState extends State<ListInfoScaffold> {
                                       list.name,
                                       style: TextStyle(
                                         fontSize: 18,
-                                        color: Colors.white,
+                                        color: Colors.white70,
                                       ),
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios_sharp,
-                                      color: Colors.white,
+                                      color: Colors.white70,
                                       size: 18,
                                     )
                                   ],

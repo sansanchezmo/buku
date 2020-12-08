@@ -42,46 +42,6 @@ class _MainPageScaffoldState extends State<MainPageScaffold> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               MainPageHeader(),
-              /*Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image(
-                    height: 30,
-                    width: 30,
-                    image: AssetImage(
-                      'assets/images/bukusymbol.png',
-                    ),
-                  ),
-                  SizedBox(width: 60),
-                  Text(
-                    'Test',
-                    style: TextStyle(
-                      fontFamily: 'ProductSans',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: CurrentTheme.searchBarText,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    child: Ink(
-                      decoration: ShapeDecoration(
-                        color: CurrentTheme.searchBarIcon,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.timeline),
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/testpages');
-                          print('You pressed the icon.');
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),*/
               SizedBox(height: 15.0),
 
 //-----------------------------First_Widget-------------------------------------

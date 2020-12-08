@@ -21,6 +21,7 @@ class OrangeTheme extends Theme{
   static LinearGradient primaryGradientColor = LinearGradient(colors: [Colors.orange, Colors.deepOrange]);
   static LinearGradient primaryGradientColorVariant = LinearGradient(colors: [Colors.orange,Colors.amber, Colors.orange]);
   static LinearGradient primaryGradientColorInverted = LinearGradient(colors: [Colors.deepOrange, Colors.orange]);
+  static LinearGradient primaryGradientColorVariant2 = LinearGradient(colors: [Colors.deepOrange,Colors.orange, Colors.deepOrange]);
 
   static ThemeData getTheme(){
     return ThemeData(

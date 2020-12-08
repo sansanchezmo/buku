@@ -34,6 +34,7 @@ class CurrentTheme{
   static LinearGradient primaryGradientColor;
   static LinearGradient primaryGradientColorVariant;
   static LinearGradient primaryGradientColorInverted;
+  static LinearGradient primaryGradientColorVariant2;
 
   static ThemeData themeData;
 
@@ -50,6 +51,7 @@ class CurrentTheme{
       primaryGradientColor = OrangeTheme.primaryGradientColor;
       primaryGradientColorVariant = OrangeTheme.primaryGradientColorVariant;
       primaryGradientColorInverted = OrangeTheme.primaryGradientColorInverted;
+      primaryGradientColorVariant2 = OrangeTheme.primaryGradientColorVariant2;
       shadow1 = OrangeTheme.shadow1;
       shadow2 = OrangeTheme.shadow2;
       separatorColor = OrangeTheme.separatorColor;
@@ -70,6 +72,7 @@ class CurrentTheme{
       primaryGradientColor = DarkTheme.primaryGradientColor;
       primaryGradientColorVariant = DarkTheme.primaryGradientColorVariant;
       primaryGradientColorInverted = DarkTheme.primaryGradientColorInverted;
+      primaryGradientColorVariant2 = DarkTheme.primaryGradientColorVariant2;
       shadow1 = DarkTheme.shadow1;
       shadow2 = DarkTheme.shadow2;
       separatorColor = DarkTheme.separatorColor;
@@ -91,6 +94,7 @@ class CurrentTheme{
       primaryGradientColor = BlueDark.primaryGradientColor;
       primaryGradientColorVariant = BlueDark.primaryGradientColorVariant;
       primaryGradientColorInverted = BlueDark.primaryGradientColorInverted;
+      primaryGradientColorVariant2 = BlueDark.primaryGradientColorVariant;
       shadow1 = BlueDark.shadow1;
       shadow2 = BlueDark.shadow2;
       separatorColor = BlueDark.separatorColor;
@@ -112,6 +116,7 @@ class CurrentTheme{
       primaryGradientColor = BlueLight.primaryGradientColor;
       primaryGradientColorVariant = BlueLight.primaryGradientColorVariant;
       primaryGradientColorInverted = BlueLight.primaryGradientColorInverted;
+      primaryGradientColorVariant2 = BlueLight.primaryGradientColorVariant;
       shadow1 = BlueLight.shadow1;
       shadow2 = BlueLight.shadow2;
       separatorColor = BlueLight.separatorColor;

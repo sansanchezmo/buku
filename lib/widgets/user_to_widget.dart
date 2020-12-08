@@ -1,3 +1,4 @@
+import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
@@ -18,8 +19,8 @@ class _UserToWidgetState extends State<UserToWidget>{
   bool isFollowed;
 
   _UserToWidgetState(this.user){
-    isFollowed = false;
-    //isFollowed = MainUser.haveFollower(user.uid);
+    //isFollowed = false;
+    isFollowed = MainUser.haveFollower(user.uid);
   }
 
   @override
@@ -76,8 +77,9 @@ class _UserToWidgetState extends State<UserToWidget>{
                     borderRadius: BorderRadius.all(Radius.circular(6))
                 ),
                 child: FlatButton(
-                  onPressed: (){
-                    setState(() {
+                  onPressed: () async {
+                    await MainUser.unfollow(user);
+                    setState(()  {
                       isFollowed = false;
                     });
 
@@ -97,8 +99,9 @@ class _UserToWidgetState extends State<UserToWidget>{
                     borderRadius: BorderRadius.all(Radius.circular(6))
                 ),
                 child: FlatButton(
-                  onPressed: (){
-                    setState(() {
+                  onPressed: () async {
+                    await MainUser.follow(user);
+                    setState(()  {
                       isFollowed = true;
                     });
                   },
