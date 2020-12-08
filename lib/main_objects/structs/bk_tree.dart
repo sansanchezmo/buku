@@ -40,7 +40,6 @@ class BKTreeNode {
 class BKTree {
   BKTreeNode _root;
   int _size;
-  static const int tolerance = 1;
 
   BKTree() {
     _size = 0;
@@ -85,7 +84,7 @@ class BKTree {
     }
   }
 
-  void _searchSuggestionsHelper(String query, List suggestions, BKTreeNode theRoot) {
+  void _searchSuggestionsHelper(String query, List suggestions, BKTreeNode theRoot, int tolerance) {
     if (theRoot == null) return;
 
     int d = editDistance(query, theRoot.key);
@@ -99,14 +98,14 @@ class BKTree {
     int end = [theRoot.children.length, d + tolerance].reduce(min);
 
     while (start < end) {
-      _searchSuggestionsHelper(query, suggestions, theRoot.children[start]);
+      _searchSuggestionsHelper(query, suggestions, theRoot.children[start], tolerance);
       start++;
     }
   }
 
-  List searchSuggestions(String query) {
+  List searchSuggestions(String query, {int tolerance = 1}) {
     List suggestions = new List();
-    _searchSuggestionsHelper(query, suggestions, _root);
+    _searchSuggestionsHelper(query, suggestions, _root, tolerance);
     return suggestions;
   }
 }
