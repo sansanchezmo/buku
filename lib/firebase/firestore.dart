@@ -11,6 +11,7 @@ import 'package:buku/main_objects/structs/bk_tree.dart';
 import 'package:buku/main_objects/structs/queue.dart';
 import 'package:buku/main_objects/structs/heap.dart';
 import 'package:buku/main_objects/user.dart';
+import 'package:buku/search_engine/search.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:buku/utilities/sort.dart';
