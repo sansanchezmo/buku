@@ -24,6 +24,11 @@ class MiniBook {
     this._color = ColorsList.colors[rdm.nextInt(5)];
   }
 
+  MiniBook.search(this._isbn10, this._title, this._authors, this._imageURL, this._rate){
+    Random rdm = new Random();
+    this._color = ColorsList.colors[rdm.nextInt(5)];
+  }
+
   //Getters
   String get isbn10 => _isbn10;
   String get title => _title;

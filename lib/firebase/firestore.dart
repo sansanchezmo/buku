@@ -6,6 +6,7 @@ import 'package:buku/main_objects/book_comment.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
+import 'package:buku/main_objects/publication.dart';
 import 'package:buku/main_objects/structs/queue.dart';
 import 'package:buku/main_objects/structs/heap.dart';
 import 'package:buku/main_objects/user.dart';
@@ -272,6 +273,26 @@ class Firestore {
 
   // Books methods ----------------------------------------------------------------------------------------
 
+  Future<MiniBook> getMiniBook(String isbn_10) async{
+
+    String isbn, title, imageUrl;
+    double rate;
+    List<dynamic> authors;
+
+    await store.collection('books').doc(isbn_10).get().then((value) {
+      var data = value.data();
+      isbn = value.id;
+      title = data['title'];
+      imageUrl = data['image_url'];
+      rate = data['rate']['stars'];
+      authors = data['authors'];
+    });
+
+    MiniBook miniBook = MiniBook.search(isbn, title, authors, imageUrl, rate);
+    return miniBook;
+
+  }
+
   Future<Book> getBook(String isbn_10, {userInitialize: true}) async {
     String title, lan, year, publisher, desc, img;
     int views, pages;
@@ -305,7 +326,7 @@ class Firestore {
       authorList.add(mini);
     }
 
-    List<BookComment> comments = []; //TODO: sort comments by date
+    /*List<BookComment> comments = []; //TODO: sort comments by date
 
     await store
         .collection('books')
@@ -319,15 +340,20 @@ class Firestore {
             data['user_image'], data['comment'], data['date']));
 
       });
-    });
+    });*/
 
     Book book = Book(title, lan, year, publisher, desc, img, views, pages, rate,
-        authorList, tags, comments, pdf, buy, isbn,
+        authorList, tags, pdf, buy, isbn,
         userInitialize: userInitialize);
 
     return book;
   }
 
+  Stream<QuerySnapshot> getBookCommentBuilder(String isbn){
+
+    return store.collection('books').doc(isbn).collection('comments').snapshots();
+
+  }
   // author method
 
   Future<Author> getAuthor(String name) async{
@@ -573,4 +599,44 @@ class Firestore {
       'date': bc.date
     });
   }
+
+  //publication method
+
+  Future<void> createPublication(Publication publication) async{
+
+    await store.collection('publication').add({
+      'body' : publication.text,
+      'book_image_url': publication.book.imageURL,
+      'book_isbn' : publication.book.isbn10,
+      'book_title' : publication.book.title,
+      'date' : publication.date,
+      'user_image_path' : publication.user.imagePath,
+      'user_name': publication.user.name,
+      'user_nickname' : publication.user.nickname,
+      'user_uid' : publication.user.uid
+    });
+
+  }
+
+  Future<void> createPublicationWithoutBook(Publication publication) async{
+
+    await store.collection('publication').add({
+      'body' : publication.text,
+      'date' : publication.date,
+      'user_image_path' : publication.user.imagePath,
+      'user_name': publication.user.name,
+      'user_nickname' : publication.user.nickname,
+      'user_uid' : publication.user.uid
+    });
+
+  }
+
+  Stream<QuerySnapshot> getForumStream(){
+
+    return store.collection('publication').snapshots();
+
+  }
+
+
+
 }

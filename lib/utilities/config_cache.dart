@@ -1,5 +1,6 @@
 
 import 'package:buku/main_objects/main_user.dart';
+import 'package:buku/main_objects/mini_book.dart';
 
 class ConfigCache{
 
@@ -8,6 +9,8 @@ class ConfigCache{
   static String _description;
   static String _userImageUrl;
   static List<String> _tags;
+
+  static MiniBook forumSelectedMiniBook;
 
   static initCache(){
     _theme = _theme = _name = _description = _userImageUrl = '';

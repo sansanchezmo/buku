@@ -22,6 +22,7 @@ class MainUser{
   static Auth get auth => _auth;
   static User get currUser => _currUser;
   static String get uid => _currUser== null ? null : _currUser.uid;
+  static String get imagePath => _currUser== null? null : _user.imageUrl;
   static List<MiniBook> get openHistory => _user==null? null: _user.history;
   static List<MiniBook> get favBooks => _user==null? null: _user.favBooks;
   static List<MiniAuthor> get favAuthors => _user==null? null: _user.favAuthors;
@@ -147,7 +148,7 @@ class MainUser{
 
     if(_user == null) throw Exception('user not loaded yet');
 
-    for(MiniUser follower in followers){
+    for(MiniUser follower in following){
       if(follower.uid == uid) return true;
     }
 
@@ -184,29 +185,26 @@ class MainUser{
   }
 
   static Future<void> addAuthorToFavorites(MiniAuthor mini) async{
-    favAuthors.add(mini);
     await _store.addToMiniAuthorCollection(uid, Firestore.favoriteAuthors, mini);
+    await init(loadML: false);
 
   }
 
   static Future<void> addTag(String tag) async{
-
-    tags.add(tag);
     await _store.addMainUserTag(uid, tag);
-
-
+    await init(loadML: false);
   }
 
   static Future<void> follow(MiniUser miniUser) async{
     await _store.addFollow(uid, Firestore.following, miniUser);
     await _store.addFollow(miniUser.uid, Firestore.followers, _user.toMiniUser());
-    followers.add(miniUser);
+    await init(loadML: false);
   }
 
   static Future<void> unfollow(MiniUser miniUser) async{
     await _store.removeFollow(uid, Firestore.following, miniUser);
     await _store.removeFollow(miniUser.uid, Firestore.followers, _user.toMiniUser());
-    followers.remove(miniUser);
+    await init(loadML: false);
   }
 
   static Future<void> removeBookFromFavorites(String isbn) async{
@@ -215,13 +213,13 @@ class MainUser{
   }
 
   static Future<void> removeAuthorToFavorites(MiniAuthor mini) async{
-    favAuthors.remove(mini);
     await _store.removeFromMiniAuthorCollection(uid, Firestore.favoriteAuthors, mini.name);
+    await init(loadML: false);
   }
 
   static Future<void> removeTag(String tag) async{
-    tags.remove(tag);
     await _store.removeMainUserTag(uid, tag);
+    await init(loadML: false);
   }
 
   static Future<void> updateProfile(Map<String, dynamic> cache) async {

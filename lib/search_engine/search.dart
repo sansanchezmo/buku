@@ -94,8 +94,8 @@ class Search{
     List<Map<String,dynamic>> result = [];
 
     if(_searchISBN(key)){
-      var book = await store.getBook(key);
-      list.add(book.toMiniBook());
+      var book = await store.getMiniBook(key);
+      list.add(book);
       return list;
     }else{
       List<dynamic> books = _searchPrefixTitle(key);
@@ -117,12 +117,8 @@ class Search{
 
       if(map['type'] == 'book'){
         String isbn = map['isbn'];
-        try {
-          Book book = await store.getBook(isbn.toUpperCase(), userInitialize: false);
-          list.add(book.toMiniBook());
-        }catch (e){
-          print('failed to load isbn: '+isbn);
-        }
+          MiniBook book = await store.getMiniBook(isbn.toUpperCase());
+          list.add(book);
       }
       else if(map['type'] == 'author'){
         String name = map['name'];
@@ -160,19 +156,16 @@ class Search{
     var store = Firestore();
     List<MiniBook> list = [];
     if(_searchISBN(key)){
-      var book = await store.getBook(key, userInitialize: false);
-      list.add(book.toMiniBook());
+      var book = await store.getMiniBook(key);
+      list.add(book);
     }else{
 
       List<dynamic> books = _searchPrefixTitle(key);
       for(var find in books){
         String isbn = find[1];
-        try {
-          Book book = await store.getBook(isbn.toUpperCase(), userInitialize: false);
-          list.add(book.toMiniBook());
-        }catch (e){
-          print(isbn);
-        }
+          MiniBook book = await store.getMiniBook(isbn.toUpperCase());
+          list.add(book);
+
       }
     }
     return list;

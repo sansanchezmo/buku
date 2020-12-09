@@ -126,4 +126,11 @@ class Publication {
     );
   }
 
+  String get text => _text;
+
+  Timestamp get date => _date;
+
+  MiniUser get user => _user;
+
+  MiniBook get book => _book;
 }

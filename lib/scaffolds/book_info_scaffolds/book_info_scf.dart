@@ -563,7 +563,7 @@ class _BookInfoScaffoldState extends State<BookInfoScaffold>
     ));
     commentList.add(Divider(height: 40, thickness: 1,));
     var commentsWidgets = book.commentWidgetList();
-    commentList.addAll(commentsWidgets);
+    commentList.add(commentsWidgets);
     return commentList;
   }
 

@@ -6,6 +6,7 @@ import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/format_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as FS;
 
 import 'author.dart';
 import 'main_user.dart';
@@ -28,7 +29,6 @@ class Book {
   final double _rating;
   List<dynamic> _authors;
   List<dynamic> _tags;
-  List<BookComment> _comments;
   List<dynamic> _pdfLinks;
   Map<String, dynamic> _buyURL;
   Map<String, dynamic> _isbn;
@@ -46,14 +46,12 @@ class Book {
       this._rating,
       List<dynamic> authors,
       List<dynamic> tags,
-      List<BookComment> comments,
       List<dynamic> pdfLinks,
       Map<String, dynamic> buyURL,
       Map<String, dynamic> isbn,
       {userInitialize: true}) {
     this._authors = authors;
     this._tags = tags;
-    this._comments = comments;
     this._pdfLinks = pdfLinks;
     this._buyURL = buyURL;
     this._isbn = isbn;
@@ -75,7 +73,6 @@ class Book {
   double get rating => _rating;
   List<dynamic> get authors => _authors;
   List<dynamic> get tags => _tags;
-  List<dynamic> get comments => _comments;
   List<dynamic> get pdfLinks => _pdfLinks;
   Map<String, dynamic> get buyURL => _buyURL;
   Map<String, dynamic> get isbn => _isbn;
@@ -123,6 +120,10 @@ class Book {
      * Removes the book from the user's fav list.
      */
     await MainUser.removeBookFromFavorites(isbn['isbn_10']);
+  }
+
+  Stream getComments(){
+    return Firestore().getBookCommentBuilder(isbn['isbn_10']);
   }
 
   MiniBook toMiniBook() {
@@ -302,11 +303,30 @@ class Book {
     }
   }
 
-  List<Widget> commentWidgetList() {
-    List<Widget> commentsList = new List<Widget>();
+  Widget commentWidgetList() {
+    /*List<Widget> commentsList = new List<Widget>();
     for (BookComment comment in _comments) {
       commentsList.add(comment.toWidget());
     }
-    return commentsList;
+    return commentsList;*/
+    return StreamBuilder(
+      stream: getComments(),
+      builder: (context, snapshot) {
+        return !snapshot.hasData
+            ? Text('Please Wait')
+            : ListView.builder(
+          shrinkWrap: true,
+          itemCount: snapshot.data.documents.length,
+          itemBuilder: (context, index) {
+            FS.DocumentSnapshot commentSnap = snapshot.data.documents[index];
+            BookComment comment = BookComment(commentSnap['user_uid'],
+                commentSnap['user_name'], commentSnap['user_nickname'],
+                commentSnap['user_image'], commentSnap['comment'],
+                commentSnap['date']);
+            return comment.toWidget();
+          }
+        );
+      },
+    );
   }
 }

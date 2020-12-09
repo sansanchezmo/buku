@@ -232,7 +232,17 @@ class _SearchScaffoldState extends State<SearchScaffold> with TickerProviderStat
       List<MiniAuthor> results = await Search.searchAuthor(toSearch);
       List<Widget> resultsWidgets = List<Widget>();
       for (MiniAuthor result in results) {
-        resultsWidgets.add(result.toResultWidget());
+        resultsWidgets.add(GestureDetector(
+          onTap: () async{
+            print('entro');
+            Author author = await Firestore().getAuthor(result.name);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AuthorInfoScaffold(author)),
+            );
+          },
+          child: result.toResultWidget(),
+        ));
       }
       _authorResults = resultsWidgets;
       return resultsWidgets;
