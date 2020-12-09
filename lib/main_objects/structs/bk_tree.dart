@@ -40,11 +40,16 @@ class BKTreeNode {
 class BKTree {
   BKTreeNode _root;
   int _size;
-  static const int tolerance = 1;
+
+  // These are helper variables used in the recursive search.
+  int _tolerance;
+  String _query;
 
   BKTree() {
     _size = 0;
     _root = null;
+    _tolerance = 1;
+    _query = '';
   }
 
   int get length => _size;
@@ -85,28 +90,35 @@ class BKTree {
     }
   }
 
-  void _searchSuggestionsHelper(String query, List suggestions, BKTreeNode theRoot) {
+  void _searchSuggestionsHelper(List suggestions, BKTreeNode theRoot) {
     if (theRoot == null) return;
 
-    int d = editDistance(query, theRoot.key);
+    int d = editDistance(_query, theRoot.key);
     if (d == 0) {
       suggestions.insert(0, [theRoot.key, theRoot.data]);
       return;
     }
-    else if (d <= tolerance) suggestions.add([theRoot.key, theRoot.data]);
+    else if (d <= _tolerance) suggestions.add([theRoot.key, theRoot.data]);
 
-    int start = [0, d - tolerance - 1].reduce(max);
-    int end = [theRoot.children.length, d + tolerance].reduce(min);
+    int start = [0, d - _tolerance - 1].reduce(max);
+    int end = [theRoot.children.length, d + _tolerance].reduce(min);
 
     while (start < end) {
-      _searchSuggestionsHelper(query, suggestions, theRoot.children[start]);
+      _searchSuggestionsHelper(suggestions, theRoot.children[start]);
       start++;
     }
   }
 
-  List searchSuggestions(String query) {
+  List searchSuggestions(String query, [int tolerance = 1]) {
+    if (tolerance <= 0)
+      throw Exception('BKTree search tolerance must be positive');
+
+    _tolerance = tolerance;
+    _query = query;
     List suggestions = new List();
-    _searchSuggestionsHelper(query, suggestions, _root);
+    _searchSuggestionsHelper(suggestions, _root);
+    _tolerance = 1;
+    _query = '';
     return suggestions;
   }
 }

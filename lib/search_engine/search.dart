@@ -7,6 +7,7 @@ import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/tag.dart';
 import 'package:buku/utilities/sort.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:string_similarity/string_similarity.dart';
 import 'package:buku/main_objects/structs/set.dart';
 import 'package:buku/main_objects/structs/map.dart';
@@ -25,6 +26,8 @@ class Search{
   static Trie bookTrie;
   static BKTree bookBKTree;
 
+  static BKTree userBKTree;
+
   static List<String> isbnList = [];
   static List<String> titleList = [];
 
@@ -34,10 +37,19 @@ class Search{
     await _loadTitle();
     _createBookSet();
     _createBookTrie(); // 7-10 seconds
+    _createUserBKTree(); // We don't have a lot of users, so this is quite fast
     //_createBookBKTree(); // JUST TOO SLOW
     print('---------------COMPLETE SEARCH INIT----------------------');
 
   }
+
+  static _createUserBKTree() {
+
+    userBKTree = new BKTree();
+    Firestore().getUsersBKTree();
+
+  }
+
 
   static _createBookBKTree() {
 
@@ -72,7 +84,7 @@ class Search{
   }
 
   static _loadISBN() async{
-    
+
     String isbn = await rootBundle.loadString('database/isbnList.txt');
     isbnList = LineSplitter().convert(isbn).map((e) => e.toString()).toList();
     isbnSet.addAll(isbnList);
@@ -269,6 +281,8 @@ class Search{
 
     return results;
   }
+
+  static _searchUser(String query, {int tolerance = 1}) => userBKTree.searchSuggestions(query, tolerance);
 
   /*static searchTagDict(String tag){
 

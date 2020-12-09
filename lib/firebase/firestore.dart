@@ -7,6 +7,7 @@ import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/main_objects/publication.dart';
+import 'package:buku/main_objects/structs/bk_tree.dart';
 import 'package:buku/main_objects/structs/queue.dart';
 import 'package:buku/main_objects/structs/heap.dart';
 import 'package:buku/main_objects/user.dart';
@@ -269,6 +270,14 @@ class Firestore {
       });
     });
     return arrayQueue;
+  }
+
+  Future<void> getUsersBKTree() async {
+    await store.collection('users').get().then((value) {
+      value.docs.forEach((element) {
+        Search.userBKTree.add(new BKTreeNode(element.data()[nickname], element.id));
+      });
+    });
   }
 
   // Books methods ----------------------------------------------------------------------------------------
