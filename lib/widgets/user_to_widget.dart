@@ -1,5 +1,8 @@
+import 'package:buku/firebase/firestore.dart';
 import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_user.dart';
+import 'package:buku/main_objects/user.dart';
+import 'package:buku/scaffolds/others_scaffolds/other_user_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +34,11 @@ class _UserToWidgetState extends State<UserToWidget>{
         alignment: Alignment.centerLeft,
         child: RaisedButton(
           onPressed: () async {
-            /*User user = await Firestore().getAuthor(this._name);
+            User user = await Firestore().getUser(this.user.uid);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OtherUserScaffold(User: this)),
-            );*/
+              MaterialPageRoute(builder: (context) => OtherUserScaffold(user)),
+            );
           },
           elevation: 0,
           color: Colors.transparent,
@@ -68,6 +71,7 @@ class _UserToWidgetState extends State<UserToWidget>{
                 ],
               ),
               Expanded(child: SizedBox(),),
+              this.user.uid == MainUser.uid? Container(width: 1,):
               isFollowed? Container(
                 height: 25,
                 width: 80,
@@ -86,7 +90,8 @@ class _UserToWidgetState extends State<UserToWidget>{
                   },
                   child: Text(
                     "Unfollow",
-                    style: TextStyle(color: Colors.white70),
+
+                    style: TextStyle(color: Colors.white70,fontSize: 12),
                   ),
                 ),
               ) : Container(
@@ -107,7 +112,7 @@ class _UserToWidgetState extends State<UserToWidget>{
                   },
                   child: Text(
                     "Follow",
-                    style: TextStyle(color: CurrentTheme.textColor2),
+                    style: TextStyle(color: CurrentTheme.textColor2, fontSize: 12),
                   ),
                 ),
               )
