@@ -3,6 +3,7 @@ import 'package:buku/main_objects/main_user.dart';
 import 'package:buku/main_objects/mini_book.dart';
 import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/main_objects/publication.dart';
+import 'package:buku/scaffolds/others_scaffolds/user_search_scf.dart';
 import 'package:buku/theme/current_theme.dart';
 import 'package:buku/utilities/config_cache.dart';
 import 'package:buku/widgets/book_image_horizonal_slider.dart';
@@ -64,7 +65,10 @@ class _ForumScaffoldState extends State<ForumScaffold> {
                       icon: Icon(Icons.person_search,
                           color: Colors.white70, size: 25),
                       onPressed: () {
-                        //TODO: search user scaffold
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserSearchScaffold())
+                        );
                       })
                 ],
               ),

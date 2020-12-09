@@ -63,6 +63,17 @@ class Firestore {
         throw Exception('there´s a problem with the user: Data not stored'));
   }
 
+  Future<MiniUser> getMiniUser(String uid) async{
+    MiniUser miniUser;
+    await store.collection('users').doc(uid).get().then((value) {
+      var data = value.data();
+      miniUser = MiniUser(uid, data['name'], data['nickname'], data['image_path']);
+    });
+
+    return miniUser;
+
+  }
+
   Future<User> getUser(String uid) async {
     List<MiniAuthor> favAuthors = await getFavAuthors(uid);
     List<MiniBook> favBooks =

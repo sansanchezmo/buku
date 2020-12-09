@@ -5,6 +5,7 @@ import 'package:buku/main_objects/author.dart';
 import 'package:buku/main_objects/book.dart';
 import 'package:buku/main_objects/mini_author.dart';
 import 'package:buku/main_objects/mini_book.dart';
+import 'package:buku/main_objects/mini_user.dart';
 import 'package:buku/main_objects/tag.dart';
 import 'package:buku/utilities/sort.dart';
 import 'package:flutter/cupertino.dart';
@@ -283,6 +284,22 @@ class Search{
   }
 
   static _searchUser(String query, {int tolerance = 1}) => userBKTree.searchSuggestions(query, tolerance);
+
+  static searchUser(String query, {int tolerance = 1}) async{
+
+    var results = _searchUser(query, tolerance: tolerance);
+    List<MiniUser> miniUsers = [];
+    for(var list in results){
+
+      String uid = list[1];
+      MiniUser miniUser = await Firestore().getMiniUser(uid);
+      miniUsers.add(miniUser);
+
+    }
+
+    return miniUsers;
+
+  }
 
   /*static searchTagDict(String tag){
 
