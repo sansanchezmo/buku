@@ -26,4 +26,4 @@ Now let´s talk what happens if you swipe left the screen. Now you can see the s
 
 Then, you can tap into the Book result and open the book information page, here you will find helpful details about it such as the rating, user views and a small review. Also, if you scroll down you will see all the comments that other users made to that book. As you will notice, there is a floating button in the bottom. If you press that button, it shows you some options like make a comment, rate, buy this book or add to favorites. It is important to say that Buku does not sell books, it only sends you to an Amazon or Google Books page so you can get the book.
 
-The last section of the app is a forum that is not yet implemented, but we are working to update it for the next version.
+The last section of the app is a forum where you can post and see posts of the users. Also you can search users by nickname and follow them. You can also be followed!
